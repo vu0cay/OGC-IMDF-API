@@ -6,6 +6,7 @@ use App\Constants\Features\TablesName;
 use App\Models\FeaturesCategory\BuildingCategory;
 use App\Models\FeaturesCategory\RestrictionCategory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Building extends Model
@@ -25,5 +26,14 @@ class Building extends Model
 
     public function address(): HasOne {
         return $this->hasOne(Address::class, 'address_id', 'address_id');
+    }
+    
+    public function footprints(): BelongsToMany {
+        return $this->belongsToMany(Footprint::class, TablesName::FOOTPRINT_BUILDING, 'building_id', 'footprint_id',
+                                    'building_id', 'footprint_id');
+    }
+    public function levels(): BelongsToMany {
+        return $this->belongsToMany(Level::class, TablesName::LEVEL_BUILDING, 'building_id', 'level_id',
+                                    'building_id', 'level_id');
     }
 }

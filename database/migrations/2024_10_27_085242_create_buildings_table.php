@@ -17,10 +17,11 @@ return new class extends Migration
             $table->uuid("building_id")->primary();
             $table->unsignedInteger('building_category_id');
             $table->unsignedInteger('restriction_category_id')->nullable();
-
-            $table->geometry("display_point", "point", 4326)->nullable();
             $table->uuid("address_id");
 
+            $table->geometry("display_point", "point", 4326)->nullable();
+
+            
             $table->foreign("address_id")->references("address_id")->on(TablesName::ADDRESSES)->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreign('building_category_id')->references('id')->on(TablesName::BUILDING_CATEGORIES)->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreign('restriction_category_id')->references('id')->on(TablesName::RESTRICTION_CATEGORIES)->cascadeOnUpdate()->cascadeOnDelete();

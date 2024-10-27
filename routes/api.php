@@ -2,7 +2,10 @@
 
 use App\Constants\Features\TablesName;
 use App\Http\Controllers\Features\BuildingController;
+use App\Http\Controllers\Features\FootprintController;
+use App\Http\Controllers\Features\LevelController;
 use App\Http\Controllers\Features\VenueController;
+use App\Models\Features\Footprint;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -24,10 +27,27 @@ Route::controller(VenueController::class)->group(function () {
     Route::get('/venues/{venue_id}', 'show');
 
 });
+/*
+    Address Controller
+*/
+
 Route::controller(BuildingController::class)->group(function () {
 
     Route::get('/buildings', 'index');
-    // Route::get('/venues/{venue_id}', 'show');
+    Route::get('/buildings/{building_id}', 'show');
+
+});
+Route::controller(FootprintController::class)->group(function () {
+
+    Route::get('/footprints', 'index');
+    Route::get('/footprints/{footprint_id}', 'show');
+
+});
+
+Route::controller(LevelController::class)->group(function () {
+
+    Route::get('/levels', 'index');
+    Route::get('/levels/{level_id}', 'show');
 
 });
 

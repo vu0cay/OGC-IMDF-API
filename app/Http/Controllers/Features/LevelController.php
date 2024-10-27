@@ -3,23 +3,23 @@
 namespace App\Http\Controllers\Features;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\FeatureResources\BuildingResource;
-use App\Models\Features\Building;
+use App\Http\Resources\FeatureResources\LevelResource;
+use App\Models\Features\Level;
 use Illuminate\Http\Request;
 
-class BuildingController extends Controller
+class LevelController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $buildings = Building::with('feature', 'restriction', 'category')->get();
-        $buildingsResource = BuildingResource::collection($buildings);
+        $levels = Level::with('feature', 'restriction', 'category', 'labels')->get();
+        $levelsResource = LevelResource::collection($levels);
         
         $geojson = '{"type": "FeatureCollection","features": []}';
         $geojson = json_decode($geojson);
-        $geojson->features = $buildingsResource;
+        $geojson->features = $levelsResource;
         
         return $geojson;
     }
@@ -43,19 +43,9 @@ class BuildingController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($building_id)
+    public function show(string $id)
     {
-        $buildings = Building::query()
-                            ->where('building_id', '=', $building_id)
-                            ->with('feature', 'restriction', 'category')
-                            ->first();
-        $buildingsResource = BuildingResource::collection([$buildings]);
-        
-        $geojson = '{"type": "FeatureCollection","features": []}';
-        $geojson = json_decode($geojson);
-        $geojson->features = $buildingsResource;
-        
-        return $geojson;
+        //
     }
 
     /**

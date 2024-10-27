@@ -3,23 +3,26 @@
 namespace App\Http\Controllers\Features;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\FeatureResources\BuildingResource;
-use App\Models\Features\Building;
+use App\Http\Resources\FeatureResources\FootprintResource;
+use App\Models\Features\Footprint;
+use DB;
 use Illuminate\Http\Request;
 
-class BuildingController extends Controller
+class FootprintController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $buildings = Building::with('feature', 'restriction', 'category')->get();
-        $buildingsResource = BuildingResource::collection($buildings);
+        $footprints = Footprint::with('feature', 'buildings', 'labels')->get();
+
+
+        $footprintsResource = FootprintResource::collection($footprints);
         
         $geojson = '{"type": "FeatureCollection","features": []}';
         $geojson = json_decode($geojson);
-        $geojson->features = $buildingsResource;
+        $geojson->features = $footprintsResource;
         
         return $geojson;
     }
@@ -43,17 +46,19 @@ class BuildingController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($building_id)
+    public function show($footprint_id)
     {
-        $buildings = Building::query()
-                            ->where('building_id', '=', $building_id)
-                            ->with('feature', 'restriction', 'category')
-                            ->first();
-        $buildingsResource = BuildingResource::collection([$buildings]);
+        $footprints = Footprint::query()
+                    ->where('footprint_id', '=', $footprint_id)
+                    ->with('feature', 'buildings', 'labels')
+                    ->first();
+
+
+        $footprintsResource = FootprintResource::collection([$footprints]);
         
         $geojson = '{"type": "FeatureCollection","features": []}';
         $geojson = json_decode($geojson);
-        $geojson->features = $buildingsResource;
+        $geojson->features = $footprintsResource;
         
         return $geojson;
     }

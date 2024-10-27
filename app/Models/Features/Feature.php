@@ -18,5 +18,16 @@ class Feature extends Model
     public function venues(): HasMany {
         return $this->hasMany(Venue::class, 'venue_id', 'feature_id');
     }
+    public function addresses(): HasMany {
+        return $this->hasMany(Address::class, 'address_id', 'feature_id');
+    }
+    public function buildings(): HasMany {
+        return $this->hasMany(Building::class, 'building_id', 'feature_id');
+    }
+    public function footprints(): HasMany {
+        return $this->hasMany(Footprint::class, 'footprint_id', 'feature_id');
+    }
 
+
+    
 }
