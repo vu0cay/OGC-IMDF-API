@@ -3,37 +3,24 @@
 namespace App\Http\Controllers\Features;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\FeatureResources\UnitResource;
-use App\Models\Features\Feature;
-use App\Models\Features\Unit;
-use DB;
+use App\Http\Resources\FeatureResources\AmenityResource;
+use App\Models\Features\Amenity;
 use Illuminate\Http\Request;
 
-class UnitController extends Controller
+class AmenityController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $units = Unit::with( 'feature', 'restriction', 'category', 'accessibilities', 'labels')->get();
-        $unitsResource = UnitResource::collection($units);
+        $amenities = Amenity::with('feature', 'units', 'category', 'labels', 'accessibilities')->get();
+        $amenitiesResource = AmenityResource::collection($amenities);
         
         $geojson = '{"type": "FeatureCollection","features": []}';
         $geojson = json_decode($geojson);
-        $geojson->features = $unitsResource;
+        $geojson->features = $amenitiesResource;
 
-
-        // $feature = Feature::
-        //     join('feature_label as feature_label', 'features.feature_id', '=', 'feature_label.feature_id')
-        //     ->join('labels as label', 'label.id', '=', 'feature_label.label_id')
-        //     // ->where('venue.venue_id', '=', $this->venue_id)
-        //     ->get()
-        //     // ->pluck('value', 'language_tag')
-        //     ->toArray();
-            
-        
-        // return $feature;
         return $geojson;
     }
 

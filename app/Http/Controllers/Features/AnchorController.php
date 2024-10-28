@@ -3,37 +3,25 @@
 namespace App\Http\Controllers\Features;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\FeatureResources\UnitResource;
-use App\Models\Features\Feature;
-use App\Models\Features\Unit;
-use DB;
+use App\Http\Resources\FeatureResources\AnchorResource;
+use App\Models\Features\Anchor;
 use Illuminate\Http\Request;
 
-class UnitController extends Controller
+class AnchorController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $units = Unit::with( 'feature', 'restriction', 'category', 'accessibilities', 'labels')->get();
-        $unitsResource = UnitResource::collection($units);
+        // $anchors = Anchor::with('feature', 'restriction', 'category', 'accessibilities', 'labels')->get();
+        $anchors = Anchor::with('feature')->get();
+        $anchorsResource = AnchorResource::collection($anchors);
         
         $geojson = '{"type": "FeatureCollection","features": []}';
         $geojson = json_decode($geojson);
-        $geojson->features = $unitsResource;
+        $geojson->features = $anchorsResource;
 
-
-        // $feature = Feature::
-        //     join('feature_label as feature_label', 'features.feature_id', '=', 'feature_label.feature_id')
-        //     ->join('labels as label', 'label.id', '=', 'feature_label.label_id')
-        //     // ->where('venue.venue_id', '=', $this->venue_id)
-        //     ->get()
-        //     // ->pluck('value', 'language_tag')
-        //     ->toArray();
-            
-        
-        // return $feature;
         return $geojson;
     }
 

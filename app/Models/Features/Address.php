@@ -17,4 +17,8 @@ class Address extends Model
     public function buildings(): HasMany {
         return $this->hasMany(Building::class, 'address_id', 'address_id');
     }
+
+    public function anchors(): HasMany {
+        return $this->hasMany(Anchor::class, 'address_id', 'address_id');
+    }
 }

@@ -29,6 +29,13 @@ class TablesName {
     public const FEATURE_LABEL = 'feature_label';
 
     public const ANCHORS = "anchors";
+    public const AMENITIES = "amenities";
+    public const AMENITY_CATEGORIES = "amenity_categories";
+    public const AMENITY_ACCESSIBILITY = "amenity_accessibility";
+    public const AMENITY_UNIT = "amenity_unit";
+
+
+
 }
 
 

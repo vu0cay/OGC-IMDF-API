@@ -9,6 +9,7 @@ use App\Models\FeaturesCategory\RestrictionCategory;
 use App\Models\FeaturesCategory\UnitCategory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Unit extends Model
@@ -40,5 +41,15 @@ class Unit extends Model
         return $this->belongsToMany(AccessibilityCategory::class, TablesName::UNIT_ACCESSIBILITY, 
                                      'unit_id', 'accessibility_id', 
                                      'unit_id', 'id');
+    }
+
+    public function anchors(): HasMany {
+        return $this->hasMany(Anchor::class, 'unit_id', 'unit_id');
+    }
+
+
+    public function amenities(): BelongsToMany {
+        return $this->belongsToMany(Amenity::class, TablesName::AMENITY_UNIT,foreignPivotKey: 'unit_id', relatedPivotKey: 'amenity_id', 
+                                        parentKey: 'unit_id', relatedKey: 'amenity_id',);
     }
 }

@@ -12,8 +12,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('anchors', function (Blueprint $table) {
+        Schema::create(TablesName::ANCHORS, function (Blueprint $table) {
             $table->id();
+            
             $table->uuid("anchor_id")->unique();
             $table->uuid("address_id")->nullable();
             $table->uuid("unit_id");
@@ -24,15 +25,31 @@ return new class extends Migration
             $table->foreign("unit_id")->references("unit_id")->on(TablesName::UNITS)->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreign("level_id")->references("level_id")->on(TablesName::LEVELS)->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreign("address_id")->references("address_id")->on(TablesName::ADDRESSES)->cascadeOnUpdate()->cascadeOnDelete();
+            
             $table->timestamps();
         });
+
+        DB::table(TablesName::FEATURES)->insert([
+            "feature_id" => "99999999-9999-9999-9999-999999999999",
+            "type" => "Feature",
+            "feature_type" => "anchor",
+            "geometry" => "Point(1.0 2.0)"
+        ]);
+        DB::table(TablesName::ANCHORS)->insert([
+            "anchor_id" => "99999999-9999-9999-9999-999999999999",
+            "address_id" => "22222222-2222-2222-2222-222222222222",
+            "unit_id" => "88888888-8888-8888-8888-888888888888",
+            "level_id" => "77777777-7777-7777-7777-777777777777"
+        ]);
     }
 
+    
     /**
      * Reverse the migrations.
-     */
+    */
+
     public function down(): void
     {
-        Schema::dropIfExists('anchors');
+        Schema::dropIfExists(TablesName::ANCHORS);
     }
 };

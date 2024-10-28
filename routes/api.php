@@ -1,6 +1,8 @@
 <?php
 
 use App\Constants\Features\TablesName;
+use App\Http\Controllers\Features\AmenityController;
+use App\Http\Controllers\Features\AnchorController;
 use App\Http\Controllers\Features\BuildingController;
 use App\Http\Controllers\Features\FootprintController;
 use App\Http\Controllers\Features\LevelController;
@@ -58,6 +60,17 @@ Route::controller(UnitController::class)->group(function () {
     Route::get('/units/{unit_id}', 'show');
 
 });
+
+Route::controller(AnchorController::class)->group(function () {
+    Route::get('/anchors', 'index');
+    Route::get('/anchors/{anchor_id}', 'show');
+});
+
+Route::controller(AmenityController::class)->group(function () {
+    Route::get('/amenities', 'index');
+    Route::get('/amenities/{amenity_id}', 'show');
+});
+
 
 
 Route::get('/user', function (Request $request) {

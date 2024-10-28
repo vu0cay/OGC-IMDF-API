@@ -15,10 +15,10 @@ class UnitResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $geom = DB::table('levels as level')
-            ->join('features as f', 'f.feature_id', '=', 'level.level_id')
+        $geom = DB::table('units as unit')
+            ->join('features as f', 'f.feature_id', '=', 'unit.unit_id')
             ->select(DB::raw('ST_AsGeoJson(geometry) as geometry'), DB::raw('ST_AsGeoJson(display_point) as display_point'))
-            ->where('level.level_id', '=', $this->level_id)
+            ->where('unit.unit_id', '=', $this->unit_id)
             ->get();
 
         // // convert geometry data in postgres (geometry coordinates) to geojson data format
