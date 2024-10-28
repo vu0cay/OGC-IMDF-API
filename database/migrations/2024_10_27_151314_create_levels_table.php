@@ -47,6 +47,17 @@ return new class extends Migration
             "display_point" => "POINT(100.0 1.0)",
             "address_id" => null
         ]);
+
+        // level label
+        DB::table(TablesName::LABELS)->insert([
+            "language_tag" => "en",
+            "value" => "Ground Floor",
+            "short_name" => "1"
+        ]);
+        DB::table(TablesName::FEATURE_LABEL)->insert([
+            "feature_id" => "77777777-7777-7777-7777-777777777777",
+            "label_id" => 5
+        ]);
     }
 
     /**

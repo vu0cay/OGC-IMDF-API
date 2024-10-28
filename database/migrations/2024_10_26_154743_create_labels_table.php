@@ -16,6 +16,7 @@ return new class extends Migration
             $table->id();
             $table->string('language_tag');
             $table->string('value');
+            $table->string('short_name')->nullable();
             $table->timestamps();
         });
         

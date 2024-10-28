@@ -18,4 +18,6 @@ class Label extends Model
 
     protected $guarded = [];
 
+    
+
 }

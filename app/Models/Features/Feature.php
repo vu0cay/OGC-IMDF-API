@@ -28,6 +28,11 @@ class Feature extends Model
         return $this->hasMany(Footprint::class, 'footprint_id', 'feature_id');
     }
 
-
+    public function levels(): HasMany {
+        return $this->hasMany(Level::class, 'level_id', 'feature_id');
+    }
+    public function units(): HasMany {
+        return $this->hasMany(Unit::class, 'unit_id', 'feature_id');
+    }
     
 }

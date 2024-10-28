@@ -6,7 +6,7 @@ use DB;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class LevelResource extends JsonResource
+class UnitResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -25,10 +25,9 @@ class LevelResource extends JsonResource
         $geometry = json_decode($geom[0]->geometry);
 
         $display_point = json_decode($geom[0]->display_point);
-
         
         return [
-            "id" => $this->footprint_id,
+            "id" => $this->unit_id,
             "type" => $this->feature->type,
             "feature_type" => $this->feature->feature_type,
             "geometry" => [
@@ -38,18 +37,17 @@ class LevelResource extends JsonResource
             "properties" => [
                 "category" => $this->category->name,
                 "restriction" => $this->restriction->name ?? null,
-                "ordinal" => $this->ordinal,
-                "outdoor" => $this->outdoor,
-                "name" => $this->labels->pluck('value', 'language_tag' )->toArray(),
-                "short_name" => $this->labels->pluck('short_name', 'language_tag' )->toArray(),
-                "display_point" => [
+                "accessibility" => $this->accessibilities->pluck('name')->toArray(), 
+                "name" => $this->labels->pluck('value', 'language_tag')->toArray(),
+                "alt_name" => null,
+                "display_point" => $display_point !== null ? [
                     "type" => $display_point->type,
                     "coordinates" => $display_point->coordinates
-                ],
-                "address_id" => $this->address_id,
-                "building_ids" => $this->buildings->pluck('building_id')->toArray()
-              
+                ] : null,
+                "level_id" => $this->level_id
+                
             ]
+
         ];
     }
 }

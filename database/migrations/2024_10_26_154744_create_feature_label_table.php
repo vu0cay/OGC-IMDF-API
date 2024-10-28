@@ -12,25 +12,20 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('level_label', function (Blueprint $table) {
+        Schema::create(TablesName::FEATURE_LABEL, function (Blueprint $table) {
             $table->id();
-            $table->uuid('level_id');
+            $table->uuid('feature_id');
             $table->unsignedInteger('label_id');
 
-            $table->primary(['level_id', 'label_id']);
+            $table->primary(['feature_id', 'label_id']);
 
-            $table->foreign('level_id')->references('level_id')->on(TablesName::LEVELS)->cascadeOnUpdate()->cascadeOnDelete();
+            $table->foreign('feature_id')->references('feature_id')->on(TablesName::FEATURES)->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreign('label_id')->references('id')->on(TablesName::LABELS)->cascadeOnUpdate()->cascadeOnDelete();
             $table->timestamps();
         });
-        DB::table(TablesName::LABELS)->insert([
-            "language_tag" => "en",
-            "value" => "Ground Floor"
-        ]);
-        DB::table(TablesName::LEVEL_LABEL)->insert([
-            "level_id" => "77777777-7777-7777-7777-777777777777",
-            "label_id" => 5
-        ]);
+
+        
+       
     }
 
     /**
@@ -38,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('level_label');
+        Schema::dropIfExists('feature_label');
     }
 };

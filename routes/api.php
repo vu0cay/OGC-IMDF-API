@@ -4,6 +4,7 @@ use App\Constants\Features\TablesName;
 use App\Http\Controllers\Features\BuildingController;
 use App\Http\Controllers\Features\FootprintController;
 use App\Http\Controllers\Features\LevelController;
+use App\Http\Controllers\Features\UnitController;
 use App\Http\Controllers\Features\VenueController;
 use App\Models\Features\Footprint;
 use Illuminate\Http\Request;
@@ -48,6 +49,13 @@ Route::controller(LevelController::class)->group(function () {
 
     Route::get('/levels', 'index');
     Route::get('/levels/{level_id}', 'show');
+
+});
+
+Route::controller(UnitController::class)->group(function () {
+
+    Route::get('/units', 'index');
+    Route::get('/units/{unit_id}', 'show');
 
 });
 

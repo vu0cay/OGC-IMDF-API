@@ -46,6 +46,16 @@ return new class extends Migration
             "footprint_id" => "66666666-6666-6666-6666-666666666666",
             "category" => "aerial",
         ]);
+
+        // footprint label
+        DB::table(TablesName::LABELS)->insert([
+            "language_tag" => "en",
+            "value" => "East Wing"
+        ]);
+        DB::table(TablesName::FEATURE_LABEL)->insert([
+            "feature_id" => "66666666-6666-6666-6666-666666666666",
+            "label_id" => 4
+        ]);
     }
 
     /**

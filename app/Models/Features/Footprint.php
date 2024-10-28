@@ -29,8 +29,9 @@ class Footprint extends Model
     // because the actual label and footprint have a (0,1) and (0,n) relationship
     // the (0,1) week function dependant will change into to an entity that receive these 2 key as primary key
     // footprint_label (label_id, footprint_id) 
+    
     public function labels(): BelongsToMany {
-        return $this->belongsToMany(Label::class, TablesName::FOOTPRINT_LABEL,foreignPivotKey: 'footprint_id', relatedPivotKey: 'label_id', 
+        return $this->belongsToMany(Label::class, TablesName::FEATURE_LABEL,foreignPivotKey: 'feature_id', relatedPivotKey: 'label_id', 
                                         parentKey: 'footprint_id', relatedKey: 'id');
     }
 

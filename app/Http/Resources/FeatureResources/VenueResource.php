@@ -29,14 +29,14 @@ class VenueResource extends JsonResource
 
 
         // tach ra thanh 1 ham rieng getName
-        $name = DB::table('venues as venue')
-            ->select('label.language_tag as language_tag', 'label.value as value')
-            ->join('venue_label as venue_label', 'venue.venue_id', '=', 'venue_label.venue_id')
-            ->join('labels as label', 'label.id', '=', 'venue_label.label_id')
-            ->where('venue.venue_id', '=', $this->venue_id)
-            ->get()
-            ->pluck('value', 'language_tag')
-            ->toArray();
+        // $name = DB::table('venues as venue')
+        //     ->select('label.language_tag as language_tag', 'label.value as value')
+        //     ->join('venue_label as venue_label', 'venue.venue_id', '=', 'venue_label.venue_id')
+        //     ->join('labels as label', 'label.id', '=', 'venue_label.label_id')
+        //     ->where('venue.venue_id', '=', $this->venue_id)
+        //     ->get()
+        //     ->pluck('value', 'language_tag')
+        //     ->toArray();
         
             
         return [
@@ -50,7 +50,7 @@ class VenueResource extends JsonResource
             "properties" => [
                 "category" => $this->category->name,
                 "restriction" => $this->restriction->name ?? null,
-                "name" => $name,
+                "name" => $this->labels->pluck( 'value', 'language_tag')->toArray(),
                 "alt_name" => null,
                 "hours" => $this->hours,
                 "website" => $this->website,

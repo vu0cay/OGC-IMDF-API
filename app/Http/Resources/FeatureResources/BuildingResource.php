@@ -25,14 +25,14 @@ class BuildingResource extends JsonResource
         $display_point = json_decode($geom[0]->display_point);
 
         // tach ra thanh 1 ham rieng getName
-        $name = DB::table('buildings as b')
-            ->select('label.language_tag as language_tag', 'label.value as value')
-            ->join('building_label as building_label', 'b.building_id', '=', 'building_label.building_id')
-            ->join('labels as label', 'label.id', '=', 'building_label.label_id')
-            ->where('b.building_id', '=', $this->building_id)
-            ->get()
-            ->pluck('value', 'language_tag')
-            ->toArray();
+        // $name = DB::table('buildings as b')
+        //     ->select('label.language_tag as language_tag', 'label.value as value')
+        //     ->join('building_label as building_label', 'b.building_id', '=', 'building_label.building_id')
+        //     ->join('labels as label', 'label.id', '=', 'building_label.label_id')
+        //     ->where('b.building_id', '=', $this->building_id)
+        //     ->get()
+        //     ->pluck('value', 'language_tag')
+        //     ->toArray();
 
 
         return [
@@ -43,7 +43,7 @@ class BuildingResource extends JsonResource
             "properties" => [
                 "category" => $this->category->name,
                 "restriction" => $this->restriction->name ?? null,
-                "name" => $name,
+                "name" => $this->labels->pluck( 'value', 'language_tag')->toArray(),
                 "alt_name" => null,
                 "display_point" => [
                     "type" => $display_point->type,

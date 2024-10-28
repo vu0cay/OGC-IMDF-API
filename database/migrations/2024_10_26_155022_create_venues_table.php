@@ -50,6 +50,25 @@ return new class extends Migration
             "address_id" => "22222222-2222-2222-2222-222222222222"
         ]);
 
+        // venue label
+        DB::table(TablesName::LABELS)->insert([
+            "language_tag" => "en",
+            "value" => "Test Venue"
+        ]);
+        DB::table(TablesName::FEATURE_LABEL)->insert([
+            "feature_id" => "11111111-1111-1111-1111-111111111111",
+            "label_id" => 1
+        ]);
+        DB::table(TablesName::LABELS)->insert([
+            "language_tag" => "vi",
+            "value" => "Kiem tra Dia Diem"
+        ]);
+        DB::table(TablesName::FEATURE_LABEL)->insert([
+            "feature_id" => "11111111-1111-1111-1111-111111111111",
+            "label_id" => 2
+        ]);
+        // 
+
    
     }
 

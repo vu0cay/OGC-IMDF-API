@@ -2,29 +2,39 @@
 
 namespace App\Http\Controllers\Features;
 
-use App\Constants\Features\TablesName;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\FeatureResources\VenueResource;
-use App\Models\Features\Venue;
+use App\Http\Resources\FeatureResources\UnitResource;
+use App\Models\Features\Feature;
+use App\Models\Features\Unit;
+use DB;
 use Illuminate\Http\Request;
 
-class VenueController extends Controller
+class UnitController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        
-        $venues = Venue::with('feature', 'restriction', 'category', 'labels')->get();
-        $venuesResource = VenueResource::collection($venues);
+        $units = Unit::with('feature', 'restriction', 'category', 'accessibilities', 'labels')->get();
+        $unitsResource = UnitResource::collection($units);
         
         $geojson = '{"type": "FeatureCollection","features": []}';
         $geojson = json_decode($geojson);
-        $geojson->features = $venuesResource;
+        $geojson->features = $unitsResource;
+
+
+        // $feature = Feature::
+        //     join('feature_label as feature_label', 'features.feature_id', '=', 'feature_label.feature_id')
+        //     ->join('labels as label', 'label.id', '=', 'feature_label.label_id')
+        //     // ->where('venue.venue_id', '=', $this->venue_id)
+        //     ->get()
+        //     // ->pluck('value', 'language_tag')
+        //     ->toArray();
+            
         
+        // return $feature;
         return $geojson;
-        
     }
 
     /**
@@ -46,18 +56,9 @@ class VenueController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($venue_id) {
-
-        $venue = Venue::query()
-                    ->with('feature', 'restriction', 'category')
-                    ->where('venue_id', '=',$venue_id)->first();
-        $venuesResource = VenueResource::collection([$venue]);
-        
-        $geojson = '{"type": "FeatureCollection","features": []}';
-        $geojson = json_decode($geojson);
-        $geojson->features = $venuesResource;
-        
-        return $geojson;
+    public function show(string $id)
+    {
+        //
     }
 
     /**
