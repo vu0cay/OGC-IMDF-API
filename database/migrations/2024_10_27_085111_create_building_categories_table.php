@@ -1,5 +1,6 @@
 <?php
 
+use App\Constants\Features\Category\BuildingCategory;
 use App\Constants\Features\TablesName;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -18,13 +19,9 @@ return new class extends Migration
             $table->timestamps();
         });
         
-        DB::table(TablesName::BUILDING_CATEGORIES)->insert([
-            ['name' => 'parking'],
-            ['name' => 'transit'],
-            ['name' => 'transit.bus'],
-            ['name' => 'transit.train'],
-            ['name' => 'unspecified'],
-        ]);
+        
+        DB::table(TablesName::BUILDING_CATEGORIES)->insert(array_map(fn($name) => ['name' => $name], array_values(BuildingCategory::getConstanst())));
+
 
     }
 
@@ -33,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('building_categories');
+        Schema::dropIfExists(TablesName::BUILDING_CATEGORIES);
     }
 };

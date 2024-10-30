@@ -12,7 +12,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('venue_restriction_category', function (Blueprint $table) {
+        Schema::create(TablesName::VENUE_RESTRICTION_CATEGORY, function (Blueprint $table) {
             $table->id();
             $table->uuid('venue_id');
             $table->unsignedInteger('restriction_category_id');
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('venue_restriction_category');
+        Schema::dropIfExists(TablesName::VENUE_RESTRICTION_CATEGORY);
     }
 };

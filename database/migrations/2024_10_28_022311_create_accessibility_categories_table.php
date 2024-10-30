@@ -40,6 +40,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('accessibility_categories');
+        Schema::dropIfExists(TablesName::ACCESSIBILITY_CATEGORIES);
     }
 };

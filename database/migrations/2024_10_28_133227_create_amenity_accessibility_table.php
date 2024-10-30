@@ -35,6 +35,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('amenity_accessibility');
+        Schema::dropIfExists(TablesName::AMENITY_ACCESSIBILITY);
     }
 };

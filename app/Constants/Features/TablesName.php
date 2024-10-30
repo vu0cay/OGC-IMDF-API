@@ -8,6 +8,7 @@ class TablesName {
 
     public const VENUES = 'venues';
     public const VENUE_CATEGORIES = 'venue_categories';
+    public const VENUE_RESTRICTION_CATEGORY = 'venue_restriction_category';
     public const RESTRICTION_CATEGORIES = 'restriction_categories';
     public const LABELS = 'labels';
     public const ADDRESSES = 'addresses';

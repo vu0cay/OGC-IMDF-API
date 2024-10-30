@@ -34,6 +34,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('restriction_categories');
+        Schema::dropIfExists(TablesName::RESTRICTION_CATEGORIES);
     }
 };

@@ -63,6 +63,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('footprints');
+        Schema::dropIfExists(TablesName::FOOTPRINTS);
     }
 };

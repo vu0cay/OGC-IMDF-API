@@ -12,7 +12,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('levels', function (Blueprint $table) {
+        Schema::create(TablesName::LEVELS, function (Blueprint $table) {
             $table->id();
             $table->uuid("level_id")->primary();
             $table->unsignedInteger('level_category_id');
@@ -65,6 +65,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('levels');
+        Schema::dropIfExists(TablesName::LEVELS);
     }
 };

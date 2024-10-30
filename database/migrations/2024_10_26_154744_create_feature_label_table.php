@@ -33,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('feature_label');
+        Schema::dropIfExists(TablesName::FEATURE_LABEL);
     }
 };

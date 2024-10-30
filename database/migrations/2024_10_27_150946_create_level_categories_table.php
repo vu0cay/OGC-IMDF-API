@@ -1,5 +1,6 @@
 <?php
 
+use App\Constants\Features\Category\LevelCategory;
 use App\Constants\Features\TablesName;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -17,18 +18,8 @@ return new class extends Migration
             $table->string('name');
             $table->timestamps();
         });
-        $categories = [
-            'arrivals',
-            'arrivals.domestic',
-            'arrivals.intl',
-            'departures',
-            'departures.domestic',
-            'departures.intl',
-            'parking',
-            'transit',
-            'unspecified',
-        ];
-        DB::table(TablesName::LEVEL_CATEGORIES)->insert(array_map(fn($name) => ['name' => $name], $categories));
+        
+        DB::table(TablesName::LEVEL_CATEGORIES)->insert(array_map(fn($name) => ['name' => $name], array_values(LevelCategory::getConstanst())));
     }
 
     /**
@@ -36,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('label_categories');
+        Schema::dropIfExists(TablesName::LEVEL_CATEGORIES);
     }
 };

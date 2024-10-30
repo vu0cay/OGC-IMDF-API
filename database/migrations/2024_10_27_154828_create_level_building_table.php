@@ -12,7 +12,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('level_building', function (Blueprint $table) {
+        Schema::create(TablesName::LEVEL_BUILDING, function (Blueprint $table) {
             $table->id();
             $table->uuid('level_id');
             $table->uuid('building_id');
@@ -33,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('level_building');
+        Schema::dropIfExists(TablesName::LEVEL_BUILDING);
     }
 };

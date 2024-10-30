@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Features;
 
+use App\Constants\Features\Category\UnitCategory;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\FeatureResources\UnitResource;
 use App\Models\Features\Feature;
@@ -23,7 +24,12 @@ class UnitController extends Controller
         $geojson = json_decode($geojson);
         $geojson->features = $unitsResource;
 
+        // $reflectionClass = new \ReflectionClass(UnitCategory::class);
 
+        // $constants = $reflectionClass->getConstants();
+        // $arr = array_values($constants);
+        // dd($arr);
+        
         // $feature = Feature::
         //     join('feature_label as feature_label', 'features.feature_id', '=', 'feature_label.feature_id')
         //     ->join('labels as label', 'label.id', '=', 'feature_label.label_id')
