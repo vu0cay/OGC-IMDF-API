@@ -8,6 +8,8 @@ use App\Http\Controllers\Features\FootprintController;
 use App\Http\Controllers\Features\LevelController;
 use App\Http\Controllers\Features\UnitController;
 use App\Http\Controllers\Features\VenueController;
+use App\Http\Controllers\Functions\SearchController;
+
 use App\Models\Features\Footprint;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -76,3 +78,7 @@ Route::controller(AmenityController::class)->group(function () {
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
+
+
+// search 
+Route::get('/search', [SearchController::class, '__invoke'])->name('search');

@@ -19,8 +19,9 @@ class UnitController extends Controller
     {
         $units = Unit::with( 'feature', 'restriction', 'category', 'accessibilities', 'labels')->get();
         $unitsResource = UnitResource::collection($units);
-        
-        $geojson = '{"type": "FeatureCollection","features": []}';
+        $geojson = '{"type": "FeatureCollection","features": [], "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::404000"}}}';
+
+        //$geojson = '{"type": "FeatureCollection","features": []}';
         $geojson = json_decode($geojson);
         $geojson->features = $unitsResource;
 
