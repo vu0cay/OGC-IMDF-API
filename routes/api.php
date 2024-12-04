@@ -82,3 +82,6 @@ Route::get('/user', function (Request $request) {
 
 // search 
 Route::get('/search', [SearchController::class, '__invoke'])->name('search');
+
+// list all sensor in levels
+
