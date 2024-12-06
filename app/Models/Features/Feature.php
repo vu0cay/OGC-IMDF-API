@@ -9,11 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Feature extends Model
 {
     protected $table = TablesName::FEATURES;
-    protected $fillable = [
-        'feature_id',
-        'feature_type',
-        'geometry'
-    ];
+    protected $guarded = [];
 
     public function venues(): HasMany {
         return $this->hasMany(Venue::class, 'venue_id', 'feature_id');

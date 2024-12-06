@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('footprint_labels', function (Blueprint $table) {
+        Schema::create(TablesName::FOOTPRINT_LABELS, function (Blueprint $table) {
             $table->id();
 
             $table->uuid('footprint_id');
@@ -31,10 +31,12 @@ return new class extends Migration
         //     // 'short_name' => '1'
         // ]);
 
-        // DB::table('footprint_labels')->insert([
+        // DB::table(TablesName::FOOTPRINT_LABELS)->insert([
         //     'footprint_id' => "55555555-5555-5555-5555-555555555555",
         //     'label_id' => $newLabel->id
         // ]);
+
+        
     }
 
     /**
@@ -42,6 +44,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('footprint_labels');
+        Schema::dropIfExists(TablesName::FOOTPRINT_LABELS);
     }
 };

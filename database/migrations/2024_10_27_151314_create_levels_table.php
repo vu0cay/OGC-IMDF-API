@@ -15,40 +15,21 @@ return new class extends Migration
         Schema::create(TablesName::LEVELS, function (Blueprint $table) {
             $table->id();
             $table->uuid("level_id")->primary();
-
             $table->unsignedBigInteger('feature_id');
-
             $table->unsignedInteger('level_category_id');
             $table->unsignedInteger('restriction_category_id')->nullable();
             $table->geometry('geometry', 'Polygon', srid:4326);
             $table->boolean("outdoor");
             $table->integer("ordinal");
             $table->geometry("display_point", srid: 4326)->nullable();
-            
-            /////
             $table->uuid("address_id")->nullable();
-
-
-            // $table->foreign('level_id')->references('feature_id')->on(TablesName::FEATURES)->cascadeOnUpdate()->cascadeOnDelete();
-            $table->foreign('feature_id')->references('id')->on('featuretests')->cascadeOnUpdate()->cascadeOnDelete();
-            
-            
+            $table->foreign('feature_id')->references('id')->on(TablesName::FEATURES)->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreign('level_category_id')->references('id')->on(TablesName::LEVEL_CATEGORIES)->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreign('restriction_category_id')->references('id')->on(TablesName::RESTRICTION_CATEGORIES)->cascadeOnUpdate()->cascadeOnDelete();
-            
-            ///
             $table->foreign("address_id")->references("address_id")->on(TablesName::ADDRESSES)->cascadeOnUpdate()->cascadeOnDelete();
-
-            $table->timestamps();
+            // $table->timestamps();
         });
 
-
-        // DB::table(TablesName::FEATURES)->insert([
-        //     "feature_id" => "77777777-7777-7777-7777-777777777777",
-        //     "type" => "Feature",
-        //     "feature_type" => "level",
-        //     "geometry" => "Polygon ((100.0 0.0, 101.0 0.0, 101.0 1.0, 100.0 1.0, 100.0 0.0 ))"
-        // ]);
 
         DB::table(TablesName::LEVELS)->insert([
             "level_id" => "77777777-7777-7777-7777-777777777777",
@@ -59,21 +40,9 @@ return new class extends Migration
             "ordinal" => 0,
             "outdoor" => false,
             "display_point" => "POINT(100.0 1.0)",
-
             "address_id" => null
-        
         ]);
 
-        // level label
-        // DB::table(TablesName::LABELS)->insert([
-        //     "language_tag" => "en",
-        //     "value" => "Ground Floor",
-        //     "short_name" => "1"
-        // ]);
-        // DB::table(TablesName::FEATURE_LABEL)->insert([
-        //     "feature_id" => "77777777-7777-7777-7777-777777777777",
-        //     "label_id" => 5
-        // ]);
     }
 
     /**

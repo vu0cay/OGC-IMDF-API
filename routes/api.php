@@ -34,7 +34,6 @@ Route::controller(VenueController::class)->group(function () {
 
 });
 
-
 Route::controller(AddressController::class)->group(function () {
 
     Route::get('/addresses', 'index');
@@ -84,6 +83,9 @@ Route::controller(AmenityController::class)->group(function () {
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
+
+
+
 
 
 // search 

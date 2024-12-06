@@ -15,26 +15,38 @@ class Footprint extends Model
 
     protected $guarded = [];
 
-    
-    public function buildings(): BelongsToMany {
-        return $this->belongsToMany(Building::class, TablesName::FOOTPRINT_BUILDING,foreignPivotKey: 'footprint_id', relatedPivotKey: 'building_id', 
-                                        parentKey: 'footprint_id', relatedKey: 'building_id');
+
+    public function buildings(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            Building::class,
+            TablesName::FOOTPRINT_BUILDING,
+            foreignPivotKey: 'footprint_id',
+            relatedPivotKey: 'building_id',
+            parentKey: 'footprint_id',
+            relatedKey: 'building_id'
+        );
     }
 
-    // test 
-    
-    public function featuretest(): HasOne {
-        return $this->hasOne(FeatureTest::class, 'id', 'feature_id');
+    public function feature(): HasOne
+    {
+        return $this->hasOne(Feature::class, 'id', 'feature_id');
     }
-    public function labels(): BelongsToMany {
-        return $this->belongsToMany(Label::class, 'footprint_labels', 
-                                        foreignPivotKey: 'footprint_id', relatedPivotKey: 'label_id', 
-                                        parentKey: 'footprint_id', relatedKey: 'id');
+    public function labels(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            Label::class,
+            'footprint_labels',
+            foreignPivotKey: 'footprint_id',
+            relatedPivotKey: 'label_id',
+            parentKey: 'footprint_id',
+            relatedKey: 'id'
+        );
     }
-    
-    public function category(): HasOne {
+
+    public function category(): HasOne
+    {
         return $this->hasOne(FootprintCategory::class, 'id', 'footprint_category_id');
     }
-    ///
 
 }

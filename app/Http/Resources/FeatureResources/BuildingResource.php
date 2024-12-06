@@ -31,7 +31,7 @@ class BuildingResource extends JsonResource
         return [
             "id" => $this->building_id,
             "type" => "Feature",
-            "feature_type" => $this->featuretest->feature_type,
+            "feature_type" => $this->feature->feature_type,
             "geometry" => null,
             "properties" => [
                 "category" => $this->category->name ?? null,

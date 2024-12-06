@@ -33,7 +33,7 @@ class LevelResource extends JsonResource
         return [
             "id" => $this->level_id,
             "type" => "Feature",
-            "feature_type" => $this->featuretest->feature_type,
+            "feature_type" => $this->feature->feature_type,
             "geometry" => [
                 "type" => $geometry->type,
                 "coordinates" => $geometry->coordinates

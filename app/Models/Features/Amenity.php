@@ -18,38 +18,55 @@ class Amenity extends Model
 
     protected $guarded = [];
 
-    // test 
-
-    public function featuretest(): HasOne {
-        return $this->hasOne(FeatureTest::class, 'id', 'feature_id');
+    public function feature(): HasOne
+    {
+        return $this->hasOne(Feature::class, 'id', 'feature_id');
     }
 
-    public function labels(): BelongsToMany {
-        return $this->belongsToMany(Label::class, TablesName::AMENTITY_LABEL, 
-                                        foreignPivotKey: 'amenity_id', relatedPivotKey: 'label_id', 
-                                        parentKey: 'amenity_id', relatedKey: 'id');
+    public function labels(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            Label::class,
+            TablesName::AMENTITY_LABEL,
+            foreignPivotKey: 'amenity_id',
+            relatedPivotKey: 'label_id',
+            parentKey: 'amenity_id',
+            relatedKey: 'id'
+        );
     }
     public function address(): HasOne
     {
         return $this->HasOne(AddressAmenity::class, 'amenity_id', 'amenity_id');
     }
-
-    ///////////////////////////////////////////////
-
-    public function category(): HasOne {
+    public function category(): HasOne
+    {
         return $this->hasOne(AmenityCategory::class, 'id', 'amenity_category_id');
     }
-    public function unit(): BelongsTo {
+    public function unit(): BelongsTo
+    {
         return $this->belongsTo(Unit::class, 'unit_id', 'unit_id');
     }
 
-    public function accessibilities(): BelongsToMany {
-        return $this->belongsToMany(AccessibilityCategory::class, TablesName::AMENITY_ACCESSIBILITY, 
-                                     'amenity_id', 'accessibility_id', 
-                                     'amenity_id', 'id');
+    public function accessibilities(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            AccessibilityCategory::class,
+            TablesName::AMENITY_ACCESSIBILITY,
+            'amenity_id',
+            'accessibility_id',
+            'amenity_id',
+            'id'
+        );
     }
-    public function units(): BelongsToMany {
-        return $this->belongsToMany(Unit::class, TablesName::AMENITY_UNIT,foreignPivotKey: 'amenity_id', relatedPivotKey: 'unit_id', 
-                                        parentKey: 'amenity_id', relatedKey: 'unit_id',);
+    public function units(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            Unit::class,
+            TablesName::AMENITY_UNIT,
+            foreignPivotKey: 'amenity_id',
+            relatedPivotKey: 'unit_id',
+            parentKey: 'amenity_id',
+            relatedKey: 'unit_id',
+        );
     }
 }

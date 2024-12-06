@@ -3,9 +3,10 @@
 namespace App\Models\FeaturesRelation;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Constants\Features\TablesName;
 
 class AddressAmenity extends Model
 {
-    protected $table = 'address_amenities';
+    protected $table = TablesName::ADDRESS_AMENITIES;
     protected $guarded = [];
 }

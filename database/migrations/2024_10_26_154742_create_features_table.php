@@ -1,5 +1,6 @@
 <?php
 
+use App\Constants\Features\FeatureType;
 use App\Constants\Features\TablesName;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -14,12 +15,12 @@ return new class extends Migration
     {
         Schema::create(TablesName::FEATURES, function (Blueprint $table) {
             $table->id();
-            $table->uuid("feature_id")->primary();
-            $table->string('type');
             $table->string('feature_type');
-            $table->geometry('geometry', srid: 4326)->nullable();
-            $table->timestamps();
         });
+
+        DB::table(TablesName::FEATURES)->insert(array_map(function ($name) {
+            return ['feature_type' => $name];
+        }, FeatureType::getConstanst()));
        
        
     }

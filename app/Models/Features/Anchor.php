@@ -14,9 +14,9 @@ class Anchor extends Model
 
     protected $guarded = [];
 
-    // test 
-    public function featuretest(): HasOne {
-        return $this->hasOne(FeatureTest::class, 'id', 'feature_id');
+    public function feature(): HasOne
+    {
+        return $this->hasOne(Feature::class, 'id', 'feature_id');
     }
 
 
@@ -25,11 +25,8 @@ class Anchor extends Model
         return $this->HasOne(AddressAnchor::class, 'anchor_id', 'anchor_id');
     }
 
-    /////////////////////////////
-
-
-    // unit
-    public function unit(): BelongsTo {
+    public function unit(): BelongsTo
+    {
         return $this->belongsTo(Unit::class, 'unit_id', 'unit_id');
     }
 }

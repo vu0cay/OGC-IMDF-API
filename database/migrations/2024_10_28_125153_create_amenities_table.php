@@ -17,20 +17,14 @@ return new class extends Migration {
             $table->uuid("amenity_id")->primary();
             $table->unsignedInteger("amenity_category_id");
             $table->unsignedInteger('feature_id');
-            
             $table->geometry('geometry', srid: 4326)->nullable();
             $table->string("phone")->nullable();
             $table->string("website")->nullable();
             $table->string("hours")->nullable();
-            // $table->uuid("address_id")->nullable();
             $table->uuid("correlation_id")->nullable();
-            
-            // $table->foreign('address_id')->references('address_id')->on(TablesName::ADDRESSES)->cascadeOnUpdate()->cascadeOnDelete();
-            
-            $table->foreign('feature_id')->references('id')->on('featuretests')->cascadeOnUpdate()->cascadeOnDelete();            
+            $table->foreign('feature_id')->references('id')->on(TablesName::FEATURES)->cascadeOnUpdate()->cascadeOnDelete();            
             $table->foreign('amenity_category_id')->references('id')->on(TablesName::AMENITY_CATEGORIES)->cascadeOnUpdate()->cascadeOnDelete();
-
-            $table->timestamps();
+            // $table->timestamps();
         });
 
 
@@ -46,7 +40,6 @@ return new class extends Migration {
         ]);
 
         
-
 
     }
 

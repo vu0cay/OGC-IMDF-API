@@ -12,7 +12,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('address_buildings', function (Blueprint $table) {
+        Schema::create(TablesName::ADDRESS_BUILDINGS, function (Blueprint $table) {
             $table->id();
 
             $table->uuid('building_id');
@@ -24,11 +24,11 @@ return new class extends Migration
         });
 
 
-        DB::table('address_buildings')->insert([
+        DB::table(TablesName::ADDRESS_BUILDINGS)->insert([
             'building_id' => '44444444-4444-4444-4444-444444444444',
             'address_id' => '22222222-2222-2222-2222-222222222222'
         ]);
-        DB::table('address_buildings')->insert([
+        DB::table(TablesName::ADDRESS_BUILDINGS)->insert([
             'building_id' => '44444444-4444-4444-4444-444444444443',
             'address_id' => '22222222-2222-2222-2222-222222222222'
         ]);
@@ -39,6 +39,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('address_buildings');
+        Schema::dropIfExists(TablesName::ADDRESS_BUILDINGS);
     }
 };

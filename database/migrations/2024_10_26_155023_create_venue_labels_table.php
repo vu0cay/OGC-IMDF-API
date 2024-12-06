@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('venue_labels', function (Blueprint $table) {
+        Schema::create(TablesName::VENUE_LABELS, function (Blueprint $table) {
             $table->id();
 
             $table->uuid('venue_id');
@@ -31,7 +31,7 @@ return new class extends Migration
             'value' => 'Test Venue'
         ]);
 
-        DB::table('venue_labels')->insert([
+        DB::table(TablesName::VENUE_LABELS)->insert([
             'venue_id' => "11111111-1111-1111-1111-111111111111",
             'label_id' => $newLabel->id
         ]);
@@ -41,7 +41,7 @@ return new class extends Migration
             'value' => 'Kiem tra dia diem'
         ]);
 
-        DB::table('venue_labels')->insert([
+        DB::table(TablesName::VENUE_LABELS)->insert([
             'venue_id' => "11111111-1111-1111-1111-111111111111",
             'label_id' => $newLabel->id
         ]);
@@ -55,6 +55,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('venue_labels');
+        Schema::dropIfExists(TablesName::VENUE_LABELS);
     }
 };

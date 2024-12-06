@@ -25,7 +25,7 @@ class AnchorResource extends JsonResource
         return [
             "id" => $this->anchor_id,
             "type" => "Feature",
-            "feature_type" => $this->featuretest->feature_type,
+            "feature_type" => $this->feature->feature_type,
             "geometry" => [
                 "type" => $geometry->type,
                 "coordinates" => $geometry->coordinates

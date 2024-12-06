@@ -26,17 +26,11 @@ return new class extends Migration {
             $table->string("postal_code_ext")->nullable();
             $table->string("postal_code_vanity")->nullable();
 
-            $table->foreign("feature_id")->references("id")->on('featuretests')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreign("feature_id")->references("id")->on(TablesName::FEATURES)->cascadeOnDelete()->cascadeOnUpdate();
             // $table->timestamps();
         });
 
         # unqualified building address
-        // DB::table(TablesName::FEATURES)->insert([
-        //     "feature_id" => "22222222-2222-2222-2222-222222222222",
-        //     "type" => "Feature",
-        //     "feature_type" => "address",
-        //     "geometry" => null
-        // ]);
         DB::table(TablesName::ADDRESSES)->insert([
             "address_id" => "22222222-2222-2222-2222-222222222222",
             "feature_id" => 1,
@@ -51,12 +45,6 @@ return new class extends Migration {
         
         
         # unit-qualified address
-        // DB::table(TablesName::FEATURES)->insert([
-            //     "feature_id" => "33333333-3333-3333-3333-333333333333",
-            //     "type" => "Feature",
-            //     "feature_type" => "address",
-            //     "geometry" => null
-            // ]);
         DB::table(TablesName::ADDRESSES)->insert([
             "address_id" => "33333333-3333-3333-3333-333333333333",
             "feature_id" => 1,

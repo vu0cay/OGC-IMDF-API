@@ -17,11 +17,9 @@ return new class extends Migration
             $table->uuid('level_id');
             $table->uuid('building_id');
             $table->primary(['level_id', 'building_id']);
-
             $table->foreign('level_id')->references('level_id')->on(TablesName::LEVELS)->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreign('building_id')->references('building_id')->on(TablesName::BUILDINGS)->cascadeOnUpdate()->cascadeOnDelete();
-            
-            $table->timestamps();
+            // $table->timestamps();
         });
         DB::table(TablesName::LEVEL_BUILDING)->insert([
             ['level_id' => '77777777-7777-7777-7777-777777777777', 'building_id' => '44444444-4444-4444-4444-444444444444'],

@@ -29,32 +29,32 @@ class Venue extends Model
         'display_point'
     ];
 
-
-
-     /// test
-    
-     public function featuretest(): HasOne {
-        return $this->hasOne(FeatureTest::class, 'id', 'feature_id');
+    public function feature(): HasOne
+    {
+        return $this->hasOne(Feature::class, 'id', 'feature_id');
     }
 
-    public function labels(): BelongsToMany {
-        return $this->belongsToMany(Label::class, 'venue_labels', 
-                                        foreignPivotKey: 'venue_id', relatedPivotKey: 'label_id', 
-                                        parentKey: 'venue_id', relatedKey: 'id');
+    public function labels(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            Label::class,
+            'venue_labels',
+            foreignPivotKey: 'venue_id',
+            relatedPivotKey: 'label_id',
+            parentKey: 'venue_id',
+            relatedKey: 'id'
+        );
     }
     public function address(): HasOne
     {
         return $this->HasOne(AddressVenue::class, 'venue_id', 'venue_id');
     }
-
-    /////////////////////////////////
-
-
-   
-    public function category(): HasOne {
+    public function category(): HasOne
+    {
         return $this->hasOne(VenueCategory::class, 'id', 'venue_category_id');
     }
-    public function restriction(): HasOne {
+    public function restriction(): HasOne
+    {
         return $this->hasOne(RestrictionCategory::class, 'id', 'restriction_category_id');
     }
 

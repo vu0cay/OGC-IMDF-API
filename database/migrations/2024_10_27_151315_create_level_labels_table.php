@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('level_labels', function (Blueprint $table) {
+        Schema::create(TablesName::LEVEL_LABELS, function (Blueprint $table) {
             $table->id();
 
             $table->uuid('level_id');
@@ -31,7 +31,7 @@ return new class extends Migration
             'short_name' => '1'
         ]);
 
-        DB::table('level_labels')->insert([
+        DB::table(TablesName::LEVEL_LABELS)->insert([
             'level_id' => "77777777-7777-7777-7777-777777777777",
             'label_id' => $newLabel->id
         ]);
@@ -42,6 +42,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('level_labels');
+        Schema::dropIfExists(TablesName::LEVEL_LABELS);
     }
 };

@@ -12,7 +12,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('address_anchors', function (Blueprint $table) {
+        Schema::create(TablesName::ADDRESS_ANCHORS, function (Blueprint $table) {
             $table->id();
 
             $table->uuid('anchor_id');
@@ -24,7 +24,7 @@ return new class extends Migration
         });
 
 
-        DB::table('address_anchors')->insert([
+        DB::table(TablesName::ADDRESS_ANCHORS)->insert([
             'anchor_id' => '99999999-9999-9999-9999-999999999999',
             'address_id' => '22222222-2222-2222-2222-222222222222'
         ]);
@@ -35,6 +35,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('address_anchors');
+        Schema::dropIfExists(TablesName::ADDRESS_ANCHORS);
     }
 };

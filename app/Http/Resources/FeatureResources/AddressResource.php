@@ -20,7 +20,7 @@ class AddressResource extends JsonResource
         return [
             "id" => $this->address_id,
             "type" => "Feature",
-            "feature_type" => $this->featuretest->feature_type,
+            "feature_type" => $this->feature->feature_type,
             "geometry" => null,
             "properties" => [
                 "address" => $this->address,

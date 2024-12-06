@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('amenity_labels', function (Blueprint $table) {
+        Schema::create(TablesName::AMENTITY_LABEL, function (Blueprint $table) {
             $table->id();
 
             $table->uuid('amenity_id');
@@ -33,7 +33,7 @@ return new class extends Migration
         //     'short_name' => 'st'
         // ]);
 
-        // DB::table('amenity_labels')->insert([
+        // DB::table(TablesName::AMENTITY_LABEL)->insert([
         //     'amenity_id' => "99999998-9999-9999-9999-999999999999",
         //     'label_id' => $newLabel->id
         // ]);
@@ -46,6 +46,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('amenity_labels');
+        Schema::dropIfExists(TablesName::AMENTITY_LABEL);
     }
 };
