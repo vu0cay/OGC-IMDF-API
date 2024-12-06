@@ -6,6 +6,7 @@ use App\Constants\Features\TablesName;
 use App\Models\FeaturesCategory\AccessibilityCategory;
 use App\Models\FeaturesCategory\AmenityCategory;
 use App\Models\FeaturesCategory\Label;
+use App\Models\FeaturesRelation\AddressAmenity;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -17,23 +18,29 @@ class Amenity extends Model
 
     protected $guarded = [];
 
-    public function feature(): HasOne {
-        return $this->hasOne(Feature::class, 'feature_id', 'amenity_id');
+    // test 
+
+    public function featuretest(): HasOne {
+        return $this->hasOne(FeatureTest::class, 'id', 'feature_id');
     }
+
+    public function labels(): BelongsToMany {
+        return $this->belongsToMany(Label::class, TablesName::AMENTITY_LABEL, 
+                                        foreignPivotKey: 'amenity_id', relatedPivotKey: 'label_id', 
+                                        parentKey: 'amenity_id', relatedKey: 'id');
+    }
+    public function address(): HasOne
+    {
+        return $this->HasOne(AddressAmenity::class, 'amenity_id', 'amenity_id');
+    }
+
+    ///////////////////////////////////////////////
+
     public function category(): HasOne {
         return $this->hasOne(AmenityCategory::class, 'id', 'amenity_category_id');
     }
     public function unit(): BelongsTo {
         return $this->belongsTo(Unit::class, 'unit_id', 'unit_id');
-    }
-
-    // this is just a trick to call eager load labels
-    // because the actual label and footprint have a (0,1) and (0,n) relationship
-    // the (0,1) week function dependant will change into to an entity that receive these 2 key as primary key
-    // footprint_label (label_id, footprint_id) 
-    public function labels(): BelongsToMany {
-        return $this->belongsToMany(Label::class, TablesName::FEATURE_LABEL,foreignPivotKey: 'feature_id', relatedPivotKey: 'label_id', 
-                                        parentKey: 'amenity_id', relatedKey: 'id');
     }
 
     public function accessibilities(): BelongsToMany {

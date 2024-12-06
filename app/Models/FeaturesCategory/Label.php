@@ -12,7 +12,6 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 class Label extends Model
 {
     protected $table = TablesName::LABELS;
-    protected $primaryKey = 'label_id';
 
     public $incrementing = true;
 

@@ -15,14 +15,16 @@ class AnchorController extends Controller
     public function index()
     {
         // $anchors = Anchor::with('feature', 'restriction', 'category', 'accessibilities', 'labels')->get();
-        $anchors = Anchor::with('feature')->get();
+        // $anchors = Anchor::with('feature')->get();
+        $anchors = Anchor::get();
         $anchorsResource = AnchorResource::collection($anchors);
         
-        $geojson = '{"type": "FeatureCollection","features": []}';
+        $geojson = '{"type": "FeatureCollection","features": [], "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::404000"}}}';
         $geojson = json_decode($geojson);
         $geojson->features = $anchorsResource;
 
-        return $geojson;
+        return response()->json([$geojson], 200);
+
     }
 
     /**
@@ -44,9 +46,21 @@ class AnchorController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($anchor_id)
     {
-        //
+        $anchor = Anchor::query()
+                    ->where('anchor_id', '=', $anchor_id)->first();
+        if (!$anchor) return response()->json(['success'=> false, 'message'=> 'Not Found'],404);
+        
+        $anchorsResource = AnchorResource::collection([$anchor]);
+
+        // $geojson = '{"type": "FeatureCollection","features": []}';
+        $geojson = '{"type": "FeatureCollection","features": [], "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::404000"}}}';
+
+        $geojson = json_decode($geojson);
+        $geojson->features = $anchorsResource;
+
+        return response()->json([$geojson], 200);
     }
 
     /**

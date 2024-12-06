@@ -23,8 +23,14 @@ return new class extends Migration
             
             $table->timestamps();
         });
+
+        DB::table(TablesName::FOOTPRINT_BUILDING)->insert([
+            ['footprint_id' => '55555555-5555-5555-5555-555555555555', 'building_id' => '44444444-4444-4444-4444-444444444444'],
+        ]);
+
         DB::table(TablesName::FOOTPRINT_BUILDING)->insert([
             ['footprint_id' => '66666666-6666-6666-6666-666666666666', 'building_id' => '44444444-4444-4444-4444-444444444444'],
+            ['footprint_id' => '66666666-6666-6666-6666-666666666666', 'building_id' => '44444444-4444-4444-4444-444444444443']
         ]);
     }
 

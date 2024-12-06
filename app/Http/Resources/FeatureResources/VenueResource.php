@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\FeatureResources;
 
+use App\Contracts\GetFeatureName;
 use DB;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -16,7 +17,6 @@ class VenueResource extends JsonResource
     public function toArray(Request $request): array
     {
         $geom = DB::table('venues as v')
-            ->join('features as f', 'f.feature_id', '=', 'v.venue_id')
             ->select(DB::raw('ST_AsGeoJson(geometry) as geometry'), DB::raw('ST_AsGeoJson(display_point) as display_point'))
             ->where('v.id', '=', $this->id)
             ->get();
@@ -26,32 +26,23 @@ class VenueResource extends JsonResource
         // // convert geometry data in postgres (display point) to geojson data format
         $display_point = json_decode($geom[0]->display_point);
 
+        $name = GetFeatureName::getName($this->labels, 'value');
+        $alt_name = GetFeatureName::getName($this->labels, 'short_name');
 
-
-        // tach ra thanh 1 ham rieng getName
-        // $name = DB::table('venues as venue')
-        //     ->select('label.language_tag as language_tag', 'label.value as value')
-        //     ->join('venue_label as venue_label', 'venue.venue_id', '=', 'venue_label.venue_id')
-        //     ->join('labels as label', 'label.id', '=', 'venue_label.label_id')
-        //     ->where('venue.venue_id', '=', $this->venue_id)
-        //     ->get()
-        //     ->pluck('value', 'language_tag')
-        //     ->toArray();
-        
             
         return [
             "id" => $this->venue_id,
-            "type" => $this->feature->type,
-            "feature_type" => $this->feature->feature_type,
+            "type" => "Feature",
+            "feature_type" => $this->featuretest->feature_type,
             "geometry" => [
                 "type" => $geometry->type,
                 "coordinates" => $geometry->coordinates
             ],
             "properties" => [
-                "category" => $this->category->name,
+                "category" => $this->category->name ?? null,
                 "restriction" => $this->restriction->name ?? null,
-                "name" => $this->labels->pluck( 'value', 'language_tag')->toArray(),
-                "alt_name" => null,
+                "name" => $name!=null && count($name) > 0 ? $name : null,
+                "alt_name" => $alt_name !=null &&  count($alt_name) > 0 ? $alt_name : null,
                 "hours" => $this->hours,
                 "website" => $this->website,
                 "phone" => $this->phone,
@@ -59,7 +50,7 @@ class VenueResource extends JsonResource
                     "type" => $display_point->type,
                     "coordinates" => $display_point->coordinates
                 ],
-                "address_id" => $this->address_id
+                "address_id" => $this->address->address_id ?? null
             ]
 
         ];

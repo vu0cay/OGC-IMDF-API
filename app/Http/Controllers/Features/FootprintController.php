@@ -15,16 +15,16 @@ class FootprintController extends Controller
      */
     public function index()
     {
-        $footprints = Footprint::with('feature', 'buildings', 'labels')->get();
+        $footprints = Footprint::get();
 
 
         $footprintsResource = FootprintResource::collection($footprints);
         
-        $geojson = '{"type": "FeatureCollection","features": []}';
+        $geojson = '{"type": "FeatureCollection","features": [], "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::404000"}}}';
         $geojson = json_decode($geojson);
         $geojson->features = $footprintsResource;
         
-        return $geojson;
+        return response()->json([$geojson], 200);
     }
 
     /**
@@ -50,17 +50,18 @@ class FootprintController extends Controller
     {
         $footprints = Footprint::query()
                     ->where('footprint_id', '=', $footprint_id)
-                    ->with('feature', 'buildings', 'labels')
+                    // ->with('feature', 'buildings', 'labels')
                     ->first();
+        if (!$footprints) return response()->json(['success'=> false, 'message'=> 'Not Found'],404);
 
 
         $footprintsResource = FootprintResource::collection([$footprints]);
         
-        $geojson = '{"type": "FeatureCollection","features": []}';
+        $geojson = '{"type": "FeatureCollection","features": [], "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::404000"}}}';
         $geojson = json_decode($geojson);
         $geojson->features = $footprintsResource;
         
-        return $geojson;
+        return response()->json([$geojson], 200);
     }
 
     /**

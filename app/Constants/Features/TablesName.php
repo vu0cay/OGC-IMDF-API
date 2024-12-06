@@ -9,6 +9,9 @@ class TablesName {
     public const VENUES = 'venues';
     public const VENUE_CATEGORIES = 'venue_categories';
     public const VENUE_RESTRICTION_CATEGORY = 'venue_restriction_category';
+
+
+    
     public const RESTRICTION_CATEGORIES = 'restriction_categories';
     public const LABELS = 'labels';
     public const ADDRESSES = 'addresses';
@@ -16,6 +19,10 @@ class TablesName {
     public const BUILDING_CATEGORIES = 'building_categories';
     public const FOOTPRINTS = 'footprints';
     public const FOOTPRINT_BUILDING = 'footprint_building';
+
+    public const FOOTPRINT_CATEGORIES = 'footprint_categories';
+    
+
     
     public const LEVELS = 'levels';
     public const LEVEL_CATEGORIES = 'level_categories';
@@ -35,6 +42,10 @@ class TablesName {
     public const AMENITY_ACCESSIBILITY = "amenity_accessibility";
     public const AMENITY_UNIT = "amenity_unit";
 
+    public const AMENTITY_LABEL = "amenity_labels";
+
+    
+    public const UNIT_LABEL = "unit_labels";
 
 
 }

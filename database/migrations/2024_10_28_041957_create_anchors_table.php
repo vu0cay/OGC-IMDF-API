@@ -16,28 +16,39 @@ return new class extends Migration
             $table->id();
             
             $table->uuid("anchor_id")->unique();
-            $table->uuid("address_id")->nullable();
+            $table->unsignedInteger('feature_id');
+            $table->geometry('geometry', srid:4326);
+
+
+            // $table->uuid("address_id")->nullable();
             $table->uuid("unit_id");
             $table->uuid("level_id");
             $table->primary(["anchor_id", "unit_id", "level_id"]);
             
-            $table->foreign("anchor_id")->references("feature_id")->on(TablesName::FEATURES)->cascadeOnUpdate()->cascadeOnDelete();
+            $table->foreign("feature_id")->references("id")->on('featuretests')->cascadeOnUpdate()->cascadeOnDelete();
+            
             $table->foreign("unit_id")->references("unit_id")->on(TablesName::UNITS)->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreign("level_id")->references("level_id")->on(TablesName::LEVELS)->cascadeOnUpdate()->cascadeOnDelete();
-            $table->foreign("address_id")->references("address_id")->on(TablesName::ADDRESSES)->cascadeOnUpdate()->cascadeOnDelete();
+            // $table->foreign("address_id")->references("address_id")->on(TablesName::ADDRESSES)->cascadeOnUpdate()->cascadeOnDelete();
             
             $table->timestamps();
         });
 
-        DB::table(TablesName::FEATURES)->insert([
-            "feature_id" => "99999999-9999-9999-9999-999999999999",
-            "type" => "Feature",
-            "feature_type" => "anchor",
-            "geometry" => "Point(1.0 2.0)"
-        ]);
+        // DB::table(TablesName::FEATURES)->insert([
+        //     "feature_id" => "99999999-9999-9999-9999-999999999999",
+        //     "type" => "Feature",
+        //     "feature_type" => "anchor",
+        //     "geometry" => "Point(1.0 2.0)"
+        // ]);
+
+
         DB::table(TablesName::ANCHORS)->insert([
             "anchor_id" => "99999999-9999-9999-9999-999999999999",
-            "address_id" => "22222222-2222-2222-2222-222222222222",
+            "feature_id" => 3,
+            "geometry" => "Point(1.0 2.0)",
+            
+            // "address_id" => "22222222-2222-2222-2222-222222222222",
+            
             "unit_id" => "88888888-8888-8888-8888-888888888888",
             "level_id" => "77777777-7777-7777-7777-777777777777"
         ]);

@@ -14,14 +14,16 @@ class BuildingController extends Controller
      */
     public function index()
     {
-        $buildings = Building::with('feature', 'restriction', 'category')->get();
+        // $buildings = Building::with('feature', 'restriction', 'category')->get();
+        $buildings = Building::get();
         $buildingsResource = BuildingResource::collection($buildings);
         
-        $geojson = '{"type": "FeatureCollection","features": []}';
+        $geojson = '{"type": "FeatureCollection","features": [], "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::404000"}}}';
         $geojson = json_decode($geojson);
         $geojson->features = $buildingsResource;
         
-        return $geojson;
+        return response()->json([$geojson], 200);
+
     }
 
     /**
@@ -47,15 +49,19 @@ class BuildingController extends Controller
     {
         $buildings = Building::query()
                             ->where('building_id', '=', $building_id)
-                            ->with('feature', 'restriction', 'category')
+                            // ->with('feature', 'restriction', 'category')
                             ->first();
+                            
+        if (!$buildings) return response()->json(['success'=> false, 'message'=> 'Not Found'],404);
+
         $buildingsResource = BuildingResource::collection([$buildings]);
         
-        $geojson = '{"type": "FeatureCollection","features": []}';
+        $geojson = '{"type": "FeatureCollection","features": [], "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::404000"}}}';
         $geojson = json_decode($geojson);
         $geojson->features = $buildingsResource;
         
-        return $geojson;
+        return response()->json([$geojson], 200);
+
     }
 
     /**

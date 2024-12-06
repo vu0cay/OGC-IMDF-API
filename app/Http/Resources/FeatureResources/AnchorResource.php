@@ -16,7 +16,6 @@ class AnchorResource extends JsonResource
     public function toArray(Request $request): array
     {
         $geom = DB::table('anchors as anchor')
-            ->join('features as f', 'f.feature_id', '=', 'anchor.anchor_id')
             ->select(DB::raw('ST_AsGeoJson(geometry) as geometry'))
             ->where('anchor.anchor_id', '=', $this->anchor_id)
             ->get();
@@ -25,14 +24,14 @@ class AnchorResource extends JsonResource
 
         return [
             "id" => $this->anchor_id,
-            "type" => $this->feature->type,
-            "feature_type" => $this->feature->feature_type,
+            "type" => "Feature",
+            "feature_type" => $this->featuretest->feature_type,
             "geometry" => [
                 "type" => $geometry->type,
                 "coordinates" => $geometry->coordinates
             ],
             "properties" => [
-                "address_id" => $this->address_id,
+                "address_id" => $this->address->address_id,
                 "unit_id" => $this->unit_id
             ]
         ];

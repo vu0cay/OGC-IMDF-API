@@ -1,6 +1,7 @@
 <?php
 
 use App\Constants\Features\TablesName;
+use App\Http\Controllers\Features\AddressController;
 use App\Http\Controllers\Features\AmenityController;
 use App\Http\Controllers\Features\AnchorController;
 use App\Http\Controllers\Features\BuildingController;
@@ -32,9 +33,14 @@ Route::controller(VenueController::class)->group(function () {
     Route::get('/venues/{venue_id}', 'show');
 
 });
-/*
-    Address Controller
-*/
+
+
+Route::controller(AddressController::class)->group(function () {
+
+    Route::get('/addresses', 'index');
+    Route::get('/addresses/{address_id}', 'show');
+
+});
 
 Route::controller(BuildingController::class)->group(function () {
 

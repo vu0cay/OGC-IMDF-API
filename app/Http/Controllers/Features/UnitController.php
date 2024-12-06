@@ -17,7 +17,8 @@ class UnitController extends Controller
      */
     public function index()
     {
-        $units = Unit::with( 'feature', 'restriction', 'category', 'accessibilities', 'labels')->get();
+        // $units = Unit::with( 'feature', 'restriction', 'category', 'accessibilities', 'labels')->get();
+        $units = Unit::get();
         $unitsResource = UnitResource::collection($units);
         $geojson = '{"type": "FeatureCollection","features": [], "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::404000"}}}';
 
@@ -41,7 +42,7 @@ class UnitController extends Controller
             
         
         // return $feature;
-        return $geojson;
+        return response()->json([$geojson], 200); 
     }
 
     /**
@@ -63,9 +64,23 @@ class UnitController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($unit_id)
     {
-        //
+        $unit = Unit::query()
+            ->where('unit_id', '=', $unit_id)->first();
+
+        if (!$unit) return response()->json(['success'=> false, 'message'=> 'Not Found'],404);
+
+
+        $unitsResource = UnitResource::collection([$unit]);
+
+        // $geojson = '{"type": "FeatureCollection","features": []}';
+        $geojson = '{"type": "FeatureCollection","features": [], "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::404000"}}}';
+
+        $geojson = json_decode($geojson);
+        $geojson->features = $unitsResource;
+
+        return response()->json([$geojson], 200);
     }
 
     /**

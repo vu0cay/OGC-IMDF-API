@@ -23,6 +23,7 @@ return new class extends Migration
             
             $table->timestamps();
         });
+        
         // DB::table(TablesName::UNIT_ACCESSIBILITY)->insert([
         //     ['unit_id' => '88888888-8888-8888-8888-888888888888', 'accessibility_id' => 1],
         //     ['unit_id' => '88888888-8888-8888-8888-888888888888', 'accessibility_id' => 2],

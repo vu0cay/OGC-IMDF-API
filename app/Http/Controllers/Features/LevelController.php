@@ -14,14 +14,15 @@ class LevelController extends Controller
      */
     public function index()
     {
-        $levels = Level::with('feature', 'restriction', 'category', 'labels')->get();
+        // $levels = Level::with('feature', 'restriction', 'category', 'labels')->get();
+        $levels = Level::get();
         $levelsResource = LevelResource::collection($levels);
         
-        $geojson = '{"type": "FeatureCollection","features": []}';
+        $geojson = '{"type": "FeatureCollection","features": [], "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::404000"}}}';
         $geojson = json_decode($geojson);
         $geojson->features = $levelsResource;
         
-        return $geojson;
+        return response()->json([$geojson], 200);
     }
 
     /**
@@ -43,9 +44,20 @@ class LevelController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($level_id)
     {
-        //
+        $level = Level::query()
+            ->where('level_id', '=', $level_id)->first();
+        
+        if (!$level) return response()->json(['success'=> false, 'message'=> 'Not Found'],404);
+
+        $levelResource = LevelResource::collection([$level]);
+
+        $geojson = '{"type": "FeatureCollection","features": [], "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::404000"}}}';
+        $geojson = json_decode($geojson);
+        $geojson->features = $levelResource;
+
+        return response()->json([$geojson], 200);
     }
 
     /**
