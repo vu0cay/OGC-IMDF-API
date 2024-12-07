@@ -14,9 +14,7 @@ return new class extends Migration {
         Schema::create(TablesName::ADDRESSES, function (Blueprint $table) {
             $table->id();
             $table->uuid("address_id")->primary();
-            
             $table->unsignedBigInteger("feature_id");
-
             $table->string("address");
             $table->string("unit")->nullable();
             $table->string("locality");
@@ -25,9 +23,8 @@ return new class extends Migration {
             $table->string("postal_code")->nullable();
             $table->string("postal_code_ext")->nullable();
             $table->string("postal_code_vanity")->nullable();
-
             $table->foreign("feature_id")->references("id")->on(TablesName::FEATURES)->cascadeOnDelete()->cascadeOnUpdate();
-            // $table->timestamps();
+            $table->timestamps();
         });
 
         # unqualified building address

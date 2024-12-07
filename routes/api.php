@@ -38,6 +38,9 @@ Route::controller(AddressController::class)->group(function () {
 
     Route::get('/addresses', 'index');
     Route::get('/addresses/{address_id}', 'show');
+    Route::post('/addresses', 'store');
+    Route::put('/addresses/{address_id}', 'update');
+    Route::delete('/addresses/{address_id}', 'destroy');
 
 });
 
