@@ -25,14 +25,7 @@ use Illuminate\Support\Facades\Route;
 // Route::apiResource("addresses", AddressController::class);
 // Route::apiResource("footprints", FootprintController::class);
 // Route::apiResource("openings", OpeningController::class);
-Route::apiResource(TablesName::VENUES, VenueController::class);
-
-Route::controller(VenueController::class)->group(function () {
-
-    Route::get('/venues', 'index');
-    Route::get('/venues/{venue_id}', 'show');
-
-});
+// Route::apiResource(TablesName::VENUES, VenueController::class);
 
 Route::controller(AddressController::class)->group(function () {
 
@@ -41,6 +34,16 @@ Route::controller(AddressController::class)->group(function () {
     Route::post('/addresses', 'store');
     Route::put('/addresses/{address_id}', 'update');
     Route::delete('/addresses/{address_id}', 'destroy');
+
+});
+
+Route::controller(VenueController::class)->group(function () {
+
+    Route::get('/venues', 'index');
+    Route::get('/venues/{venue_id}', 'show');
+    Route::post('/venues', 'store');
+    Route::put('/venues/{venue_id}', 'update');
+    Route::delete('/venues/{venue_id}', 'destroy');
 
 });
 

@@ -9,6 +9,7 @@ use App\Models\FeaturesCategory\VenueCategory;
 use App\Models\FeaturesCategory\VenueLabel;
 use App\Models\FeaturesRelation\AddressVenue;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -19,15 +20,7 @@ class Venue extends Model
 {
     protected $table = TablesName::VENUES;
 
-    protected $fillable = [
-        'venue_id',
-        'venue_category_id',
-        'restriction_category_id',
-        'hours',
-        'phone',
-        'website',
-        'display_point'
-    ];
+    protected $guarded = [];
 
     public function feature(): HasOne
     {
@@ -45,9 +38,11 @@ class Venue extends Model
             relatedKey: 'id'
         );
     }
-    public function address(): HasOne
+
+
+    public function address(): BelongsTo
     {
-        return $this->HasOne(AddressVenue::class, 'venue_id', 'venue_id');
+        return $this->BelongsTo(Address::class, 'address_id', 'address_id');
     }
     public function category(): HasOne
     {

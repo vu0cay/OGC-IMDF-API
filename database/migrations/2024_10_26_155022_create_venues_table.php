@@ -15,10 +15,11 @@ return new class extends Migration
         Schema::create(TablesName::VENUES, function (Blueprint $table) {
             $table->id();
             $table->uuid("venue_id")->primary();
-
+            
             $table->unsignedInteger('venue_category_id');
             $table->unsignedInteger('restriction_category_id')->nullable();
             $table->unsignedInteger('feature_id');
+            $table->uuid("address_id");
             $table->geometry('geometry', srid:4326);
             $table->string('hours');
             $table->string('phone');
@@ -26,9 +27,9 @@ return new class extends Migration
             $table->geometry('display_point', srid:4326);            
             $table->foreign('feature_id')->references('id')->on(TablesName::FEATURES)->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreign('venue_category_id')->references('id')->on(TablesName::VENUE_CATEGORIES)->cascadeOnUpdate()->cascadeOnDelete();
+            $table->foreign('address_id')->references('address_id')->on(TablesName::ADDRESSES)->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreign('restriction_category_id')->references('id')->on(TablesName::RESTRICTION_CATEGORIES)->cascadeOnUpdate()->cascadeOnDelete();
-            
-            // $table->timestamps();
+            $table->timestamps();
         });
 
 
@@ -41,7 +42,8 @@ return new class extends Migration
             "hours" => "Mo-Fr 08:30-20:00",
             "website" => "http://example.com",
             "phone" => "+12225551212",
-            "display_point" => "POINT(100.0 1.0)"        
+            "display_point" => "POINT(100.0 1.0)",       
+            "address_id" => "22222222-2222-2222-2222-222222222222"        
         ]);
 
         

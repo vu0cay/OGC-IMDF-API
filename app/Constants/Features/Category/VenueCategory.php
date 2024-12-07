@@ -28,4 +28,6 @@ final class VenueCategory extends BaseFixedConstants {
         const TRANSIT_STATION = 'transitstation';
         const UNIVERSITY = 'university';
 
+
+        
 }

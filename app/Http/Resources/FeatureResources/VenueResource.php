@@ -50,7 +50,7 @@ class VenueResource extends JsonResource
                     "type" => $display_point->type,
                     "coordinates" => $display_point->coordinates
                 ],
-                "address_id" => $this->address->address_id ?? null
+                "address_id" => $this->address_id ?? null
             ]
 
         ];

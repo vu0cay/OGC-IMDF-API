@@ -1,12 +1,12 @@
 <?php
 
+use App\Constants\Features\Category\RestrictionCategory;
 use App\Constants\Features\TablesName;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -17,16 +17,16 @@ return new class extends Migration
             $table->string('name');
             $table->timestamps();
         });
-        DB::table(TablesName::RESTRICTION_CATEGORIES)->insert([
-            "name" => "employeesonly"
-        ]);
-        DB::table(TablesName::RESTRICTION_CATEGORIES)->insert([
-            "name" => "restricted"
-        ]);
-        
-        
-        
-        
+      
+        DB::table(TablesName::RESTRICTION_CATEGORIES)
+            ->insert(
+                array_map(fn($name) =>
+                    ['name' => $name], array_values(RestrictionCategory::getConstanst()))
+                );
+
+
+
+
     }
 
     /**
