@@ -31,12 +31,12 @@ class Venue extends Model
     {
         return $this->belongsToMany(
             Label::class,
-            'venue_labels',
+            TablesName::VENUE_LABELS,
             foreignPivotKey: 'venue_id',
             relatedPivotKey: 'label_id',
             parentKey: 'venue_id',
             relatedKey: 'id'
-        );
+        )->withPivot('type');
     }
 
 

@@ -5,11 +5,13 @@ namespace App\Http\Controllers\Features;
 use App\Constants\Features\Category\VenueCategory;
 use App\Constants\Features\Category\RestrictionCategory;
 use App\Constants\Features\TablesName;
+use App\Contracts\FeatureService;
 use App\Contracts\Geom;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\FeatureResources\VenueResource;
 use App\Models\Features\Venue;
 use App\Models\FeaturesCategory\Label;
+use App\Rules\UniqueLangueTag;
 use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -97,18 +99,18 @@ class VenueController extends Controller
             'address_id' => $request->properties['address_id']       
         ]);
         
-        // label
-        foreach($request->properties["name"] as $key => $value) { 
-            $newLabel = Label::create([
-                'language_tag' => $key,
-                'value' => $value
-            ]);
-            DB::table(TablesName::VENUE_LABELS)->insert([
-                'venue_id' => $request->id,
-                'label_id' => $newLabel->id
-            ]);
-        }
-
+        // label name
+        FeatureService::AddFeatureLabel($request->properties["name"], 
+                                        'name', 
+                                        'venue_id', 
+                                        TablesName::VENUE_LABELS,
+                                        $venue->venue_id);
+        // label alt_name
+        FeatureService::AddFeatureLabel($request->properties["alt_name"], 
+                                        'alt_name', 
+                                        'venue_id', 
+                                        TablesName::VENUE_LABELS,
+                                        $venue->venue_id);
 
         $venueResource = VenueResource::collection([$venue]);
 
@@ -157,7 +159,7 @@ class VenueController extends Controller
 
         // validate
         $attributes = Validator::make($request->all(), [
-            'id' => 'required|uuid',
+            'id' => 'required|uuid|in:'.$venue_id,
             'feature_type' => 'required|string|in:venue',
             'geometry' => 'required',
             'lower(geometry.type)' => 'in:polygon',    
@@ -206,35 +208,29 @@ class VenueController extends Controller
             'address_id' => $request->properties['address_id']       
         ]);
         
-        // label
-        foreach($request->properties["name"] as $key => $value) { 
-            $existingLabel = Label::where("language_tag", $key)->first();
-            if($existingLabel) { 
-                $existingLabel->update([
-                    "value" => $value
-                ]);
-            } else {
-                $newLabel = Label::create([
-                    'language_tag' => $key,
-                    'value' => $value
-                ]);
-                DB::table(TablesName::VENUE_LABELS)->insert([
-                    'venue_id' => $request->id,
-                    'label_id' => $newLabel->id
-                ]);
-            }
-        }
+        // label name
+        FeatureService::UpdateFeatureLabel($request->properties["name"],
+                                            'name',
+                                            'venue_id',
+                                            TablesName::VENUE_LABELS,
+                                            $venue->venue_id
+        );
+        // label alt_name
+        FeatureService::UpdateFeatureLabel($request->properties["alt_name"],
+                                            'alt_name',
+                                            'venue_id',
+                                            TablesName::VENUE_LABELS,
+                                            $venue->venue_id
+        );
+        
 
-
+        // change to IMDF json format 
         $venueResource = VenueResource::collection([$venue]);
 
         // return response 
-        return response()->json(['success' => true, 'data' => $venueResource], 201);
+        return response()->json(['success' => true, 'data' => $venueResource], 200);
 
-        // change to IMDF json format 
-        $addressesResource = AddressResource::collection([$address]);
-        // return response 
-        return response()->json(['success' => true, 'data' => $addressesResource], 200);
+      
     }
 
     /**
@@ -247,6 +243,7 @@ class VenueController extends Controller
         
         if (!$venue) return response()->json(['success'=> false, 'message'=> 'Not Found'],404);
 
+        $venue->labels()->delete();
         $venue->delete();
 
         return response()->json(['success'=> true,'message'=> 'Delete successfully'],204);
