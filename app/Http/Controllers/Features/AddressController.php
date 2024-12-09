@@ -6,6 +6,8 @@ use App\Constants\Features\TablesName;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\FeatureResources\AddressResource;
 use App\Models\Features\Address;
+use App\Rules\ValidateIso3166;
+use App\Rules\ValidateIso3166_2;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -42,12 +44,15 @@ class AddressController extends Controller
     {
         // validation
         $attributes = Validator::make($request->all(), [
-            'id' => 'required|uuid|unique:'.TablesName::ADDRESSES.',address_id',
+            'id' => 'required|uuid|unique:' . TablesName::ADDRESSES . ',address_id',
+            'type' => 'in:Feature',
             'feature_type' => 'required|string|in:address',
             'geometry' => 'nullable|in:null',
             'properties.address' => 'required|string',
+            'properties.unit' => 'nullable|string',
             'properties.locality' => 'required|string',
-            'properties.country' => 'required|string'
+            'properties.province' => ['nullable','string',new ValidateIso3166_2],
+            'properties.country' => ['required','string',new ValidateIso3166]
         ]);
 
         // Bad Request
@@ -115,12 +120,15 @@ class AddressController extends Controller
 
         // validate
         $attributes = Validator::make($request->all(), [
-            'id' => 'required|uuid',
+            'id' => 'required|uuid|unique:' . TablesName::ADDRESSES . ',address_id',
+            'type' => 'in:Feature',
             'feature_type' => 'required|string|in:address',
             'geometry' => 'nullable|in:null',
             'properties.address' => 'required|string',
+            'properties.unit' => 'nullable|string',
             'properties.locality' => 'required|string',
-            'properties.country' => 'required|string'
+            'properties.province' => ['nullable','string',new ValidateIso3166_2],
+            'properties.country' => ['required','string',new ValidateIso3166]
         ]);
         // Bad Request
         if($attributes->fails()) {

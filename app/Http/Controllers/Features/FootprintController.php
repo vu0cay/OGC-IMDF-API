@@ -16,10 +16,7 @@ class FootprintController extends Controller
     public function index()
     {
         $footprints = Footprint::get();
-
-
         $footprintsResource = FootprintResource::collection($footprints);
-        
         $geojson = '{"type": "FeatureCollection","features": [], "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::404000"}}}';
         $geojson = json_decode($geojson);
         $geojson->features = $footprintsResource;
@@ -50,7 +47,6 @@ class FootprintController extends Controller
     {
         $footprints = Footprint::query()
                     ->where('footprint_id', '=', $footprint_id)
-                    // ->with('feature', 'buildings', 'labels')
                     ->first();
         if (!$footprints) return response()->json(['success'=> false, 'message'=> 'Not Found'],404);
 

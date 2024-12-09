@@ -47,16 +47,17 @@ Route::controller(VenueController::class)->group(function () {
 
 });
 
-Route::controller(BuildingController::class)->group(function () {
-
-    Route::get('/buildings', 'index');
-    Route::get('/buildings/{building_id}', 'show');
-
-});
 Route::controller(FootprintController::class)->group(function () {
 
     Route::get('/footprints', 'index');
     Route::get('/footprints/{footprint_id}', 'show');
+
+});
+
+Route::controller(BuildingController::class)->group(function () {
+
+    Route::get('/buildings', 'index');
+    Route::get('/buildings/{building_id}', 'show');
 
 });
 
