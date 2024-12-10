@@ -71,6 +71,9 @@ Route::controller(LevelController::class)->group(function () {
 
     Route::get('/levels', 'index');
     Route::get('/levels/{level_id}', 'show');
+    Route::post('/levels', 'store');
+    Route::put('/levels/{level_id}', 'update');
+    Route::delete('/levels/{level_id}', 'destroy');
 
 });
 

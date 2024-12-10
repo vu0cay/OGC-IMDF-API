@@ -30,7 +30,7 @@ class Level extends Model
             relatedPivotKey: 'label_id',
             parentKey: 'level_id',
             relatedKey: 'id'
-        );
+        )->withPivot('type');
     }
     public function address(): HasOne
     {

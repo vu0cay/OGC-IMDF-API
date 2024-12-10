@@ -54,38 +54,38 @@ class VenueController extends Controller
      */
     public function store(Request $request)
     {
-
-        // validation
-        $attributes = Validator::make($request->all(), [
-            // 'id' => 'required|uuid|unique:' . TablesName::VENUES . ',venue_id',
-            'id' => ['required','uuid', new ValidateFeatureIDUnique],
-            'type' => 'in:Feature',
-            'feature_type' => 'required|string|in:venue',
-            'geometry' => 'required',
-            'geometry.type' => 'required|in:Polygon',
-            'geometry.coordinates' => ['required', new PolygonCoordinateRule],
-            'properties.category' => 'required|string|in:' . VenueCategory::getConstansAsString(),
-            'properties.restriction' => 'nullable|string|in:' . RestrictionCategory::getConstansAsString(),
-            'properties.name' => ['required', 'array'],
-            'properties.name.*' => 'required',
-            'properties.alt_name' => 'nullable|array',
-            'properties.alt_name.*' => 'required',
-            'properties.hours' => 'required|string',
-            'properties.website' => 'required|string',
-            'properties.phone' => 'required|string',
-            'properties.display_point' => 'required',
-            'properties.display_point.type' => 'required|in:Point',
-            'properties.display_point.coordinates' => ['required', new PointCoordinateRule],
-            'properties.address_id' => 'required|exists:' . TablesName::ADDRESSES . ',address_id'
-        ]);
-
-        // Bad Request
-        if ($attributes->fails()) {
-            $error = $attributes->errors()->first();
-            return response()->json(['success' => false, 'message' => $error], 400);
-        }
-        
         try {
+            // validation
+            $attributes = Validator::make($request->all(), [
+                // 'id' => 'required|uuid|unique:' . TablesName::VENUES . ',venue_id',
+                'id' => ['required', 'uuid', new ValidateFeatureIDUnique],
+                'type' => 'in:Feature',
+                'feature_type' => 'required|string|in:venue',
+                'geometry' => 'required',
+                'geometry.type' => 'required|in:Polygon',
+                'geometry.coordinates' => ['required', new PolygonCoordinateRule],
+                'properties.category' => 'required|string|in:' . VenueCategory::getConstansAsString(),
+                'properties.restriction' => 'nullable|string|in:' . RestrictionCategory::getConstansAsString(),
+                'properties.name' => ['required', 'array'],
+                'properties.name.*' => 'required',
+                'properties.alt_name' => 'nullable|array',
+                'properties.alt_name.*' => 'required',
+                'properties.hours' => 'required|string',
+                'properties.website' => 'required|string',
+                'properties.phone' => 'required|string',
+                'properties.display_point' => 'required',
+                'properties.display_point.type' => 'required|in:Point',
+                'properties.display_point.coordinates' => ['required', new PointCoordinateRule],
+                'properties.address_id' => 'required|exists:' . TablesName::ADDRESSES . ',address_id'
+            ]);
+
+            // Bad Request
+            if ($attributes->fails()) {
+                $error = $attributes->errors()->first();
+                return response()->json(['success' => false, 'message' => $error], 400);
+            }
+
+
             // Adding feature to the database
 
             // convert coordinate Polygon to 4236 geometry format: POLYGON( (x1 y1), (x2 y2), ..., (x3 y3) )
@@ -179,43 +179,43 @@ class VenueController extends Controller
      */
     public function update(Request $request, $venue_id)
     {
-
-        // check if the address feature exists
-        $venue = Venue::query()
-            ->where('venue_id', '=', $venue_id)->first();
-        if (!$venue)
-            return response()->json(['success' => false, 'message' => 'Not Found'], 404);
-
-        // validate
-        $attributes = Validator::make($request->all(), [
-            'id' => 'required|uuid|in:' . $venue_id,
-            'type' => 'in:Feature',
-            'feature_type' => 'required|string|in:venue',
-            'geometry' => 'required',
-            'geometry.type' => 'required|in:Polygon',
-            'geometry.coordinates' => ['required', new PolygonCoordinateRule],
-            'properties.category' => 'required|string|in:' . VenueCategory::getConstansAsString(),
-            'properties.restriction' => 'nullable|string|in:' . RestrictionCategory::getConstansAsString(),
-            'properties.name' => ['required', 'array'],
-            'properties.name.*' => 'required',
-            'properties.alt_name' => 'nullable|array',
-            'properties.alt_name.*' => 'required',
-            'properties.hours' => 'required|string',
-            'properties.website' => 'required|string',
-            'properties.phone' => 'required|string',
-            'properties.display_point' => 'required',
-            'properties.display_point.type' => 'required|in:Point',
-            'properties.display_point.coordinates' => ['required', new PointCoordinateRule],
-            'properties.address_id' => 'required|exists:' . TablesName::ADDRESSES . ',address_id'
-        ]);
-
-        // Bad Request
-        if ($attributes->fails()) {
-            $error = $attributes->errors()->first();
-            return response()->json(['success' => false, 'message' => $error], 400);
-        }
-
         try {
+            // check if the address feature exists
+            $venue = Venue::query()
+                ->where('venue_id', '=', $venue_id)->first();
+            if (!$venue)
+                return response()->json(['success' => false, 'message' => 'Not Found'], 404);
+
+            // validate
+            $attributes = Validator::make($request->all(), [
+                'id' => 'required|uuid|in:' . $venue_id,
+                'type' => 'in:Feature',
+                'feature_type' => 'required|string|in:venue',
+                'geometry' => 'required',
+                'geometry.type' => 'required|in:Polygon',
+                'geometry.coordinates' => ['required', new PolygonCoordinateRule],
+                'properties.category' => 'required|string|in:' . VenueCategory::getConstansAsString(),
+                'properties.restriction' => 'nullable|string|in:' . RestrictionCategory::getConstansAsString(),
+                'properties.name' => ['required', 'array'],
+                'properties.name.*' => 'required',
+                'properties.alt_name' => 'nullable|array',
+                'properties.alt_name.*' => 'required',
+                'properties.hours' => 'required|string',
+                'properties.website' => 'required|string',
+                'properties.phone' => 'required|string',
+                'properties.display_point' => 'required',
+                'properties.display_point.type' => 'required|in:Point',
+                'properties.display_point.coordinates' => ['required', new PointCoordinateRule],
+                'properties.address_id' => 'required|exists:' . TablesName::ADDRESSES . ',address_id'
+            ]);
+
+            // Bad Request
+            if ($attributes->fails()) {
+                $error = $attributes->errors()->first();
+                return response()->json(['success' => false, 'message' => $error], 400);
+            }
+
+
             // update to the database
             // convert coordinate Polygon to 4236 geometry format: POLYGON( (x1 y1), (x2 y2), ..., (x3 y3) )
             $textPolygon = Geom::GeomFromText($request->geometry);

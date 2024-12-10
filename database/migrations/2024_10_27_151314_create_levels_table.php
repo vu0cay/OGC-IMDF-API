@@ -27,7 +27,7 @@ return new class extends Migration
             $table->foreign('level_category_id')->references('id')->on(TablesName::LEVEL_CATEGORIES)->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreign('restriction_category_id')->references('id')->on(TablesName::RESTRICTION_CATEGORIES)->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreign("address_id")->references("address_id")->on(TablesName::ADDRESSES)->cascadeOnUpdate()->cascadeOnDelete();
-            // $table->timestamps();
+            $table->timestamps();
         });
 
 
