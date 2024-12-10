@@ -22,7 +22,7 @@ return new class extends Migration
             $table->foreign("feature_id")->references("id")->on(TablesName::FEATURES)->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreign('building_category_id')->references('id')->on(TablesName::BUILDING_CATEGORIES)->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreign('restriction_category_id')->references('id')->on(TablesName::RESTRICTION_CATEGORIES)->cascadeOnUpdate()->cascadeOnDelete();
-            // $table->timestamps();
+            $table->timestamps();
         });
 
         DB::table(TablesName::BUILDINGS)->insert([

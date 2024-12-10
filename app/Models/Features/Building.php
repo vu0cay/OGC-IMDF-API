@@ -38,7 +38,7 @@ class Building extends Model
             relatedPivotKey: 'label_id',
             parentKey: 'building_id',
             relatedKey: 'id'
-        );
+        )->withPivot('type');
     }
 
     public function address(): HasOne

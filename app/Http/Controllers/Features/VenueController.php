@@ -229,7 +229,7 @@ class VenueController extends Controller
                 'feature_id' => DB::table(TablesName::FEATURES)->where("feature_type", $request->feature_type)->first()->id,
                 'venue_category_id' => DB::table(TablesName::VENUE_CATEGORIES)->where("name", $request->properties['category'])->first()->id,
                 'geometry' => DB::raw($textPolygon),
-                'restriction_category_id' => $request->properties["restriction"] != null
+                'restriction_category_id' => isset($request->properties["restriction"])
                     ? DB::table(TablesName::RESTRICTION_CATEGORIES)->where("name", $request->properties['restriction'])->first()->id
                     : null,
                 'hours' => $request->properties['hours'],
@@ -282,7 +282,7 @@ class VenueController extends Controller
         if (!$venue)
             return response()->json(['success' => false, 'message' => 'Not Found'], 404);
 
-        $venue->labels()->delete();
+        // $venue->labels()->delete();
         $venue->delete();
 
         return response()->json(['success' => true, 'message' => 'Delete successfully'], 204);

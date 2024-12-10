@@ -19,10 +19,10 @@ return new class extends Migration
             $table->uuid('building_id');
             $table->unsignedBigInteger('label_id');
             $table->primary(['building_id', 'label_id']);
-
+            $table->enum('type',['name', 'alt_name']);
             $table->foreign('building_id')->references('building_id')->on(TablesName::BUILDINGS)->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreign('label_id')->references('id')->on(TablesName::LABELS)->cascadeOnUpdate()->cascadeOnDelete();
-            
+            $table->timestamps();
         });
 
         // building labels
@@ -33,7 +33,8 @@ return new class extends Migration
 
         DB::table(TablesName::BUILDING_LABELS)->insert([
             'building_id' => "44444444-4444-4444-4444-444444444444",
-            'label_id' => $newLabel->id
+            'label_id' => $newLabel->id,
+            'type' => 'name'
         ]);
 
     }
