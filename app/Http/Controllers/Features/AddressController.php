@@ -11,6 +11,7 @@ use App\Rules\Address\ValidateProvince;
 use App\Rules\ValidateFeatureIDUnique;
 use App\Rules\ValidateIso3166;
 use App\Rules\ValidateIso3166_2;
+use DB;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -56,9 +57,15 @@ class AddressController extends Controller
             'properties.address' => 'required|string',
             'properties.unit' => ['nullable', new AddressUnitMustNotBeBlank],
             'properties.locality' => 'required|string',
-            'properties.province' => ['nullable','string',new ValidateIso3166_2],
+            'properties.province' => 'nullable',
             'properties.country' => ['required','string',new ValidateIso3166, 
-                                'in:'.json_encode(explode('-',$request->properties['province'])[0])],
+                                function($attribute, $value, $fail) use ($request){
+                                    if(!isset($request->properties['province'])) return;
+                                    $province = explode('-',$request->properties['province'])[0];
+                                    // dd($province);
+                                    if($value !== $province)
+                                        $fail('The country code not match with province ISO-3166-2'); 
+                                }],
             'properties.postal_code' => ['nullable'],
             'properties.postal_code_ext' => ['nullable','string'],
             'properties.postal_code_vanity' => ['nullable','string']
@@ -69,19 +76,18 @@ class AddressController extends Controller
             $error = $attributes->errors()->first();
             return response()->json(['success' => false, 'message' => $error], 400);
         }
-
         try{
             // adding feature to the database 
             $address = Address::create([
                 'address_id' => $request->id,
-                'feature_id' => 1,
+                'feature_id' => DB::table(TablesName::FEATURES)->where("feature_type", $request->feature_type)->first()->id,
                 'address' => $request->properties['address'],
-                'unit' => $request->properties['unit'],
+                'unit' => isset($request->properties['unit']) ? $request->properties['unit'] : null,
                 'locality' => $request->properties['locality'],
                 'province' => $request->properties['province'],
                 'country'=> $request->properties['country'],
-                'postal_code'=> $request->properties['postal_code'],
-                'postal_code_ext'=> $request->properties['postal_code_ext'],
+                'postal_code'=> isset($request->properties['postal_code']) ? $request->properties['postal_code'] : null,
+                'postal_code_ext'=> isset($request->properties['postal_code_ext']) ? $request->properties['postal_code_ext'] : null,
             ]);
         } catch(Exception $e) {
             return response()->json(['success' => false, 'message' => $e->getMessage()], status: 400);
