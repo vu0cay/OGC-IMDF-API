@@ -292,7 +292,7 @@ class LevelController extends Controller
         }
 
         $levelResource = LevelResource::collection([$level]);
-        return response()->json(['success' => true, 'data' => $levelResource], 201);
+        return response()->json(['success' => true, 'data' => $levelResource], 200);
     }
 
     /**

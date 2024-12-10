@@ -45,7 +45,6 @@ class TablesName
     public const UNIT_CATEGORIES = 'unit_categories';
     public const UNIT_ACCESSIBILITY = 'unit_accessibility';
     public const UNIT_LABELS = 'unit_labels';
-    public const UNIT_LABEL = "unit_labels";
     
     public const ACCESSIBILITY_CATEGORIES = 'accessibility_categories';
 

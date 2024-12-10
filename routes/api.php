@@ -81,17 +81,26 @@ Route::controller(UnitController::class)->group(function () {
 
     Route::get('/units', 'index');
     Route::get('/units/{unit_id}', 'show');
+    Route::post('/units', 'store');
+    Route::put('/units/{unit_id}', 'update');
+    Route::delete('/units/{unit_id}', 'destroy');
 
 });
 
 Route::controller(AnchorController::class)->group(function () {
     Route::get('/anchors', 'index');
     Route::get('/anchors/{anchor_id}', 'show');
+    Route::post('/anchors', 'store');
+    Route::put('/anchors/{anchor_id}', 'update');
+    Route::delete('/anchors/{anchor_id}', 'destroy');
 });
 
 Route::controller(AmenityController::class)->group(function () {
     Route::get('/amenities', 'index');
     Route::get('/amenities/{amenity_id}', 'show');
+    Route::post('/amenities', 'store');
+    Route::put('/amenities/{amenity_id}', 'update');
+    Route::delete('/amenities/{amenity_id}', 'destroy');
 });
 
 

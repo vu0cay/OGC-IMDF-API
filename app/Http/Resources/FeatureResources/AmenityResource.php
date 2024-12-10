@@ -26,9 +26,24 @@ class AmenityResource extends JsonResource
     
         $geometry = json_decode($geom[0]->geometry);
 
-        $name = GetFeatureName::getName($this->labels, 'value');
-        $alt_name = GetFeatureName::getName($this->labels, 'short_name');
-
+        // $name = GetFeatureName::getName($this->labels, 'value');
+        // $alt_name = GetFeatureName::getName($this->labels, 'short_name');
+        $name = count($this->labels) > 0 ? 
+                    $this->labels
+                    ->filter(function ($item){
+                        return $item->pivot->type == 'name';
+                    })
+                    ->pluck('value', 'language_tag')->toArray() 
+                    : null;
+        
+        $alt_name = count($this->labels) > 0 ? 
+                    $this->labels
+                    ->filter(function ($item){
+                        return $item->pivot->type == 'alt_name';
+                    })
+                    ->pluck('value', 'language_tag')->toArray() 
+                    : null;
+                    
         return [
             "id" => $this->amenity_id,
             "type" => 'Feature',

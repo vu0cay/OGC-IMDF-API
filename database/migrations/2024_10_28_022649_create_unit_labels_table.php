@@ -19,7 +19,7 @@ return new class extends Migration
             $table->uuid('unit_id');
             $table->unsignedBigInteger('label_id');
             $table->primary(['unit_id', 'label_id']);
-
+            $table->enum('type',allowed: ['name', 'alt_name']);
             $table->foreign('unit_id')->references('unit_id')->on(TablesName::UNITS)->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreign('label_id')->references('id')->on(TablesName::LABELS)->cascadeOnUpdate()->cascadeOnDelete();
             
@@ -32,7 +32,8 @@ return new class extends Migration
 
         DB::table(TablesName::UNIT_LABELS)->insert([
             'unit_id' => "88888888-8888-8888-8888-888888888888",
-            'label_id' => $newLabel->id
+            'label_id' => $newLabel->id,
+            'type' => 'name'
         ]);
     }
 

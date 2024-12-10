@@ -26,7 +26,7 @@ return new class extends Migration
             $table->foreign("unit_category_id")->references("id")->on(TablesName::UNIT_CATEGORIES)->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreign("restriction_category_id")->references("id")->on(TablesName::RESTRICTION_CATEGORIES)->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreign("level_id")->references("level_id")->on(TablesName::LEVELS)->cascadeOnUpdate()->cascadeOnDelete();
-            // $table->timestamps();
+            $table->timestamps();
         });
 
         DB::table(TablesName::UNITS)->insert([

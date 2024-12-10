@@ -19,7 +19,7 @@ return new class extends Migration
             $table->uuid('amenity_id');
             $table->unsignedBigInteger('label_id');
             $table->primary(['amenity_id', 'label_id']);
-
+            $table->enum('type',allowed: ['name', 'alt_name']);
             $table->foreign('amenity_id')->references('amenity_id')->on(TablesName::AMENITIES)->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreign('label_id')->references('id')->on(TablesName::LABELS)->cascadeOnUpdate()->cascadeOnDelete();
             

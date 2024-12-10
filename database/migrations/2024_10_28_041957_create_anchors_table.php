@@ -23,7 +23,7 @@ return new class extends Migration
             $table->foreign("feature_id")->references("id")->on(TablesName::FEATURES)->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreign("unit_id")->references("unit_id")->on(TablesName::UNITS)->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreign("level_id")->references("level_id")->on(TablesName::LEVELS)->cascadeOnUpdate()->cascadeOnDelete();
-            // $table->timestamps();
+            $table->timestamps();
         });
 
 

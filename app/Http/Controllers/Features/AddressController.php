@@ -47,36 +47,42 @@ class AddressController extends Controller
      */
     public function store(Request $request)
     {
-        // validation
-        $attributes = Validator::make($request->all(), [
-            // 'id' => 'required|uuid|unique:' . TablesName::ADDRESSES . ',address_id',
-            'id' => ['required','uuid', new ValidateFeatureIDUnique],
-            'type' => 'in:Feature',
-            'feature_type' => 'required|string|in:address',
-            'geometry' => 'nullable|in:null',
-            'properties.address' => 'required|string',
-            'properties.unit' => ['nullable', new AddressUnitMustNotBeBlank],
-            'properties.locality' => 'required|string',
-            'properties.province' => 'nullable',
-            'properties.country' => ['required','string',new ValidateIso3166, 
-                                function($attribute, $value, $fail) use ($request){
-                                    if(!isset($request->properties['province'])) return;
-                                    $province = explode('-',$request->properties['province'])[0];
-                                    // dd($province);
-                                    if($value !== $province)
-                                        $fail('The country code not match with province ISO-3166-2'); 
-                                }],
-            'properties.postal_code' => ['nullable'],
-            'properties.postal_code_ext' => ['nullable','string'],
-            'properties.postal_code_vanity' => ['nullable','string']
-        ]);
+        try {
+            // validation
+            $attributes = Validator::make($request->all(), [
+                // 'id' => 'required|uuid|unique:' . TablesName::ADDRESSES . ',address_id',
+                'id' => ['required', 'uuid', new ValidateFeatureIDUnique],
+                'type' => 'in:Feature',
+                'feature_type' => 'required|string|in:address',
+                'geometry' => 'nullable|in:null',
+                'properties.address' => 'required|string',
+                'properties.unit' => ['nullable', new AddressUnitMustNotBeBlank],
+                'properties.locality' => 'required|string',
+                'properties.province' => 'nullable',
+                'properties.country' => [
+                    'required',
+                    'string',
+                    new ValidateIso3166,
+                    function ($attribute, $value, $fail) use ($request) {
+                        if (!isset($request->properties['province']))
+                            return;
+                        $province = explode('-', $request->properties['province'])[0];
+                        // dd($province);
+                        if ($value !== $province)
+                            $fail('The country code not match with province ISO-3166-2');
+                    }
+                ],
+                'properties.postal_code' => ['nullable'],
+                'properties.postal_code_ext' => ['nullable', 'string'],
+                'properties.postal_code_vanity' => ['nullable', 'string']
+            ]);
 
-        // Bad Request
-        if($attributes->fails()) {
-            $error = $attributes->errors()->first();
-            return response()->json(['success' => false, 'message' => $error], 400);
-        }
-        try{
+            // Bad Request
+            if ($attributes->fails()) {
+                $error = $attributes->errors()->first();
+                return response()->json(['success' => false, 'message' => $error], 400);
+            }
+
             // adding feature to the database 
             $address = Address::create([
                 'address_id' => $request->id,
@@ -85,11 +91,11 @@ class AddressController extends Controller
                 'unit' => isset($request->properties['unit']) ? $request->properties['unit'] : null,
                 'locality' => $request->properties['locality'],
                 'province' => $request->properties['province'],
-                'country'=> $request->properties['country'],
-                'postal_code'=> isset($request->properties['postal_code']) ? $request->properties['postal_code'] : null,
-                'postal_code_ext'=> isset($request->properties['postal_code_ext']) ? $request->properties['postal_code_ext'] : null,
+                'country' => $request->properties['country'],
+                'postal_code' => isset($request->properties['postal_code']) ? $request->properties['postal_code'] : null,
+                'postal_code_ext' => isset($request->properties['postal_code_ext']) ? $request->properties['postal_code_ext'] : null,
             ]);
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             return response()->json(['success' => false, 'message' => $e->getMessage()], status: 400);
         }
 
@@ -108,7 +114,8 @@ class AddressController extends Controller
         $address = Address::query()
             ->where('address_id', '=', $address_id)->first();
 
-        if (!$address) return response()->json(['success'=> false, 'message'=> 'Not Found'],404);
+        if (!$address)
+            return response()->json(['success' => false, 'message' => 'Not Found'], 404);
 
         $addressesResource = AddressResource::collection([$address]);
 
@@ -133,35 +140,41 @@ class AddressController extends Controller
      */
     public function update(Request $request, $address_id)
     {
-        // check if the address feature exists
-        $address = Address::query()
-                    ->where('address_id', '=', $address_id)->first();
-        if (!$address) return response()->json(['success'=> false, 'message'=> 'Not Found'],404);
+        try {
+            // check if the address feature exists
+            $address = Address::query()
+                ->where('address_id', '=', $address_id)->first();
+            if (!$address)
+                return response()->json(['success' => false, 'message' => 'Not Found'], 404);
 
-        // validation
-        $attributes = Validator::make($request->all(), [
-            'id' => 'required|uuid|in:'.$address_id,
-            'type' => 'in:Feature',
-            'feature_type' => 'required|string|in:address',
-            'geometry' => 'nullable|in:null',
-            'properties.address' => 'required|string',
-            'properties.unit' => 'nullable|string',
-            'properties.locality' => 'required|string',
-            'properties.province' => ['nullable','string',new ValidateIso3166_2],
-            'properties.country' => ['required','string',new ValidateIso3166, 
-                                'in:'.json_encode(explode('-',$request->properties['province'])[0])],
-            'properties.postal_code' => ['nullable'],
-            'properties.postal_code_ext' => ['nullable','string'],
-            'properties.postal_code_vanity' => ['nullable','string']
-        ]);
+            // validation
+            $attributes = Validator::make($request->all(), [
+                'id' => 'required|uuid|in:' . $address_id,
+                'type' => 'in:Feature',
+                'feature_type' => 'required|string|in:address',
+                'geometry' => 'nullable|in:null',
+                'properties.address' => 'required|string',
+                'properties.unit' => 'nullable|string',
+                'properties.locality' => 'required|string',
+                'properties.province' => ['nullable', 'string', new ValidateIso3166_2],
+                'properties.country' => [
+                    'required',
+                    'string',
+                    new ValidateIso3166,
+                    'in:' . json_encode(explode('-', $request->properties['province'])[0])
+                ],
+                'properties.postal_code' => ['nullable'],
+                'properties.postal_code_ext' => ['nullable', 'string'],
+                'properties.postal_code_vanity' => ['nullable', 'string']
+            ]);
 
-        // Bad Request
-        if($attributes->fails()) {
-            $error = $attributes->errors()->first();
-            return response()->json(['success' => false, 'message' => $error], 400);
-        }
-        
-        try{
+            // Bad Request
+            if ($attributes->fails()) {
+                $error = $attributes->errors()->first();
+                return response()->json(['success' => false, 'message' => $error], 400);
+            }
+
+
             // update to the database
             $rows = $address->update([
                 'address_id' => $request->id,
@@ -169,12 +182,12 @@ class AddressController extends Controller
                 'unit' => $request->properties['unit'],
                 'locality' => $request->properties['locality'],
                 'province' => $request->properties['province'],
-                'country'=> $request->properties['country'],
-                'postal_code'=> $request->properties['postal_code'],
-                'postal_code_ext'=> $request->properties['postal_code_ext'],
+                'country' => $request->properties['country'],
+                'postal_code' => $request->properties['postal_code'],
+                'postal_code_ext' => $request->properties['postal_code_ext'],
             ]);
 
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             return response()->json(['success' => false, 'message' => $e->getMessage()], status: 400);
         }
 
@@ -190,14 +203,15 @@ class AddressController extends Controller
      */
     public function destroy($address_id)
     {
-        
-        $address = Address::query()
-                    ->where('address_id', '=', $address_id)->first();
 
-        if (!$address) return response()->json(['success'=> false, 'message'=> 'Not Found'],404);
+        $address = Address::query()
+            ->where('address_id', '=', $address_id)->first();
+
+        if (!$address)
+            return response()->json(['success' => false, 'message' => 'Not Found'], 404);
 
         $address->delete();
 
-        return response()->json(['success'=> true,'message'=> 'Delete successfully'],204);
+        return response()->json(['success' => true, 'message' => 'Delete successfully'], 204);
     }
 }

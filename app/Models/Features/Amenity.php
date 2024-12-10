@@ -32,7 +32,7 @@ class Amenity extends Model
             relatedPivotKey: 'label_id',
             parentKey: 'amenity_id',
             relatedKey: 'id'
-        );
+        )->withPivot('type');
     }
     public function address(): HasOne
     {

@@ -24,7 +24,7 @@ return new class extends Migration {
             $table->uuid("correlation_id")->nullable();
             $table->foreign('feature_id')->references('id')->on(TablesName::FEATURES)->cascadeOnUpdate()->cascadeOnDelete();            
             $table->foreign('amenity_category_id')->references('id')->on(TablesName::AMENITY_CATEGORIES)->cascadeOnUpdate()->cascadeOnDelete();
-            // $table->timestamps();
+            $table->timestamps();
         });
 
 

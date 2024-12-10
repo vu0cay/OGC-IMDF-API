@@ -8,6 +8,7 @@ use App\Models\FeaturesCategory\Label;
 use App\Models\FeaturesCategory\RestrictionCategory;
 use App\Models\FeaturesCategory\UnitCategory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -26,20 +27,22 @@ class Unit extends Model
         return $this->hasOne(RestrictionCategory::class, 'id', 'restriction_category_id');
     }
 
+    
     public function feature(): HasOne
     {
         return $this->hasOne(Feature::class, 'id', 'feature_id');
     }
+
     public function labels(): BelongsToMany
     {
         return $this->belongsToMany(
             Label::class,
-            TablesName::UNIT_LABEL,
+            TablesName::UNIT_LABELS,
             foreignPivotKey: 'unit_id',
             relatedPivotKey: 'label_id',
             parentKey: 'unit_id',
             relatedKey: 'id'
-        );
+        )->withPivot('type');
     }
 
 
@@ -72,5 +75,9 @@ class Unit extends Model
             parentKey: 'unit_id',
             relatedKey: 'amenity_id',
         );
+    }
+
+    public function level(): BelongsTo {
+        return $this->belongsTo(Level::class,'level_id', 'level_id');
     }
 }
