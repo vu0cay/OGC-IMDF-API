@@ -24,13 +24,18 @@ class FootprintController extends Controller
      */
     public function index()
     {
-        $footprints = Footprint::get();
-        $footprintsResource = FootprintResource::collection($footprints);
-        $geojson = '{"type": "FeatureCollection","features": [], "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::404000"}}}';
-        $geojson = json_decode($geojson);
-        $geojson->features = $footprintsResource;
-
-        return response()->json([$geojson], 200);
+        try{
+            $footprints = Footprint::get();
+            $footprintsResource = FootprintResource::collection($footprints);
+            $geojson = '{"type": "FeatureCollection","features": [], "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::404000"}}}';
+            $geojson = json_decode($geojson);
+            $geojson->features = $footprintsResource;
+    
+            return response()->json([$geojson], 200);
+        }
+        catch (Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], status: 400);
+        }
     }
 
     /**
@@ -127,20 +132,25 @@ class FootprintController extends Controller
      */
     public function show($footprint_id)
     {
-        $footprints = Footprint::query()
-            ->where('footprint_id', '=', $footprint_id)
-            ->first();
-        if (!$footprints)
-            return response()->json(['success' => false, 'message' => 'Not Found'], 404);
-
-
-        $footprintsResource = FootprintResource::collection([$footprints]);
-
-        $geojson = '{"type": "FeatureCollection","features": [], "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::404000"}}}';
-        $geojson = json_decode($geojson);
-        $geojson->features = $footprintsResource;
-
-        return response()->json([$geojson], 200);
+        try{
+            $footprints = Footprint::query()
+                ->where('footprint_id', '=', $footprint_id)
+                ->first();
+            if (!$footprints)
+                return response()->json(['success' => false, 'message' => 'Not Found'], 404);
+    
+    
+            $footprintsResource = FootprintResource::collection([$footprints]);
+    
+            $geojson = '{"type": "FeatureCollection","features": [], "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::404000"}}}';
+            $geojson = json_decode($geojson);
+            $geojson->features = $footprintsResource;
+    
+            return response()->json([$geojson], 200);
+        }
+        catch (Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], status: 400);
+        }
     }
 
     /**

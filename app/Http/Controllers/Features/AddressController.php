@@ -23,15 +23,20 @@ class AddressController extends Controller
      */
     public function index()
     {
-        $addresses = Address::get();
-        $addressesResource = AddressResource::collection($addresses);
-        $geojson = '{"type": "FeatureCollection","features": [], "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::404000"}}}';
 
-        //$geojson = '{"type": "FeatureCollection","features": []}';
-        $geojson = json_decode($geojson);
-        $geojson->features = $addressesResource;
+        try {
+            $addresses = Address::get();
+            $addressesResource = AddressResource::collection($addresses);
+            $geojson = '{"type": "FeatureCollection","features": [], "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::404000"}}}';
 
-        return response()->json([$geojson], 200);
+            //$geojson = '{"type": "FeatureCollection","features": []}';
+            $geojson = json_decode($geojson);
+            $geojson->features = $addressesResource;
+
+            return response()->json([$geojson], 200);
+        } catch (Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], status: 400);
+        }
     }
 
     /**
@@ -60,18 +65,18 @@ class AddressController extends Controller
                 'properties.locality' => 'required|string',
                 'properties.province' => 'nullable',
                 'properties.country' => [
-                    'required',
-                    'string',
-                    new ValidateIso3166,
-                    function ($attribute, $value, $fail) use ($request) {
-                        if (!isset($request->properties['province']))
-                            return;
-                        $province = explode('-', $request->properties['province'])[0];
-                        // dd($province);
-                        if ($value !== $province)
-                            $fail('The country code not match with province ISO-3166-2');
-                    }
-                ],
+                        'required',
+                        'string',
+                        new ValidateIso3166,
+                        function ($attribute, $value, $fail) use ($request) {
+                            if (!isset($request->properties['province']))
+                                return;
+                            $province = explode('-', $request->properties['province'])[0];
+                            // dd($province);
+                            if ($value !== $province)
+                                $fail('The country code not match with province ISO-3166-2');
+                        }
+                    ],
                 'properties.postal_code' => ['nullable'],
                 'properties.postal_code_ext' => ['nullable', 'string'],
                 'properties.postal_code_vanity' => ['nullable', 'string']
@@ -111,19 +116,25 @@ class AddressController extends Controller
      */
     public function show($address_id)
     {
-        $address = Address::query()
-            ->where('address_id', '=', $address_id)->first();
-
-        if (!$address)
-            return response()->json(['success' => false, 'message' => 'Not Found'], 404);
-
-        $addressesResource = AddressResource::collection([$address]);
-
-        $geojson = '{"type": "FeatureCollection","features": [], "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::404000"}}}';
-        $geojson = json_decode($geojson);
-        $geojson->features = $addressesResource;
-
-        return response()->json([$geojson], 200);
+        try{
+        
+            $address = Address::query()
+                ->where('address_id', '=', $address_id)->first();
+    
+            if (!$address)
+                return response()->json(['success' => false, 'message' => 'Not Found'], 404);
+    
+            $addressesResource = AddressResource::collection([$address]);
+    
+            $geojson = '{"type": "FeatureCollection","features": [], "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::404000"}}}';
+            $geojson = json_decode($geojson);
+            $geojson->features = $addressesResource;
+    
+            return response()->json([$geojson], 200);
+        }
+        catch (Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], status: 400);
+        }
     }
 
     /**
@@ -158,11 +169,11 @@ class AddressController extends Controller
                 'properties.locality' => 'required|string',
                 'properties.province' => ['nullable', 'string', new ValidateIso3166_2],
                 'properties.country' => [
-                    'required',
-                    'string',
-                    new ValidateIso3166,
-                    'in:' . json_encode(explode('-', $request->properties['province'])[0])
-                ],
+                        'required',
+                        'string',
+                        new ValidateIso3166,
+                        'in:' . json_encode(explode('-', $request->properties['province'])[0])
+                    ],
                 'properties.postal_code' => ['nullable'],
                 'properties.postal_code_ext' => ['nullable', 'string'],
                 'properties.postal_code_vanity' => ['nullable', 'string']

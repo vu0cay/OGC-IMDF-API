@@ -23,15 +23,20 @@ class AmenityController extends Controller
      */
     public function index()
     {
-        // $amenities = Amenity::with('feature', 'units', 'category', 'labels', 'accessibilities')->get();
-        $amenities = Amenity::get();
-        $amenitiesResource = AmenityResource::collection($amenities);
-        
-        $geojson = '{"type": "FeatureCollection","features": [], "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::404000"}}}';
-        $geojson = json_decode($geojson);
-        $geojson->features = $amenitiesResource;
-
-        return response()->json([$geojson], 200);
+        try{
+            // $amenities = Amenity::with('feature', 'units', 'category', 'labels', 'accessibilities')->get();
+            $amenities = Amenity::get();
+            $amenitiesResource = AmenityResource::collection($amenities);
+            
+            $geojson = '{"type": "FeatureCollection","features": [], "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::404000"}}}';
+            $geojson = json_decode($geojson);
+            $geojson->features = $amenitiesResource;
+    
+            return response()->json([$geojson], 200);
+        }
+        catch (Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], status: 400);
+        }
     }
 
     /**
@@ -159,21 +164,26 @@ class AmenityController extends Controller
      */
     public function show($amenity_id)
     {
-        $amenity = Amenity::query()
-                    ->where('amenity_id', '=', $amenity_id)->first();
-        
-        if(!$amenity) return response()->json( ['success' => false, 'message'=> 'Not Found'],404);
-
-
-        $amenitysResource = AmenityResource::collection([$amenity]);
-
-        // $geojson = '{"type": "FeatureCollection","features": []}';
-        $geojson = '{"type": "FeatureCollection","features": [], "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::404000"}}}';
-
-        $geojson = json_decode($geojson);
-        $geojson->features = $amenitysResource;
-
-        return response()->json([$geojson], 200);
+        try{
+            $amenity = Amenity::query()
+                        ->where('amenity_id', '=', $amenity_id)->first();
+            
+            if(!$amenity) return response()->json( ['success' => false, 'message'=> 'Not Found'],404);
+    
+    
+            $amenitysResource = AmenityResource::collection([$amenity]);
+    
+            // $geojson = '{"type": "FeatureCollection","features": []}';
+            $geojson = '{"type": "FeatureCollection","features": [], "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::404000"}}}';
+    
+            $geojson = json_decode($geojson);
+            $geojson->features = $amenitysResource;
+    
+            return response()->json([$geojson], 200);
+        }
+        catch (Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], status: 400);
+        }
     }
 
     /**

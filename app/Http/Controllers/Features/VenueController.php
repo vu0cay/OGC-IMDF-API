@@ -28,16 +28,21 @@ class VenueController extends Controller
      */
     public function index()
     {
+        try{
+            // $venues = Venue::with('feature', 'restriction', 'category', 'labels')->get();
+            $venues = Venue::get();
+            $venuesResource = VenueResource::collection($venues);
+    
+            $geojson = '{"type": "FeatureCollection","features": [], "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::404000"}}}';
+            $geojson = json_decode($geojson);
+            $geojson->features = $venuesResource;
+    
+            return response()->json([$geojson], 200);
+        }
+        catch (Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], status: 400);
+        }
 
-        // $venues = Venue::with('feature', 'restriction', 'category', 'labels')->get();
-        $venues = Venue::get();
-        $venuesResource = VenueResource::collection($venues);
-
-        $geojson = '{"type": "FeatureCollection","features": [], "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::404000"}}}';
-        $geojson = json_decode($geojson);
-        $geojson->features = $venuesResource;
-
-        return response()->json([$geojson], 200);
 
     }
 
@@ -149,21 +154,26 @@ class VenueController extends Controller
     public function show($venue_id)
     {
 
-        $venue = Venue::query()
-            // ->with('feature', 'restriction', 'category')
-            ->where('venue_id', '=', $venue_id)->first();
-
-        if (!$venue)
-            return response()->json(['success' => false, 'message' => 'Not Found'], 404);
-
-
-        $venuesResource = VenueResource::collection([$venue]);
-
-        $geojson = '{"type": "FeatureCollection","features": [], "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::404000"}}}';
-        $geojson = json_decode($geojson);
-        $geojson->features = $venuesResource;
-
-        return response()->json([$geojson], 200);
+        try{
+            $venue = Venue::query()
+                // ->with('feature', 'restriction', 'category')
+                ->where('venue_id', '=', $venue_id)->first();
+    
+            if (!$venue)
+                return response()->json(['success' => false, 'message' => 'Not Found'], 404);
+    
+    
+            $venuesResource = VenueResource::collection([$venue]);
+    
+            $geojson = '{"type": "FeatureCollection","features": [], "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::404000"}}}';
+            $geojson = json_decode($geojson);
+            $geojson->features = $venuesResource;
+    
+            return response()->json([$geojson], 200);
+        }
+        catch (Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], status: 400);
+        }
     }
 
     /**

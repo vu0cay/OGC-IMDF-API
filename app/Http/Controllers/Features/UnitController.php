@@ -26,32 +26,37 @@ class UnitController extends Controller
      */
     public function index()
     {
-        // $units = Unit::with( 'feature', 'restriction', 'category', 'accessibilities', 'labels')->get();
-        $units = Unit::get();
-        $unitsResource = UnitResource::collection($units);
-        $geojson = '{"type": "FeatureCollection","features": [], "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::404000"}}}';
-
-        //$geojson = '{"type": "FeatureCollection","features": []}';
-        $geojson = json_decode($geojson);
-        $geojson->features = $unitsResource;
-
-        // $reflectionClass = new \ReflectionClass(UnitCategory::class);
-
-        // $constants = $reflectionClass->getConstants();
-        // $arr = array_values($constants);
-        // dd($arr);
-
-        // $feature = Feature::
-        //     join('feature_label as feature_label', 'features.feature_id', '=', 'feature_label.feature_id')
-        //     ->join('labels as label', 'label.id', '=', 'feature_label.label_id')
-        //     // ->where('venue.venue_id', '=', $this->venue_id)
-        //     ->get()
-        //     // ->pluck('value', 'language_tag')
-        //     ->toArray();
-
-
-        // return $feature;
-        return response()->json([$geojson], 200);
+        try{
+            // $units = Unit::with( 'feature', 'restriction', 'category', 'accessibilities', 'labels')->get();
+            $units = Unit::get();
+            $unitsResource = UnitResource::collection($units);
+            $geojson = '{"type": "FeatureCollection","features": [], "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::404000"}}}';
+    
+            //$geojson = '{"type": "FeatureCollection","features": []}';
+            $geojson = json_decode($geojson);
+            $geojson->features = $unitsResource;
+    
+            // $reflectionClass = new \ReflectionClass(UnitCategory::class);
+    
+            // $constants = $reflectionClass->getConstants();
+            // $arr = array_values($constants);
+            // dd($arr);
+    
+            // $feature = Feature::
+            //     join('feature_label as feature_label', 'features.feature_id', '=', 'feature_label.feature_id')
+            //     ->join('labels as label', 'label.id', '=', 'feature_label.label_id')
+            //     // ->where('venue.venue_id', '=', $this->venue_id)
+            //     ->get()
+            //     // ->pluck('value', 'language_tag')
+            //     ->toArray();
+    
+    
+            // return $feature;
+            return response()->json([$geojson], 200);
+        }
+        catch (Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], status: 400);
+        }
     }
 
     /**
@@ -166,22 +171,27 @@ class UnitController extends Controller
      */
     public function show($unit_id)
     {
-        $unit = Unit::query()
-            ->where('unit_id', '=', $unit_id)->first();
-
-        if (!$unit)
-            return response()->json(['success' => false, 'message' => 'Not Found'], 404);
-
-
-        $unitsResource = UnitResource::collection([$unit]);
-
-        // $geojson = '{"type": "FeatureCollection","features": []}';
-        $geojson = '{"type": "FeatureCollection","features": [], "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::404000"}}}';
-
-        $geojson = json_decode($geojson);
-        $geojson->features = $unitsResource;
-
-        return response()->json([$geojson], 200);
+        try{
+            $unit = Unit::query()
+                ->where('unit_id', '=', $unit_id)->first();
+    
+            if (!$unit)
+                return response()->json(['success' => false, 'message' => 'Not Found'], 404);
+    
+    
+            $unitsResource = UnitResource::collection([$unit]);
+    
+            // $geojson = '{"type": "FeatureCollection","features": []}';
+            $geojson = '{"type": "FeatureCollection","features": [], "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::404000"}}}';
+    
+            $geojson = json_decode($geojson);
+            $geojson->features = $unitsResource;
+    
+            return response()->json([$geojson], 200);
+        }
+        catch (Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], status: 400);
+        }
     }
 
     /**
