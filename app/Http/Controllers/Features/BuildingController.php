@@ -11,6 +11,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\FeatureResources\BuildingResource;
 use App\Models\Features\Building;
 use App\Rules\PointCoordinateRule;
+use App\Rules\ValidateFeatureIDUnique;
 use DB;
 use Exception;
 use Illuminate\Http\Request;
@@ -51,7 +52,8 @@ class BuildingController extends Controller
         try {
             // validation
             $attributes = Validator::make($request->all(), [
-                'id' => 'required|uuid|unique:' . TablesName::BUILDINGS . ',building_id',
+                // 'id' => 'required|uuid|unique:' . TablesName::BUILDINGS . ',building_id',
+                'id' => ['required','uuid', new ValidateFeatureIDUnique],
                 'type' => 'in:Feature',
                 'feature_type' => 'required|string|in:building',
                 'geometry' => 'nullable|in:null',

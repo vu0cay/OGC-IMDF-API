@@ -49,6 +49,24 @@ class Geom extends Model
                 }
                 $text = rtrim($text, ', ')."))', 4326)";
                 return $text;
+            case "MultiPolygon":
+                    $polygons = $geometry["coordinates"];
+                    //"MULTIPOLYGON(((180.0 40.0, 180.0 50.0, 170.0 50.0, 170.0 40.0, 180.0 40.0)),
+                    //((-170.0 40.0, -170.0 50.0, -180.0 50.0, -180.0 40.0, -170.0 40.0))
+                    //)"
+                    $text = "ST_GeomFromText('MULTIPOLYGON(";
+                    foreach($polygons as $polygon) {
+                        $coordinates = $polygon[0];
+                        $text .= '((';
+                        foreach($coordinates as $coordinate) {
+                            $text .= $coordinate[0]." ".$coordinate[1].", ";
+                        }
+                        $text = rtrim($text, ", ");
+                        $text .= ')),';
+                    }
+                    $text = rtrim($text, ', ').")', 4326)";
+                    
+                    return $text;
             case "LineString":
                 $coordinates = $geometry["coordinates"];
                 $text = "ST_GeomFromText('LineString(";

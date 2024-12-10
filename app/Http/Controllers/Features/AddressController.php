@@ -6,7 +6,9 @@ use App\Constants\Features\TablesName;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\FeatureResources\AddressResource;
 use App\Models\Features\Address;
+use App\Rules\Address\AddressUnitMustNotBeBlank;
 use App\Rules\Address\ValidateProvince;
+use App\Rules\ValidateFeatureIDUnique;
 use App\Rules\ValidateIso3166;
 use App\Rules\ValidateIso3166_2;
 use Exception;
@@ -46,12 +48,13 @@ class AddressController extends Controller
     {
         // validation
         $attributes = Validator::make($request->all(), [
-            'id' => 'required|uuid|unique:' . TablesName::ADDRESSES . ',address_id',
+            // 'id' => 'required|uuid|unique:' . TablesName::ADDRESSES . ',address_id',
+            'id' => ['required','uuid', new ValidateFeatureIDUnique],
             'type' => 'in:Feature',
             'feature_type' => 'required|string|in:address',
             'geometry' => 'nullable|in:null',
             'properties.address' => 'required|string',
-            'properties.unit' => 'nullable|string',
+            'properties.unit' => ['nullable', new AddressUnitMustNotBeBlank],
             'properties.locality' => 'required|string',
             'properties.province' => ['nullable','string',new ValidateIso3166_2],
             'properties.country' => ['required','string',new ValidateIso3166, 

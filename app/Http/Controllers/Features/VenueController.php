@@ -14,6 +14,7 @@ use App\Models\FeaturesCategory\Label;
 use App\Rules\PointCoordinateRule;
 use App\Rules\PolygonCoordinateRule;
 use App\Rules\UniqueLangueTag;
+use App\Rules\ValidateFeatureIDUnique;
 use DB;
 use Exception;
 use Illuminate\Http\Request;
@@ -56,7 +57,8 @@ class VenueController extends Controller
 
         // validation
         $attributes = Validator::make($request->all(), [
-            'id' => 'required|uuid|unique:' . TablesName::VENUES . ',venue_id',
+            // 'id' => 'required|uuid|unique:' . TablesName::VENUES . ',venue_id',
+            'id' => ['required','uuid', new ValidateFeatureIDUnique],
             'type' => 'in:Feature',
             'feature_type' => 'required|string|in:venue',
             'geometry' => 'required',

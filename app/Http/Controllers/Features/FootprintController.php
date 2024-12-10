@@ -9,7 +9,9 @@ use App\Contracts\Geom;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\FeatureResources\FootprintResource;
 use App\Models\Features\Footprint;
+use App\Rules\MultiPolygonCoordinateRule;
 use App\Rules\PolygonCoordinateRule;
+use App\Rules\ValidateFeatureIDUnique;
 use DB;
 use Exception;
 use Illuminate\Http\Request;
@@ -47,12 +49,22 @@ class FootprintController extends Controller
         try {
             // validation
             $attributes = Validator::make($request->all(), [
-                'id' => 'required|uuid|unique:' . TablesName::FOOTPRINTS . ',footprint_id',
+                // 'id' => 'required|uuid|unique:' . TablesName::FOOTPRINTS . ',footprint_id',
+                'id' => ['required','uuid', new ValidateFeatureIDUnique],
                 'type' => 'in:Feature',
                 'feature_type' => 'required|string|in:footprint',
                 'geometry' => 'required',
-                'geometry.type' => 'required|in:Polygon',
-                'geometry.coordinates' => ['required', new PolygonCoordinateRule],
+                'geometry.type' => 'required|in:Polygon,MultiPolygon',
+                'geometry.coordinates' => ['required', function($attribute, $value, $fail) use($request) {
+                    if($request->geometry['type'] === 'Polygon') {
+                        $validateInstance = new PolygonCoordinateRule();
+                        $validateInstance->validate($attribute, $value, $fail);
+                    } else {
+                        $validateInstance = new MultiPolygonCoordinateRule();
+                        $validateInstance->validate($attribute, $value, $fail);
+                    }
+
+                }],
                 'properties.category' => 'required|string|in:' . FootprintCategory::getConstansAsString(),
                 'properties.name' => 'nullable|array',
                 'properties.building_ids' => 'required|array',
