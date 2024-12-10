@@ -2,13 +2,14 @@
 
 namespace App\Rules\ValidateRuleCSV;
 
+//This site or product includes Ipregistry ISO 3166 data available from https://ipregistry.co.
 
 class LoadIsoCountryCode 
 {
     static function loadIso3166($path) {
         $iso3166 = [];
         if (($handle = fopen($path, "r")) !== false) {
-            $header = fgetcsv($handle); // Read header row
+            $header = fgetcsv($handle);
             while (($row = fgetcsv($handle)) !== false) {
                 $iso3166[] = [
                     'alpha2' => $row[9]
@@ -26,18 +27,19 @@ class LoadIsoCountryCode
     static function loadIso3166_2($path) {
         $iso31662 = [];
         if (($handle = fopen($path, "r")) !== false) {
-            $header = fgetcsv($handle); // Read header row
+            $header = fgetcsv($handle); 
             while (($row = fgetcsv($handle)) !== false) {
-                $str = str_replace('"','',$row[0]);
-                $arr = explode(';', $str);
+                // dd($row);
+                // $str = str_replace('"','',$row[0]);
+                // $arr = explode(';', $str);
                 // dd($arr);
                 // if($arr[0] === 'VN') {
                 //     dd($arr);
                 // }
                 $iso31662[] = [
-                    'alpha2' => $arr[0],
-                    'region_name' => $arr[1],
-                    'regional_code' => $arr[3]
+                    'alpha2' => $row[0],
+                    'regional_code' => $row[1],
+                    'region_name' => $row[2],
                 ];
             }
             fclose($handle);

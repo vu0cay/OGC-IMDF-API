@@ -51,6 +51,9 @@ Route::controller(FootprintController::class)->group(function () {
 
     Route::get('/footprints', 'index');
     Route::get('/footprints/{footprint_id}', 'show');
+    Route::post('/footprints', 'store');
+    Route::put('/footprints/{footprint_id}', 'update');
+    Route::delete('/footprints/{footprint_id}', 'destroy');
 
 });
 
@@ -58,6 +61,9 @@ Route::controller(BuildingController::class)->group(function () {
 
     Route::get('/buildings', 'index');
     Route::get('/buildings/{building_id}', 'show');
+    Route::post('/buildings', 'store');
+    Route::put('/buildings/{building_id}', 'update');
+    Route::delete('/buildings/{building_id}', 'destroy');
 
 });
 

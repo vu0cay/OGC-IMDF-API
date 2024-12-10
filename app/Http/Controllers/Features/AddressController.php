@@ -6,8 +6,10 @@ use App\Constants\Features\TablesName;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\FeatureResources\AddressResource;
 use App\Models\Features\Address;
+use App\Rules\Address\ValidateProvince;
 use App\Rules\ValidateIso3166;
 use App\Rules\ValidateIso3166_2;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -52,7 +54,11 @@ class AddressController extends Controller
             'properties.unit' => 'nullable|string',
             'properties.locality' => 'required|string',
             'properties.province' => ['nullable','string',new ValidateIso3166_2],
-            'properties.country' => ['required','string',new ValidateIso3166]
+            'properties.country' => ['required','string',new ValidateIso3166, 
+                                'in:'.json_encode(explode('-',$request->properties['province'])[0])],
+            'properties.postal_code' => ['nullable'],
+            'properties.postal_code_ext' => ['nullable','string'],
+            'properties.postal_code_vanity' => ['nullable','string']
         ]);
 
         // Bad Request
@@ -60,18 +66,23 @@ class AddressController extends Controller
             $error = $attributes->errors()->first();
             return response()->json(['success' => false, 'message' => $error], 400);
         }
-        // adding feature to the database 
-        $address = Address::create([
-            'address_id' => $request->id,
-            'feature_id' => 1,
-            'address' => $request->properties['address'],
-            'unit' => $request->properties['unit'],
-            'locality' => $request->properties['locality'],
-            'province' => $request->properties['province'],
-            'country'=> $request->properties['country'],
-            'postal_code'=> $request->properties['postal_code'],
-            'postal_code_ext'=> $request->properties['postal_code_ext'],
-        ]);
+
+        try{
+            // adding feature to the database 
+            $address = Address::create([
+                'address_id' => $request->id,
+                'feature_id' => 1,
+                'address' => $request->properties['address'],
+                'unit' => $request->properties['unit'],
+                'locality' => $request->properties['locality'],
+                'province' => $request->properties['province'],
+                'country'=> $request->properties['country'],
+                'postal_code'=> $request->properties['postal_code'],
+                'postal_code_ext'=> $request->properties['postal_code_ext'],
+            ]);
+        } catch(Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], status: 400);
+        }
 
         $addressesResource = AddressResource::collection([$address]);
 
@@ -118,9 +129,9 @@ class AddressController extends Controller
                     ->where('address_id', '=', $address_id)->first();
         if (!$address) return response()->json(['success'=> false, 'message'=> 'Not Found'],404);
 
-        // validate
+        // validation
         $attributes = Validator::make($request->all(), [
-            'id' => 'required|uuid|unique:' . TablesName::ADDRESSES . ',address_id',
+            'id' => 'required|uuid|in:'.$address_id,
             'type' => 'in:Feature',
             'feature_type' => 'required|string|in:address',
             'geometry' => 'nullable|in:null',
@@ -128,25 +139,35 @@ class AddressController extends Controller
             'properties.unit' => 'nullable|string',
             'properties.locality' => 'required|string',
             'properties.province' => ['nullable','string',new ValidateIso3166_2],
-            'properties.country' => ['required','string',new ValidateIso3166]
+            'properties.country' => ['required','string',new ValidateIso3166, 
+                                'in:'.json_encode(explode('-',$request->properties['province'])[0])],
+            'properties.postal_code' => ['nullable'],
+            'properties.postal_code_ext' => ['nullable','string'],
+            'properties.postal_code_vanity' => ['nullable','string']
         ]);
+
         // Bad Request
         if($attributes->fails()) {
             $error = $attributes->errors()->first();
             return response()->json(['success' => false, 'message' => $error], 400);
         }
         
-        // update to the database
-        $rows = $address->update([
-            'address_id' => $request->id,
-            'address' => $request->properties['address'],
-            'unit' => $request->properties['unit'],
-            'locality' => $request->properties['locality'],
-            'province' => $request->properties['province'],
-            'country'=> $request->properties['country'],
-            'postal_code'=> $request->properties['postal_code'],
-            'postal_code_ext'=> $request->properties['postal_code_ext'],
-        ]);
+        try{
+            // update to the database
+            $rows = $address->update([
+                'address_id' => $request->id,
+                'address' => $request->properties['address'],
+                'unit' => $request->properties['unit'],
+                'locality' => $request->properties['locality'],
+                'province' => $request->properties['province'],
+                'country'=> $request->properties['country'],
+                'postal_code'=> $request->properties['postal_code'],
+                'postal_code_ext'=> $request->properties['postal_code_ext'],
+            ]);
+
+        } catch(Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], status: 400);
+        }
 
         // change to IMDF json format 
         $addressesResource = AddressResource::collection([$address]);

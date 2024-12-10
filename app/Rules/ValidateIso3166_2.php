@@ -15,23 +15,24 @@ class ValidateIso3166_2 implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        $filePath = __DIR__ . '/ValidateRuleCSV/ISO-3166-2.csv';
+        // $filePath = __DIR__ . '/ValidateRuleCSV/ISO-3166-2.csv';
+        $filePath = __DIR__ . '/ValidateRuleCSV/subdivisions.csv';
         $iso3166 = LoadIsoCountryCode::loadIso3166_2($filePath);
-        $str = explode('-', $value);
         
-        if(count($str) != 2) { 
-            $fail('Invalid ISO-3166-2 country code');
-            return;
-        }
+        // $str = explode('-', $value);
+        
+        // if(count($str) != 2) { 
+        //     $fail('Invalid ISO-3166-2 country code');
+        //     return;
+        // }
 
-        $country_code = $str[0];
-        $regional_code = $str[1];
-  
+        // $country_code = $str[0];
+        // $regional_code = $str[1];
+        // dd($iso3166);
+
         foreach ($iso3166 as $country) {
             if (
-                strtolower($country['alpha2']) === strtolower($country_code)
-                && 
-                strtolower($country['regional_code']) === strtolower($regional_code)
+                strtolower($country['regional_code']) === strtolower($value)
             ) {
                 return;
             }
