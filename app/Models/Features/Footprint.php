@@ -41,7 +41,7 @@ class Footprint extends Model
             relatedPivotKey: 'label_id',
             parentKey: 'footprint_id',
             relatedKey: 'id'
-        );
+        )->withPivot('type');
     }
 
     public function category(): HasOne

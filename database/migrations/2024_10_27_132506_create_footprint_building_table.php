@@ -20,6 +20,8 @@ return new class extends Migration
 
             $table->foreign('footprint_id')->references('footprint_id')->on(TablesName::FOOTPRINTS)->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreign('building_id')->references('building_id')->on(TablesName::BUILDINGS)->cascadeOnUpdate()->cascadeOnDelete();
+            // $table->foreign('footprint_id')->references('footprint_id')->on(TablesName::FOOTPRINTS);
+            // $table->foreign('building_id')->references('building_id')->on(TablesName::BUILDINGS);
             
             $table->timestamps();
         });

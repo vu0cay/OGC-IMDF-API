@@ -19,7 +19,7 @@ return new class extends Migration
             $table->uuid('footprint_id');
             $table->unsignedBigInteger('label_id');
             $table->primary(['footprint_id', 'label_id']);
-
+            $table->enum('type',['name']);
             $table->foreign('footprint_id')->references('footprint_id')->on(TablesName::FOOTPRINTS)->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreign('label_id')->references('id')->on(TablesName::LABELS)->cascadeOnUpdate()->cascadeOnDelete();
         });

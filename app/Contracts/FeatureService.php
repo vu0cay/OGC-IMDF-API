@@ -70,7 +70,6 @@ class FeatureService
             ->where('feature_label.type', $type)
             ->delete();
 
-
         if ($labels == null)
             return;
 

@@ -20,7 +20,7 @@ return new class extends Migration
             $table->geometry('geometry', srid:4326);
             $table->foreign('feature_id')->references('id')->on(TablesName::FEATURES)->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreign('footprint_category_id')->references('id')->on(TablesName::FOOTPRINT_CATEGORIES)->cascadeOnUpdate()->cascadeOnDelete();
-            // $table->timestamps();
+            $table->timestamps();
         });
 
         #Ground level footprint for single Building
