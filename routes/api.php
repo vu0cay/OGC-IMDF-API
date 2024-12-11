@@ -32,6 +32,12 @@ Route::controller(VenueController::class)->group(function () {
     Route::get('/venues/{venue_id}', 'show');
 
 });
+Route::controller(VenueController::class)->group(function () {
+
+    Route::get('/addresses', 'index');
+    Route::get('/addresses/{address_id}', 'show');
+
+});
 /*
     Address Controller
 */
