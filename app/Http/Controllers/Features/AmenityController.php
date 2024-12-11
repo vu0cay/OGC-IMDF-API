@@ -12,6 +12,8 @@ use App\Models\Features\Amenity;
 use App\Rules\PointCoordinateRule;
 use App\Rules\ValidateFeatureIDUnique;
 use App\Rules\ValidateIso639;
+use App\Rules\Venue\ValidatePhone;
+use App\Rules\Venue\ValidateWebsiteUri;
 use DB;
 use Exception;
 use Illuminate\Http\Request;
@@ -71,9 +73,9 @@ class AmenityController extends Controller
                 'properties.alt_name' => ['nullable','array',new ValidateIso639],
                 'properties.alt_name.*' => 'required',
                 
-                'properties.phone' => 'nullable',
-                'properties.website' => 'nullable',
-                'properties.hours' => 'nullable',
+                'properties.hours' => 'nullable|string',
+                'properties.website' => ['nullable','string', new ValidateWebsiteUri],
+                'properties.phone' => ['nullable','string',new ValidatePhone],
                 'properties.correlation_id' => ['nullable','uuid'],
                 'properties.address_id' => 'nullable|uuid|exists:' . TablesName::ADDRESSES . ',address_id',
                 'properties.unit_ids' => 'required|array',
@@ -226,9 +228,10 @@ class AmenityController extends Controller
                 'properties.alt_name' => ['nullable','array',new ValidateIso639],
                 'properties.alt_name.*' => 'required',
                 
-                'properties.phone' => 'nullable',
-                'properties.website' => 'nullable',
-                'properties.hours' => 'nullable',
+                'properties.hours' => 'nullable|string',
+                'properties.website' => ['nullable','string', new ValidateWebsiteUri],
+                'properties.phone' => ['nullable','string',new ValidatePhone],
+                
                 'properties.correlation_id' => ['nullable','uuid'],
                 'properties.address_id' => 'nullable|uuid|exists:' . TablesName::ADDRESSES . ',address_id',
                 'properties.unit_ids' => 'required|array',
