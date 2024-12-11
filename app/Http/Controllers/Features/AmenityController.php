@@ -11,6 +11,7 @@ use App\Http\Resources\FeatureResources\AmenityResource;
 use App\Models\Features\Amenity;
 use App\Rules\PointCoordinateRule;
 use App\Rules\ValidateFeatureIDUnique;
+use App\Rules\ValidateIso639;
 use DB;
 use Exception;
 use Illuminate\Http\Request;
@@ -64,10 +65,12 @@ class AmenityController extends Controller
                 'properties.category' => 'required|string|in:' . AmenityCategory::getConstansAsString(),
                 'properties.accessibility' => 'nullable|array',
                 'properties.accessibility.*' => 'required_if:properties.accessibility,!=null|exists:' . TablesName::ACCESSIBILITY_CATEGORIES . ',name',
-                'properties.name' => ['nullable', 'array'],
+                
+                'properties.name' => ['nullable', 'array',new ValidateIso639],
                 'properties.name.*' => 'required',
-                'properties.short_name' => ['nullable', 'array'],
-                'properties.short_name.*' => 'required',
+                'properties.alt_name' => ['nullable','array',new ValidateIso639],
+                'properties.alt_name.*' => 'required',
+                
                 'properties.phone' => 'nullable',
                 'properties.website' => 'nullable',
                 'properties.hours' => 'nullable',
@@ -217,10 +220,12 @@ class AmenityController extends Controller
                 'properties.category' => 'required|string|in:' . AmenityCategory::getConstansAsString(),
                 'properties.accessibility' => 'nullable|array',
                 'properties.accessibility.*' => 'required_if:properties.accessibility,!=null|exists:' . TablesName::ACCESSIBILITY_CATEGORIES . ',name',
-                'properties.name' => ['nullable', 'array'],
+                
+                'properties.name' => ['nullable', 'array',new ValidateIso639],
                 'properties.name.*' => 'required',
-                'properties.short_name' => ['nullable', 'array'],
-                'properties.short_name.*' => 'required',
+                'properties.alt_name' => ['nullable','array',new ValidateIso639],
+                'properties.alt_name.*' => 'required',
+                
                 'properties.phone' => 'nullable',
                 'properties.website' => 'nullable',
                 'properties.hours' => 'nullable',

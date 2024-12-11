@@ -24,8 +24,8 @@ class FootprintResource extends JsonResource
         // // convert geometry data in postgres (geometry coordinates) to geojson data format
         $geometry = json_decode($geom[0]->geometry);
         
-        $name = GetFeatureName::getName($this->labels, 'value');
-
+        $name = GetFeatureName::getName($this->labels, 'name');
+        
         return [
             "id" => $this->footprint_id,
             "type" => "Feature",

@@ -27,23 +27,9 @@ class LevelResource extends JsonResource
         $display_point = json_decode($geom[0]->display_point);
 
 
-        // $name = GetFeatureName::getName($this->labels, 'value');
-        // $short_name = GetFeatureName::getName($this->labels, 'short_name');
-        $name = count($this->labels) > 0 ? 
-                    $this->labels
-                    ->filter(function ($item){
-                        return $item->pivot->type == 'name';
-                    })
-                    ->pluck('value', 'language_tag')->toArray() 
-                    : null;
-        
-        $short_name = count($this->labels) > 0 ? 
-                    $this->labels
-                    ->filter(function ($item){
-                        return $item->pivot->type == 'short_name';
-                    })
-                    ->pluck('value', 'language_tag')->toArray() 
-                    : null;
+        $name = GetFeatureName::getName($this->labels, 'name');
+        $short_name = GetFeatureName::getName($this->labels, 'short_name');
+
 
         return [
             "id" => $this->level_id,

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('feature_id');
             $table->unsignedInteger('level_category_id');
             $table->unsignedInteger('restriction_category_id')->nullable();
-            $table->geometry('geometry', 'Polygon', srid:4326);
+            $table->geometry('geometry', srid:4326);
             $table->boolean("outdoor");
             $table->integer("ordinal");
             $table->geometry("display_point", srid: 4326)->nullable();

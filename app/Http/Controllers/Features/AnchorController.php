@@ -67,7 +67,6 @@ class AnchorController extends Controller
                 'properties.unit_id' => 'required|exists:' . TablesName::UNITS . ',unit_id',
                 
             ]);
-
             // Bad Request
             if ($attributes->fails()) {
                 $error = $attributes->errors()->first();
@@ -90,8 +89,7 @@ class AnchorController extends Controller
                 'unit_id' => $request->properties["unit_id"],
                 'level_id' => $level[0]
             ]);
-
-             // add level address
+            // add level address
             if (isset($request->properties['address_id'])) {
                 DB::table(TablesName::ADDRESS_ANCHORS)->insert([
                     'anchor_id' => $anchor->anchor_id,

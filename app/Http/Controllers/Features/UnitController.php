@@ -11,9 +11,11 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\FeatureResources\UnitResource;
 use App\Models\Features\Feature;
 use App\Models\Features\Unit;
+use App\Rules\MultiPolygonCoordinateRule;
 use App\Rules\PointCoordinateRule;
 use App\Rules\PolygonCoordinateRule;
 use App\Rules\ValidateFeatureIDUnique;
+use App\Rules\ValidateIso639;
 use DB;
 use Exception;
 use Illuminate\Http\Request;
@@ -78,16 +80,26 @@ class UnitController extends Controller
                 'id' => ['required', 'uuid', new ValidateFeatureIDUnique],
                 'type' => 'in:Feature',
                 'feature_type' => 'required|string|in:unit',
+                
                 'geometry' => 'required',
-                'geometry.type' => 'required|in:Polygon',
-                'geometry.coordinates' => ['required', new PolygonCoordinateRule],
+                'geometry.type' => 'required|in:Polygon,MultiPolygon',
+                'geometry.coordinates' => ['required', function($attribute, $value, $fail) use($request) {
+                    if($request->geometry['type'] === 'Polygon') {
+                        $validateInstance = new PolygonCoordinateRule();
+                        $validateInstance->validate($attribute, $value, $fail);
+                    } else {
+                        $validateInstance = new MultiPolygonCoordinateRule();
+                        $validateInstance->validate($attribute, $value, $fail);
+                    }
+
+                }],
                 'properties.category' => 'required|string|in:' . UnitCategory::getConstansAsString(),
                 'properties.restriction' => 'nullable|string|in:' . RestrictionCategory::getConstansAsString(),
                 'properties.accessibility' => 'nullable|array',
                 'properties.accessibility.*' => 'required_if:properties.accessibility,!=null|exists:' . TablesName::ACCESSIBILITY_CATEGORIES . ',name',
-                'properties.name' => 'nullable|array',
+                'properties.name' => ['nullable', 'array',new ValidateIso639],
                 'properties.name.*' => 'required',
-                'properties.alt_name' => 'nullable|array',
+                'properties.alt_name' => ['nullable','array',new ValidateIso639],
                 'properties.alt_name.*' => 'required',
                 'properties.display_point' => 'nullable',
                 'properties.display_point.type' => ['required_if:properties.display_point,!=null', 'in:Point'],
@@ -219,17 +231,29 @@ class UnitController extends Controller
                 'id' => ['required', 'uuid', 'in:' . $unit_id],
                 'type' => 'in:Feature',
                 'feature_type' => 'required|string|in:unit',
+                
                 'geometry' => 'required',
-                'geometry.type' => 'required|in:Polygon',
-                'geometry.coordinates' => ['required', new PolygonCoordinateRule],
+                'geometry.type' => 'required|in:Polygon,MultiPolygon',
+                'geometry.coordinates' => ['required', function($attribute, $value, $fail) use($request) {
+                    if($request->geometry['type'] === 'Polygon') {
+                        $validateInstance = new PolygonCoordinateRule();
+                        $validateInstance->validate($attribute, $value, $fail);
+                    } else {
+                        $validateInstance = new MultiPolygonCoordinateRule();
+                        $validateInstance->validate($attribute, $value, $fail);
+                    }
+
+                }],
                 'properties.category' => 'required|string|in:' . UnitCategory::getConstansAsString(),
                 'properties.restriction' => 'nullable|string|in:' . RestrictionCategory::getConstansAsString(),
                 'properties.accessibility' => 'nullable|array',
                 'properties.accessibility.*' => 'required_if:properties.accessibility,!=null|exists:' . TablesName::ACCESSIBILITY_CATEGORIES . ',name',
-                'properties.name' => 'nullable|array',
+                
+                'properties.name' => ['nullable', 'array',new ValidateIso639],
                 'properties.name.*' => 'required',
-                'properties.alt_name' => 'nullable|array',
+                'properties.alt_name' => ['nullable','array',new ValidateIso639],
                 'properties.alt_name.*' => 'required',
+
                 'properties.display_point' => 'nullable',
                 'properties.display_point.type' => ['required_if:properties.display_point,!=null', 'in:Point'],
                 'properties.display_point.coordinates' => ['required_if:properties.display_point,!=null', new PointCoordinateRule],

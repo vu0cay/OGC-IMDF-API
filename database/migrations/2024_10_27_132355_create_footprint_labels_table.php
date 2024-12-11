@@ -33,7 +33,8 @@ return new class extends Migration
 
         // DB::table(TablesName::FOOTPRINT_LABELS)->insert([
         //     'footprint_id' => "55555555-5555-5555-5555-555555555555",
-        //     'label_id' => $newLabel->id
+        //     'label_id' => $newLabel->id,
+        //     'type' => 'name'
         // ]);
 
         

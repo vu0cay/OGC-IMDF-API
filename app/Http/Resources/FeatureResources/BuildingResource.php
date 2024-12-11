@@ -25,23 +25,10 @@ class BuildingResource extends JsonResource
         $display_point = json_decode($geom[0]->display_point);
 
 
-        // $name = GetFeatureName::getName($this->labels, 'value');
-        // $alt_name = GetFeatureName::getName($this->labels, 'short_name');
-        $name = count($this->labels) > 0 ? 
-                    $this->labels
-                    ->filter(function ($item){
-                        return $item->pivot->type == 'name';
-                    })
-                    ->pluck('value', 'language_tag')->toArray() 
-                    : null;
-        
-        $alt_name = count($this->labels) > 0 ? 
-                    $this->labels
-                    ->filter(function ($item){
-                        return $item->pivot->type == 'alt_name';
-                    })
-                    ->pluck('value', 'language_tag')->toArray() 
-                    : null;
+        $name = GetFeatureName::getName($this->labels, 'name');
+        $alt_name = GetFeatureName::getName($this->labels, 'alt_name');
+
+
                     
         return [
             "id" => $this->building_id,

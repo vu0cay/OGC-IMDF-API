@@ -12,6 +12,7 @@ use App\Http\Resources\FeatureResources\BuildingResource;
 use App\Models\Features\Building;
 use App\Rules\PointCoordinateRule;
 use App\Rules\ValidateFeatureIDUnique;
+use App\Rules\ValidateIso639;
 use DB;
 use Exception;
 use Illuminate\Http\Request;
@@ -64,10 +65,12 @@ class BuildingController extends Controller
                 'geometry' => 'nullable|in:null',
                 'properties.category' => 'required|string|in:' . BuildingCategory::getConstansAsString(),
                 'properties.restriction' => 'nullable|string|in:' . RestrictionCategory::getConstansAsString(),
-                'properties.name' => 'nullable|array',
+                
+                'properties.name' => ['nullable', 'array',new ValidateIso639],
                 'properties.name.*' => 'required',
-                'properties.alt_name' => 'nullable|array',
+                'properties.alt_name' => ['nullable','array',new ValidateIso639],
                 'properties.alt_name.*' => 'required',
+
                 'properties.display_point' => 'required',
                 'properties.display_point.type' => 'required|in:Point',
                 'properties.display_point.coordinates' => ['required', new PointCoordinateRule],
@@ -197,9 +200,9 @@ class BuildingController extends Controller
                 'geometry' => 'nullable|in:null',
                 'properties.category' => 'required|string|in:' . BuildingCategory::getConstansAsString(),
                 'properties.restriction' => 'nullable|string|in:' . RestrictionCategory::getConstansAsString(),
-                'properties.name' => 'nullable|array',
+                'properties.name' => ['nullable', 'array',new ValidateIso639],
                 'properties.name.*' => 'required',
-                'properties.alt_name' => 'nullable|array',
+                'properties.alt_name' => ['nullable','array',new ValidateIso639],
                 'properties.alt_name.*' => 'required',
                 'properties.display_point' => 'required',
                 'properties.display_point.type' => 'required|in:Point',

@@ -31,7 +31,7 @@ class AnchorResource extends JsonResource
                 "coordinates" => $geometry->coordinates
             ],
             "properties" => [
-                "address_id" => $this->address->address_id,
+                "address_id" => $this->address->address_id ?? null,
                 "unit_id" => $this->unit_id
             ]
         ];

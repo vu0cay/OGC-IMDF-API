@@ -10,9 +10,11 @@ use App\Contracts\Geom;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\FeatureResources\LevelResource;
 use App\Models\Features\Level;
+use App\Rules\MultiPolygonCoordinateRule;
 use App\Rules\PointCoordinateRule;
 use App\Rules\PolygonCoordinateRule;
 use App\Rules\ValidateFeatureIDUnique;
+use App\Rules\ValidateIso639;
 use DB;
 use Exception;
 use Illuminate\Http\Request;
@@ -61,14 +63,25 @@ class LevelController extends Controller
                 'type' => 'in:Feature',
                 'feature_type' => 'required|string|in:level',
                 'geometry' => 'required',
-                'geometry.type' => 'required|in:Polygon',
-                'geometry.coordinates' => ['required', new PolygonCoordinateRule],
+                'geometry.type' => 'required|in:Polygon,MultiPolygon',
+                'geometry.coordinates' => ['required', function($attribute, $value, $fail) use($request) {
+                    if($request->geometry['type'] === 'Polygon') {
+                        $validateInstance = new PolygonCoordinateRule();
+                        $validateInstance->validate($attribute, $value, $fail);
+                    } else {
+                        $validateInstance = new MultiPolygonCoordinateRule();
+                        $validateInstance->validate($attribute, $value, $fail);
+                    }
+
+                }],
                 'properties.category' => 'required|string|in:' . LevelCategory::getConstansAsString(),
                 'properties.restriction' => 'nullable|string|in:' . RestrictionCategory::getConstansAsString(),
-                'properties.name' => ['required', 'array'],
+                
+                'properties.name' => ['required', 'array',new ValidateIso639],
                 'properties.name.*' => 'required',
-                'properties.short_name' => ['required', 'array'],
+                'properties.short_name' => ['required','array',new ValidateIso639],
                 'properties.short_name.*' => 'required',
+
                 'properties.outdoor' => ['required','boolean'],
                 'properties.ordinal' => ['required','integer','min:0'],
                 'properties.display_point' => 'nullable',
@@ -204,14 +217,25 @@ class LevelController extends Controller
                 'type' => 'in:Feature',
                 'feature_type' => 'required|string|in:level',
                 'geometry' => 'required',
-                'geometry.type' => 'required|in:Polygon',
-                'geometry.coordinates' => ['required', new PolygonCoordinateRule],
+                'geometry.type' => 'required|in:Polygon,MultiPolygon',
+                'geometry.coordinates' => ['required', function($attribute, $value, $fail) use($request) {
+                    if($request->geometry['type'] === 'Polygon') {
+                        $validateInstance = new PolygonCoordinateRule();
+                        $validateInstance->validate($attribute, $value, $fail);
+                    } else {
+                        $validateInstance = new MultiPolygonCoordinateRule();
+                        $validateInstance->validate($attribute, $value, $fail);
+                    }
+
+                }],
                 'properties.category' => 'required|string|in:' . LevelCategory::getConstansAsString(),
                 'properties.restriction' => 'nullable|string|in:' . RestrictionCategory::getConstansAsString(),
-                'properties.name' => ['required', 'array'],
+                
+                'properties.name' => ['required', 'array',new ValidateIso639],
                 'properties.name.*' => 'required',
-                'properties.short_name' => ['required', 'array'],
+                'properties.short_name' => ['required','array',new ValidateIso639],
                 'properties.short_name.*' => 'required',
+
                 'properties.outdoor' => ['required','boolean'],
                 'properties.ordinal' => ['required','integer','min:0'],
                 'properties.display_point' => 'nullable',

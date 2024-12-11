@@ -63,7 +63,7 @@ class AddressController extends Controller
                 'properties.address' => 'required|string',
                 'properties.unit' => ['nullable', new AddressUnitMustNotBeBlank],
                 'properties.locality' => 'required|string',
-                'properties.province' => 'nullable',
+                'properties.province' => ['nullable', 'string', new ValidateIso3166_2],
                 'properties.country' => [
                         'required',
                         'string',

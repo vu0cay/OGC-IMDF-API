@@ -23,19 +23,19 @@ return new class extends Migration
             $table->foreign('amenity_id')->references('amenity_id')->on(TablesName::AMENITIES)->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreign('label_id')->references('id')->on(TablesName::LABELS)->cascadeOnUpdate()->cascadeOnDelete();
             
-            // $table->timestamps();
+            $table->timestamps();
         });
 
 
         // $newLabel = Label::create([
         //     'language_tag' => 'vi',
-        //     'value' => 'stairs',
-        //     'short_name' => 'st'
+        //     'value' => 'stairs'
         // ]);
 
         // DB::table(TablesName::AMENTITY_LABEL)->insert([
         //     'amenity_id' => "99999998-9999-9999-9999-999999999999",
-        //     'label_id' => $newLabel->id
+        //     'label_id' => $newLabel->id,
+        //     'type' => 'alt_name'
         // ]);
 
         

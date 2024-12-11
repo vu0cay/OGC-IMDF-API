@@ -11,10 +11,14 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\FeatureResources\VenueResource;
 use App\Models\Features\Venue;
 use App\Models\FeaturesCategory\Label;
+use App\Rules\MultiPolygonCoordinateRule;
 use App\Rules\PointCoordinateRule;
 use App\Rules\PolygonCoordinateRule;
 use App\Rules\UniqueLangueTag;
 use App\Rules\ValidateFeatureIDUnique;
+use App\Rules\ValidateIso639;
+use App\Rules\Venue\ValidatePhone;
+use App\Rules\Venue\ValidateWebsiteUri;
 use DB;
 use Exception;
 use Illuminate\Http\Request;
@@ -67,17 +71,26 @@ class VenueController extends Controller
                 'type' => 'in:Feature',
                 'feature_type' => 'required|string|in:venue',
                 'geometry' => 'required',
-                'geometry.type' => 'required|in:Polygon',
-                'geometry.coordinates' => ['required', new PolygonCoordinateRule],
+                'geometry.type' => 'required|in:Polygon,MultiPolygon',
+                'geometry.coordinates' => ['required', function($attribute, $value, $fail) use($request) {
+                    if($request->geometry['type'] === 'Polygon') {
+                        $validateInstance = new PolygonCoordinateRule();
+                        $validateInstance->validate($attribute, $value, $fail);
+                    } else {
+                        $validateInstance = new MultiPolygonCoordinateRule();
+                        $validateInstance->validate($attribute, $value, $fail);
+                    }
+
+                }],
                 'properties.category' => 'required|string|in:' . VenueCategory::getConstansAsString(),
                 'properties.restriction' => 'nullable|string|in:' . RestrictionCategory::getConstansAsString(),
-                'properties.name' => ['required', 'array'],
+                'properties.name' => ['required', 'array',new ValidateIso639],
                 'properties.name.*' => 'required',
-                'properties.alt_name' => 'nullable|array',
+                'properties.alt_name' => ['nullable','array',new ValidateIso639],
                 'properties.alt_name.*' => 'required',
                 'properties.hours' => 'required|string',
-                'properties.website' => 'required|string',
-                'properties.phone' => 'required|string',
+                'properties.website' => ['required','string', new ValidateWebsiteUri],
+                'properties.phone' => ['required','string',new ValidatePhone],
                 'properties.display_point' => 'required',
                 'properties.display_point.type' => 'required|in:Point',
                 'properties.display_point.coordinates' => ['required', new PointCoordinateRule],
@@ -202,17 +215,26 @@ class VenueController extends Controller
                 'type' => 'in:Feature',
                 'feature_type' => 'required|string|in:venue',
                 'geometry' => 'required',
-                'geometry.type' => 'required|in:Polygon',
-                'geometry.coordinates' => ['required', new PolygonCoordinateRule],
+                'geometry.type' => 'required|in:Polygon,MultiPolygon',
+                'geometry.coordinates' => ['required', function($attribute, $value, $fail) use($request) {
+                    if($request->geometry['type'] === 'Polygon') {
+                        $validateInstance = new PolygonCoordinateRule();
+                        $validateInstance->validate($attribute, $value, $fail);
+                    } else {
+                        $validateInstance = new MultiPolygonCoordinateRule();
+                        $validateInstance->validate($attribute, $value, $fail);
+                    }
+
+                }],
                 'properties.category' => 'required|string|in:' . VenueCategory::getConstansAsString(),
                 'properties.restriction' => 'nullable|string|in:' . RestrictionCategory::getConstansAsString(),
-                'properties.name' => ['required', 'array'],
+                'properties.name' => ['required', 'array',new ValidateIso639],
                 'properties.name.*' => 'required',
-                'properties.alt_name' => 'nullable|array',
+                'properties.alt_name' => ['nullable','array',new ValidateIso639],
                 'properties.alt_name.*' => 'required',
                 'properties.hours' => 'required|string',
-                'properties.website' => 'required|string',
-                'properties.phone' => 'required|string',
+                'properties.website' => ['required','string', new ValidateWebsiteUri],
+                'properties.phone' => ['required','string',new ValidatePhone],
                 'properties.display_point' => 'required',
                 'properties.display_point.type' => 'required|in:Point',
                 'properties.display_point.coordinates' => ['required', new PointCoordinateRule],
