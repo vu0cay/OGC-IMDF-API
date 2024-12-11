@@ -113,8 +113,9 @@ Route::get('/user', function (Request $request) {
 
 
 
-// search 
-Route::get('/search', [SearchController::class, '__invoke'])->name('search');
+// search custom function for client use 
+// Route::get('/search', [SearchController::class, '__invoke'])->name('search');
 
-// list all sensor in levels
+// list all feature references
+// unit - level - building - footprint - venue - address
 

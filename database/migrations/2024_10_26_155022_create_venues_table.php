@@ -21,9 +21,9 @@ return new class extends Migration
             $table->unsignedInteger('feature_id');
             $table->uuid("address_id");
             $table->geometry('geometry', srid:4326);
-            $table->string('hours');
-            $table->string('phone');
-            $table->string('website');
+            $table->string('hours')->nullable();
+            $table->string('phone')->nullable();
+            $table->string('website')->nullable();
             $table->geometry('display_point', srid:4326);            
             $table->foreign('feature_id')->references('id')->on(TablesName::FEATURES)->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreign('venue_category_id')->references('id')->on(TablesName::VENUE_CATEGORIES)->cascadeOnUpdate()->cascadeOnDelete();

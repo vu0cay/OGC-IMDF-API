@@ -20,17 +20,21 @@ class ValidateIso639 implements ValidationRule
 
         $language_tags = array_keys($value);
 
-
+        
         foreach($language_tags as $key) {
+            $check = false;
             foreach ($iso639 as $country) {
                 if (
                     strtolower($country['2alpha']) === strtolower($key)
                 ) {
-                    return;
+                    $check = true;
                 }
+            }
+            if(!$check) {
+                $fail('Invalid ISO-639-1 language code');
+                return;
             }
         }
 
-        $fail('Invalid ISO-639-1 language code');
     }
 }

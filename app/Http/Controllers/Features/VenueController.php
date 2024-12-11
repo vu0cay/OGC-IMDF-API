@@ -88,9 +88,9 @@ class VenueController extends Controller
                 'properties.name.*' => 'required',
                 'properties.alt_name' => ['nullable','array',new ValidateIso639],
                 'properties.alt_name.*' => 'required',
-                'properties.hours' => 'required|string',
-                'properties.website' => ['required','string', new ValidateWebsiteUri],
-                'properties.phone' => ['required','string',new ValidatePhone],
+                'properties.hours' => 'nullable|string',
+                'properties.website' => ['nullable','string', new ValidateWebsiteUri],
+                'properties.phone' => ['nullable','string',new ValidatePhone],
                 'properties.display_point' => 'required',
                 'properties.display_point.type' => 'required|in:Point',
                 'properties.display_point.coordinates' => ['required', new PointCoordinateRule],
@@ -111,7 +111,7 @@ class VenueController extends Controller
 
             // convert coordinates Point to 4236 geometry format: Point( x1 y1 )
             $txtPoint = Geom::GeomFromText($request->properties["display_point"]);
-
+            // dd($request->properties['website']);
             // Start the transaction
             DB::beginTransaction();
             $venue = Venue::create([
@@ -122,9 +122,9 @@ class VenueController extends Controller
                 'restriction_category_id' => isset($request->properties["restriction"])
                     ? DB::table(TablesName::RESTRICTION_CATEGORIES)->where("name", $request->properties['restriction'])->first()->id
                     : null,
-                'hours' => $request->properties['hours'],
-                'website' => $request->properties['website'],
-                'phone' => $request->properties['phone'],
+                'hours' => isset($request->properties['hours']) ? $request->properties['hours'] : null,
+                'website' => isset($request->properties['website']) ? $request->properties['website'] : null,
+                'phone' => isset($request->properties['phone']) ? $request->properties['phone'] : null,
                 'display_point' => DB::raw(value: $txtPoint),
                 'address_id' => $request->properties['address_id']
             ]);
@@ -233,7 +233,7 @@ class VenueController extends Controller
                 'properties.alt_name' => ['nullable','array',new ValidateIso639],
                 'properties.alt_name.*' => 'required',
                 'properties.hours' => 'required|string',
-                'properties.website' => ['required','string', new ValidateWebsiteUri],
+                'properties.website' => ['nullable','string', new ValidateWebsiteUri],
                 'properties.phone' => ['required','string',new ValidatePhone],
                 'properties.display_point' => 'required',
                 'properties.display_point.type' => 'required|in:Point',
