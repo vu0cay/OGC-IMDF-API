@@ -26,18 +26,17 @@ class AmenityController extends Controller
      */
     public function index()
     {
-        try{
+        try {
             // $amenities = Amenity::with('feature', 'units', 'category', 'labels', 'accessibilities')->get();
             $amenities = Amenity::get();
             $amenitiesResource = AmenityResource::collection($amenities);
-            
+
             $geojson = '{"type": "FeatureCollection","features": [], "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::404000"}}}';
             $geojson = json_decode($geojson);
             $geojson->features = $amenitiesResource;
-    
+
             return response()->json([$geojson], 200);
-        }
-        catch (Exception $e) {
+        } catch (Exception $e) {
             return response()->json(['success' => false, 'message' => $e->getMessage()], status: 400);
         }
     }
@@ -62,21 +61,21 @@ class AmenityController extends Controller
                 'type' => 'in:Feature',
                 'feature_type' => 'required|string|in:amenity',
                 'geometry' => 'required',
-                'geometry.type' => ['required','in:Point'],
+                'geometry.type' => ['required', 'in:Point'],
                 'geometry.coordinates' => ['required', new PointCoordinateRule],
                 'properties.category' => 'required|string|in:' . AmenityCategory::getConstansAsString(),
                 'properties.accessibility' => 'nullable|array',
                 'properties.accessibility.*' => 'required_if:properties.accessibility,!=null|exists:' . TablesName::ACCESSIBILITY_CATEGORIES . ',name',
-                
-                'properties.name' => ['nullable', 'array',new ValidateIso639],
+
+                'properties.name' => ['nullable', 'array', new ValidateIso639],
                 'properties.name.*' => 'required',
-                'properties.alt_name' => ['nullable','array',new ValidateIso639],
+                'properties.alt_name' => ['nullable', 'array', new ValidateIso639],
                 'properties.alt_name.*' => 'required',
-                
+
                 'properties.hours' => 'nullable|string',
-                'properties.website' => ['nullable','string', new ValidateWebsiteUri],
-                'properties.phone' => ['nullable','string',new ValidatePhone],
-                'properties.correlation_id' => ['nullable','uuid'],
+                'properties.website' => ['nullable', 'string', new ValidateWebsiteUri],
+                'properties.phone' => ['nullable', 'string', new ValidatePhone],
+                'properties.correlation_id' => ['nullable', 'uuid'],
                 'properties.address_id' => 'nullable|uuid|exists:' . TablesName::ADDRESSES . ',address_id',
                 'properties.unit_ids' => 'required|array',
                 'properties.unit_ids.*' => 'required|uuid|exists:' . TablesName::UNITS . ',unit_id',
@@ -135,7 +134,7 @@ class AmenityController extends Controller
 
             // label name
             FeatureService::AddFeatureLabel(
-                $request->properties["name"],
+                isset($request->properties["name"]) ? $request->properties["alt_name"] : null,
                 'name',
                 'amenity_id',
                 TablesName::AMENTITY_LABEL,
@@ -143,7 +142,7 @@ class AmenityController extends Controller
             );
             // label short_name
             FeatureService::AddFeatureLabel(
-                $request->properties["alt_name"],
+                isset($request->properties["alt_name"]) ? $request->properties["alt_name"] : null,
                 'alt_name',
                 'amenity_id',
                 TablesName::AMENTITY_LABEL,
@@ -169,24 +168,24 @@ class AmenityController extends Controller
      */
     public function show($amenity_id)
     {
-        try{
+        try {
             $amenity = Amenity::query()
-                        ->where('amenity_id', '=', $amenity_id)->first();
-            
-            if(!$amenity) return response()->json( ['success' => false, 'message'=> 'Not Found'],404);
-    
-    
+                ->where('amenity_id', '=', $amenity_id)->first();
+
+            if (!$amenity)
+                return response()->json(['success' => false, 'message' => 'Not Found'], 404);
+
+
             $amenitysResource = AmenityResource::collection([$amenity]);
-    
+
             // $geojson = '{"type": "FeatureCollection","features": []}';
             $geojson = '{"type": "FeatureCollection","features": [], "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::404000"}}}';
-    
+
             $geojson = json_decode($geojson);
             $geojson->features = $amenitysResource;
-    
+
             return response()->json([$geojson], 200);
-        }
-        catch (Exception $e) {
+        } catch (Exception $e) {
             return response()->json(['success' => false, 'message' => $e->getMessage()], status: 400);
         }
     }
@@ -213,26 +212,26 @@ class AmenityController extends Controller
 
             // validation
             $attributes = Validator::make($request->all(), [
-                'id' => ['required', 'uuid', 'in:'.$amenity_id],
+                'id' => ['required', 'uuid', 'in:' . $amenity_id],
                 'type' => 'in:Feature',
                 'feature_type' => 'required|string|in:amenity',
                 'geometry' => 'required',
-                'geometry.type' => ['required','in:Point'],
+                'geometry.type' => ['required', 'in:Point'],
                 'geometry.coordinates' => ['required', new PointCoordinateRule],
                 'properties.category' => 'required|string|in:' . AmenityCategory::getConstansAsString(),
                 'properties.accessibility' => 'nullable|array',
                 'properties.accessibility.*' => 'required_if:properties.accessibility,!=null|exists:' . TablesName::ACCESSIBILITY_CATEGORIES . ',name',
-                
-                'properties.name' => ['nullable', 'array',new ValidateIso639],
+
+                'properties.name' => ['nullable', 'array', new ValidateIso639],
                 'properties.name.*' => 'required',
-                'properties.alt_name' => ['nullable','array',new ValidateIso639],
+                'properties.alt_name' => ['nullable', 'array', new ValidateIso639],
                 'properties.alt_name.*' => 'required',
-                
+
                 'properties.hours' => 'nullable|string',
-                'properties.website' => ['nullable','string', new ValidateWebsiteUri],
-                'properties.phone' => ['nullable','string',new ValidatePhone],
-                
-                'properties.correlation_id' => ['nullable','uuid'],
+                'properties.website' => ['nullable', 'string', new ValidateWebsiteUri],
+                'properties.phone' => ['nullable', 'string', new ValidatePhone],
+
+                'properties.correlation_id' => ['nullable', 'uuid'],
                 'properties.address_id' => 'nullable|uuid|exists:' . TablesName::ADDRESSES . ',address_id',
                 'properties.unit_ids' => 'required|array',
                 'properties.unit_ids.*' => 'required|uuid|exists:' . TablesName::UNITS . ',unit_id',
@@ -305,7 +304,7 @@ class AmenityController extends Controller
 
             // label name
             FeatureService::UpdateFeatureLabel(
-                $request->properties["name"],
+                isset($request->properties["name"]) ? $request->properties["name"] : null,
                 'name',
                 'amenity_id',
                 TablesName::AMENTITY_LABEL,
@@ -313,7 +312,7 @@ class AmenityController extends Controller
             );
             // label short_name
             FeatureService::UpdateFeatureLabel(
-                $request->properties["alt_name"],
+                isset($request->properties["alt_name"]) ? $request->properties["alt_name"] : null,
                 'alt_name',
                 'amenity_id',
                 TablesName::AMENTITY_LABEL,
@@ -339,16 +338,16 @@ class AmenityController extends Controller
      */
     public function destroy($amenity_id)
     {
-        try{
+        try {
 
             $amenity = Amenity::query()
-            ->where('amenity_id', '=', $amenity_id)->first();
-    
+                ->where('amenity_id', '=', $amenity_id)->first();
+
             if (!$amenity)
                 return response()->json(['success' => false, 'message' => 'Not Found'], 404);
-            
+
             $amenity->delete();
-    
+
             return response()->json(['success' => true, 'message' => 'Delete successfully'], 204);
         } catch (Exception $e) {
             return response()->json(['success' => false, 'message' => $e->getMessage()], status: 400);
