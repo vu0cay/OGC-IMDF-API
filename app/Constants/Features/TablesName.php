@@ -64,9 +64,15 @@ class TablesName
     public const KIOSKS = "kiosk";
     public const KIOSK_LABELS = "kiosk_labels";
 
+    
+    public const OPENINGS = "openings";
+    public const OPENING_LABELS = "opening_labels";
+    public const OPENING_CATEGORIES = "opening_categories";
+    public const OPENING_ACCESSIBILITY = "opening_accessibility";
+    public const DOORS = "doors";
 
-
-
+    public const ACCESSCONTROLS = 'accesscontrols';
+    public const OPENING_ACCESSCONTROL = 'opening_accesscontrol';
 
 
 }
