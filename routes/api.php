@@ -6,6 +6,7 @@ use App\Http\Controllers\Features\AmenityController;
 use App\Http\Controllers\Features\AnchorController;
 use App\Http\Controllers\Features\BuildingController;
 use App\Http\Controllers\Features\FootprintController;
+use App\Http\Controllers\Features\KioskController;
 use App\Http\Controllers\Features\LevelController;
 use App\Http\Controllers\Features\UnitController;
 use App\Http\Controllers\Features\VenueController;
@@ -103,13 +104,13 @@ Route::controller(AmenityController::class)->group(function () {
     Route::delete('/amenities/{amenity_id}', 'destroy');
 });
 
-// Route::controller(AmenityController::class)->group(function () {
-//     Route::get('/kiosks', 'index');
-//     Route::get('/kiosks/{kiosk_id}', 'show');
-//     Route::post('/kiosks', 'store');
-//     Route::put('/kiosks/{kiosk_id}', 'update');
-//     Route::delete('/kiosks/{kiosk_id}', 'destroy');
-// });
+Route::controller(KioskController::class)->group(function () {
+    Route::get('/kiosks', 'index');
+    Route::get('/kiosks/{kiosk_id}', 'show');
+    Route::post('/kiosks', 'store');
+    Route::put('/kiosks/{kiosk_id}', 'update');
+    Route::delete('/kiosks/{kiosk_id}', 'destroy');
+});
 
 
 
