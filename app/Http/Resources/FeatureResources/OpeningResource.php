@@ -18,12 +18,13 @@ class OpeningResource extends JsonResource
     public function toArray(Request $request): array
     {
         $door = json_decode($this->door);
-        $doorCol = collect([
+        
+        $doorCol = isset($door) ? collect([
             "type" => $door->type,
             "automatic" => $door->automatic,
             "material" => $door->material,
-        ]);
-
+        ]) : null;
+        // dd($doorCol);
         $geom = DB::table(TablesName::OPENINGS.' as opening')
             ->select(DB::raw('ST_AsGeoJson(geometry) as geometry'), DB::raw('ST_AsGeoJson(display_point) as display_point'))
             ->where('opening.opening_id', '=', $this->opening_id)
@@ -50,7 +51,7 @@ class OpeningResource extends JsonResource
                 "accessibility" => count($this->accessibilities) > 0 ? $this->accessibilities->pluck('name')->toArray() : null, 
                 "access_control" => count($this->accesscontrols) > 0 ? $this->accesscontrols->pluck('name')->toArray() : null, 
                 
-                "door" => $doorCol ?? null,
+                "door" => $doorCol,
                 "name" => $name!=null && count($name) > 0 ? $name : null,
                 "alt_name" => $alt_name!=null &&  count($alt_name) > 0 ? $alt_name : null,
 

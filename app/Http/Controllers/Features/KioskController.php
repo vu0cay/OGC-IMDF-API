@@ -61,10 +61,12 @@ class KioskController extends Controller
                 'type' => 'in:Feature',
                 'feature_type' => 'required|string|in:kiosk',
                 'geometry' => 'required',
-                'geometry.type' => 'required|in:Polygon,MultiPolygon',
+                'geometry.type' => ['required','in:Polygon,MultiPolygon'],
                 'geometry.coordinates' => [
                     'required',
                     function ($attribute, $value, $fail) use ($request) {
+                        if(!isset($request->geometry['type'])) return;
+
                         if ($request->geometry['type'] === 'Polygon') {
                             $validateInstance = new PolygonCoordinateRule();
                             $validateInstance->validate($attribute, $value, $fail);
@@ -81,7 +83,7 @@ class KioskController extends Controller
                 'properties.alt_name.*' => 'required',
                 'properties.display_point' => 'nullable',
                 'properties.display_point.type' => ['required_if:properties.display_point,!=null', 'in:Point'],
-                'properties.display_point.coordinates' => ['required_if:properties.display_point,!=null', new PointCoordinateRule],
+                'properties.display_point.coordinates' => ['required_if:properties.display_point,!=null', new PolygonCoordinateRule],
                 'properties.level_id' => 'required|exists:' . TablesName::LEVELS . ',level_id',
                 'properties.anchor_id' => 'nullable|exists:' . TablesName::ANCHORS . ',anchor_id',
             ]);
@@ -108,7 +110,7 @@ class KioskController extends Controller
                 'feature_id' => DB::table(TablesName::FEATURES)->where("feature_type", $request->feature_type)->first()->id,
                 'geometry' => DB::raw($textPolygon),
                 'level_id' => $request->properties["level_id"],
-                'anchor_id' => $request->properties["anchor_id"],
+                'anchor_id' => $request->properties["anchor_id"] ?? null,
                 'display_point' => DB::raw(value: $txtPoint)
             ]);
 
@@ -202,6 +204,8 @@ class KioskController extends Controller
                 'geometry.coordinates' => [
                     'required',
                     function ($attribute, $value, $fail) use ($request) {
+                        if(!isset($request->geometry['type'])) return;
+
                         if ($request->geometry['type'] === 'Polygon') {
                             $validateInstance = new PolygonCoordinateRule();
                             $validateInstance->validate($attribute, $value, $fail);

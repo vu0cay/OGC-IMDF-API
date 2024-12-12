@@ -65,6 +65,8 @@ class LevelController extends Controller
                 'geometry' => 'required',
                 'geometry.type' => 'required|in:Polygon,MultiPolygon',
                 'geometry.coordinates' => ['required', function($attribute, $value, $fail) use($request) {
+                    if(!isset($request->geometry['type'])) return;
+
                     if($request->geometry['type'] === 'Polygon') {
                         $validateInstance = new PolygonCoordinateRule();
                         $validateInstance->validate($attribute, $value, $fail);
@@ -219,6 +221,8 @@ class LevelController extends Controller
                 'geometry' => 'required',
                 'geometry.type' => 'required|in:Polygon,MultiPolygon',
                 'geometry.coordinates' => ['required', function($attribute, $value, $fail) use($request) {
+                    if(!isset($request->geometry['type'])) return;
+
                     if($request->geometry['type'] === 'Polygon') {
                         $validateInstance = new PolygonCoordinateRule();
                         $validateInstance->validate($attribute, $value, $fail);

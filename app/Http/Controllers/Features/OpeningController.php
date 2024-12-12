@@ -36,7 +36,7 @@ class OpeningController extends Controller
             //$geojson = '{"type": "FeatureCollection","features": []}';
             $geojson = json_decode($geojson);
             $geojson->features = $openingsResource;
-            
+
             return response()->json($geojson, 200);
         } catch (Exception $e) {
             return response()->json(['success' => false, 'message' => $e->getMessage()], status: 400);
@@ -72,12 +72,9 @@ class OpeningController extends Controller
                 'properties.category' => 'required|string|in:' . OpeningCategory::getConstansAsString(),
                 'properties.accessibility' => 'nullable|array',
                 'properties.accessibility.*' => 'required_if:properties.accessibility,!=null|exists:' . TablesName::ACCESSIBILITY_CATEGORIES . ',name',
-                
                 'properties.access_control' => 'nullable|array',
                 'properties.access_control.*' => 'required_if:properties.access_control,!=null|exists:' . TablesName::ACCESSCONTROLS . ',name',
-                
                 'properties.door' => ['nullable', new ValidateDoor],
-                
                 'properties.name' => ['nullable', 'array', new ValidateIso639],
                 'properties.name.*' => 'required',
                 'properties.alt_name' => ['nullable', 'array', new ValidateIso639],
@@ -88,7 +85,7 @@ class OpeningController extends Controller
                 'properties.level_id' => 'required|exists:' . TablesName::LEVELS . ',level_id',
 
             ]);
-            
+
             // Bad Request
             if ($attributes->fails()) {
                 $error = $attributes->errors()->first();
@@ -103,12 +100,13 @@ class OpeningController extends Controller
 
             // Start the transaction
             DB::beginTransaction();
+            $door_id = isset($request->properties["door"]) ?
+                Door::create([
+                    "automatic" => $request->properties["door"]["automatic"],
+                    "material" => $request->properties["door"]["material"],
+                    "type" => $request->properties["door"]["type"],
+                ])->id : null;
 
-            $door = Door::create([
-                "automatic" => $request->properties["door"]["automatic"],
-                "material" => $request->properties["door"]["material"],
-                "type" => $request->properties["door"]["type"],
-            ]);
 
             $opening = Opening::create([
                 'opening_id' => $request->id,
@@ -117,27 +115,31 @@ class OpeningController extends Controller
                 'geometry' => DB::raw($textPolygon),
                 'level_id' => $request->properties["level_id"],
                 'display_point' => DB::raw(value: $txtPoint),
-                "door_id" => $door->id 
+                "door_id" => $door_id
             ]);
 
             // add unit accessibility
-            collect($request->properties['accessibility'])->map(function ($item) use ($opening) {
-                $accessibility_id = DB::table(TablesName::ACCESSIBILITY_CATEGORIES)->where('name', $item)->first()->id;
-                DB::table(TablesName::OPENING_ACCESSIBILITY)->insert([
-                    'opening_id' => $opening->opening_id,
-                    'accessibility_id' => $accessibility_id
-                ]);
-            });
+            if (isset($request->properties['accessibility'])) {
+
+                collect($request->properties['accessibility'])->map(function ($item) use ($opening) {
+                    $accessibility_id = DB::table(TablesName::ACCESSIBILITY_CATEGORIES)->where('name', $item)->first()->id;
+                    DB::table(TablesName::OPENING_ACCESSIBILITY)->insert([
+                        'opening_id' => $opening->opening_id,
+                        'accessibility_id' => $accessibility_id
+                    ]);
+                });
+            }
 
             // add unit access_control
-            collect($request->properties['access_control'])->map(function ($item) use ($opening) {
-                $access_control_id = DB::table(TablesName::ACCESSCONTROLS)->where('name', $item)->first()->id;
-                DB::table(TablesName::OPENING_ACCESSCONTROL)->insert([
-                    'opening_id' => $opening->opening_id,
-                    'access_control_id' => $access_control_id
-                ]);
-            });
-
+            if (isset($request->properties['access_control'])) {
+                collect($request->properties['access_control'])->map(function ($item) use ($opening) {
+                    $access_control_id = DB::table(TablesName::ACCESSCONTROLS)->where('name', $item)->first()->id;
+                    DB::table(TablesName::OPENING_ACCESSCONTROL)->insert([
+                        'opening_id' => $opening->opening_id,
+                        'access_control_id' => $access_control_id
+                    ]);
+                });
+            }
 
             // label name
             FeatureService::AddFeatureLabel(
@@ -211,7 +213,7 @@ class OpeningController extends Controller
     public function update(Request $request, $opening_id)
     {
         try {
-            
+
             // check if the opening feature exists
             $opening = Opening::query()
                 ->where('opening_id', '=', $opening_id)->first();
@@ -220,7 +222,7 @@ class OpeningController extends Controller
 
             // validation
             $attributes = Validator::make($request->all(), [
-                'id' => ['required', 'uuid', 'in:'.$opening_id],
+                'id' => ['required', 'uuid', 'in:' . $opening_id],
                 'type' => 'in:Feature',
                 'feature_type' => 'required|string|in:opening',
 
@@ -233,12 +235,12 @@ class OpeningController extends Controller
                 'properties.category' => 'required|string|in:' . OpeningCategory::getConstansAsString(),
                 'properties.accessibility' => 'nullable|array',
                 'properties.accessibility.*' => 'required_if:properties.accessibility,!=null|exists:' . TablesName::ACCESSIBILITY_CATEGORIES . ',name',
-                
+
                 'properties.access_control' => 'nullable|array',
                 'properties.access_control.*' => 'required_if:properties.access_control,!=null|exists:' . TablesName::ACCESSCONTROLS . ',name',
-                
+
                 'properties.door' => ['nullable', new ValidateDoor],
-                
+
                 'properties.name' => ['nullable', 'array', new ValidateIso639],
                 'properties.name.*' => 'required',
                 'properties.alt_name' => ['nullable', 'array', new ValidateIso639],
@@ -249,7 +251,7 @@ class OpeningController extends Controller
                 'properties.level_id' => 'required|exists:' . TablesName::LEVELS . ',level_id',
 
             ]);
-            
+
             // Bad Request
             if ($attributes->fails()) {
                 $error = $attributes->errors()->first();
@@ -265,13 +267,14 @@ class OpeningController extends Controller
             // Start the transaction
             DB::beginTransaction();
 
-            
-            
-            $door = Door::create([
-                "automatic" => $request->properties["door"]["automatic"],
-                "material" => $request->properties["door"]["material"],
-                "type" => $request->properties["door"]["type"],
-            ]);
+
+            $door_id = isset($request->properties["door"]) ?
+                Door::create([
+                    "automatic" => $request->properties["door"]["automatic"],
+                    "material" => $request->properties["door"]["material"],
+                    "type" => $request->properties["door"]["type"],
+                ])->id : null;
+
 
             $opening->update([
                 'opening_id' => $request->id,
@@ -280,7 +283,7 @@ class OpeningController extends Controller
                 'geometry' => DB::raw($textPolygon),
                 'level_id' => $request->properties["level_id"],
                 'display_point' => DB::raw(value: $txtPoint),
-                "door_id" => $door->id 
+                "door_id" => $door_id
             ]);
 
             // add opening accessibility
@@ -288,26 +291,30 @@ class OpeningController extends Controller
                 ->where('opening_id', $opening->opening_id)
                 ->delete();
 
-            collect($request->properties['accessibility'])->map(function ($item) use ($opening) {
-                $accessibility_id = DB::table(TablesName::ACCESSIBILITY_CATEGORIES)->where('name', $item)->first()->id;
-                DB::table(TablesName::OPENING_ACCESSIBILITY)->insert([
-                    'opening_id' => $opening->opening_id,
-                    'accessibility_id' => $accessibility_id
-                ]);
-            });
+            if (isset($request->properties['accessibility'])) {
+                collect($request->properties['accessibility'])->map(function ($item) use ($opening) {
+                    $accessibility_id = DB::table(TablesName::ACCESSIBILITY_CATEGORIES)->where('name', $item)->first()->id;
+                    DB::table(TablesName::OPENING_ACCESSIBILITY)->insert([
+                        'opening_id' => $opening->opening_id,
+                        'accessibility_id' => $accessibility_id
+                    ]);
+                });
+            }
 
             // add unit access_control
             $record = DB::table(TablesName::OPENING_ACCESSCONTROL)
                 ->where('opening_id', $opening->opening_id)
                 ->delete();
 
-            collect($request->properties['access_control'])->map(function ($item) use ($opening) {
-                $access_control_id = DB::table(TablesName::ACCESSCONTROLS)->where('name', $item)->first()->id;
-                DB::table(TablesName::OPENING_ACCESSCONTROL)->insert([
-                    'opening_id' => $opening->opening_id,
-                    'access_control_id' => $access_control_id
-                ]);
-            });
+            if (isset($request->properties['access_control'])) {
+                collect($request->properties['access_control'])->map(function ($item) use ($opening) {
+                    $access_control_id = DB::table(TablesName::ACCESSCONTROLS)->where('name', $item)->first()->id;
+                    DB::table(TablesName::OPENING_ACCESSCONTROL)->insert([
+                        'opening_id' => $opening->opening_id,
+                        'access_control_id' => $access_control_id
+                    ]);
+                });
+            }
 
 
             // label name

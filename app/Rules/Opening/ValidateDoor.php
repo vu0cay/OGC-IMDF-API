@@ -14,7 +14,7 @@ class ValidateDoor implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        // dd($value);
+        
         $type_value = [
             "movablepartition",
             "open",

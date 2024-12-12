@@ -85,6 +85,8 @@ class UnitController extends Controller
                 'geometry.coordinates' => [
                     'required',
                     function ($attribute, $value, $fail) use ($request) {
+                        if(!isset($request->geometry['type'])) return;
+
                         if ($request->geometry['type'] === 'Polygon') {
                             $validateInstance = new PolygonCoordinateRule();
                             $validateInstance->validate($attribute, $value, $fail);
@@ -356,6 +358,8 @@ class UnitController extends Controller
                 'geometry.coordinates' => [
                     'required',
                     function ($attribute, $value, $fail) use ($request) {
+                        if(!isset($request->geometry['type'])) return;
+
                         if ($request->geometry['type'] === 'Polygon') {
                             $validateInstance = new PolygonCoordinateRule();
                             $validateInstance->validate($attribute, $value, $fail);
