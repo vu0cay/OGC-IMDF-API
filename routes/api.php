@@ -103,6 +103,14 @@ Route::controller(AmenityController::class)->group(function () {
     Route::delete('/amenities/{amenity_id}', 'destroy');
 });
 
+// Route::controller(AmenityController::class)->group(function () {
+//     Route::get('/kiosks', 'index');
+//     Route::get('/kiosks/{kiosk_id}', 'show');
+//     Route::post('/kiosks', 'store');
+//     Route::put('/kiosks/{kiosk_id}', 'update');
+//     Route::delete('/kiosks/{kiosk_id}', 'destroy');
+// });
+
 
 
 Route::get('/user', function (Request $request) {

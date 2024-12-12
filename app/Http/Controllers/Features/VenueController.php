@@ -41,7 +41,7 @@ class VenueController extends Controller
             $geojson = json_decode($geojson);
             $geojson->features = $venuesResource;
     
-            return response()->json([$geojson], 200);
+            return response()->json($geojson, 200);
         }
         catch (Exception $e) {
             return response()->json(['success' => false, 'message' => $e->getMessage()], status: 400);
@@ -140,7 +140,7 @@ class VenueController extends Controller
             );
             // label alt_name
             FeatureService::AddFeatureLabel(
-                $request->properties["alt_name"],
+                $request->properties["alt_name"] ?? null,
                 'alt_name',
                 'venue_id',
                 TablesName::VENUE_LABELS,
@@ -182,7 +182,7 @@ class VenueController extends Controller
             $geojson = json_decode($geojson);
             $geojson->features = $venuesResource;
     
-            return response()->json([$geojson], 200);
+            return response()->json($geojson, 200);
         }
         catch (Exception $e) {
             return response()->json(['success' => false, 'message' => $e->getMessage()], status: 400);
@@ -283,7 +283,7 @@ class VenueController extends Controller
             );
             // Add label alt_name
             FeatureService::UpdateFeatureLabel(
-                $request->properties["alt_name"],
+                $request->properties["alt_name"] ?? null,
                 'alt_name',
                 'venue_id',
                 TablesName::VENUE_LABELS,

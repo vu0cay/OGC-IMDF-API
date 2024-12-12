@@ -54,7 +54,7 @@ class UnitController extends Controller
 
 
             // return $feature;
-            return response()->json([$geojson], 200);
+            return response()->json($geojson, 200);
         } catch (Exception $e) {
             return response()->json(['success' => false, 'message' => $e->getMessage()], status: 400);
         }
@@ -151,7 +151,7 @@ class UnitController extends Controller
 
             // label name
             FeatureService::AddFeatureLabel(
-                $request->properties["name"],
+                $request->properties["name"] ?? null,
                 'name',
                 'unit_id',
                 TablesName::UNIT_LABELS,
@@ -159,7 +159,7 @@ class UnitController extends Controller
             );
             // label short_name
             FeatureService::AddFeatureLabel(
-                $request->properties["alt_name"],
+                $request->properties["alt_name"] ?? null,
                 'alt_name',
                 'unit_id',
                 TablesName::UNIT_LABELS,
@@ -319,7 +319,7 @@ class UnitController extends Controller
             $geojson = json_decode($geojson);
             $geojson->features = $unitsResource;
 
-            return response()->json([$geojson], 200);
+            return response()->json($geojson, 200);
         } catch (Exception $e) {
             return response()->json(['success' => false, 'message' => $e->getMessage()], status: 400);
         }
@@ -429,7 +429,7 @@ class UnitController extends Controller
 
             // label name
             FeatureService::UpdateFeatureLabel(
-                $request->properties["name"],
+                $request->properties["name"] ?? null,
                 'name',
                 'unit_id',
                 TablesName::UNIT_LABELS,
@@ -437,7 +437,7 @@ class UnitController extends Controller
             );
             // label short_name
             FeatureService::UpdateFeatureLabel(
-                $request->properties["alt_name"],
+                $request->properties["alt_name"] ?? null,
                 'alt_name',
                 'unit_id',
                 TablesName::UNIT_LABELS,

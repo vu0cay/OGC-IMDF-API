@@ -36,7 +36,7 @@ class LevelController extends Controller
             $geojson = json_decode($geojson);
             $geojson->features = $levelsResource;
             
-            return response()->json([$geojson], 200);
+            return response()->json($geojson, 200);
         }
         catch (Exception $e) {
             return response()->json(['success' => false, 'message' => $e->getMessage()], status: 400);
@@ -184,7 +184,7 @@ class LevelController extends Controller
             $geojson = json_decode($geojson);
             $geojson->features = $levelResource;
     
-            return response()->json([$geojson], 200);
+            return response()->json($geojson, 200);
         }
         catch (Exception $e) {
             return response()->json(['success' => false, 'message' => $e->getMessage()], status: 400);

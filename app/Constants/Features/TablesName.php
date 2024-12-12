@@ -61,6 +61,10 @@ class TablesName
 
 
 
+    public const KIOSKS = "kiosk";
+
+
+
 
 
 

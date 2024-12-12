@@ -32,7 +32,7 @@ class FootprintController extends Controller
             $geojson = json_decode($geojson);
             $geojson->features = $footprintsResource;
     
-            return response()->json([$geojson], 200);
+            return response()->json($geojson, 200);
         }
         catch (Exception $e) {
             return response()->json(['success' => false, 'message' => $e->getMessage()], status: 400);
@@ -109,7 +109,7 @@ class FootprintController extends Controller
 
             // add labels
             FeatureService::AddFeatureLabel(
-                $request->properties["name"],
+                $request->properties["name"] ?? null,
                 'name',
                 'footprint_id',
                 TablesName::FOOTPRINT_LABELS,
@@ -148,7 +148,7 @@ class FootprintController extends Controller
             $geojson = json_decode($geojson);
             $geojson->features = $footprintsResource;
     
-            return response()->json([$geojson], 200);
+            return response()->json($geojson, 200);
         }
         catch (Exception $e) {
             return response()->json(['success' => false, 'message' => $e->getMessage()], status: 400);
@@ -234,7 +234,7 @@ class FootprintController extends Controller
 
             // add labels
             FeatureService::AddFeatureLabel(
-                $request->properties["name"],
+                $request->properties["name"] ?? null,
                 'name',
                 'footprint_id',
                 TablesName::FOOTPRINT_LABELS,

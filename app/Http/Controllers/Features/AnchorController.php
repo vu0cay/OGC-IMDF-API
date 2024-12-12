@@ -33,7 +33,7 @@ class AnchorController extends Controller
             $geojson = json_decode($geojson);
             $geojson->features = $anchorsResource;
     
-            return response()->json([$geojson], 200);
+            return response()->json($geojson, 200);
         }
         catch (Exception $e) {
             return response()->json(['success' => false, 'message' => $e->getMessage()], status: 400);
@@ -128,7 +128,7 @@ class AnchorController extends Controller
             $geojson = json_decode($geojson);
             $geojson->features = $anchorsResource;
     
-            return response()->json([$geojson], 200);
+            return response()->json($geojson, 200);
         }
         catch (Exception $e) {
             return response()->json(['success' => false, 'message' => $e->getMessage()], status: 400);

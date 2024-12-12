@@ -35,7 +35,7 @@ class AmenityController extends Controller
             $geojson = json_decode($geojson);
             $geojson->features = $amenitiesResource;
 
-            return response()->json([$geojson], 200);
+            return response()->json($geojson, 200);
         } catch (Exception $e) {
             return response()->json(['success' => false, 'message' => $e->getMessage()], status: 400);
         }
@@ -134,7 +134,7 @@ class AmenityController extends Controller
 
             // label name
             FeatureService::AddFeatureLabel(
-                isset($request->properties["name"]) ? $request->properties["alt_name"] : null,
+                $request->properties["name"] ?? null,
                 'name',
                 'amenity_id',
                 TablesName::AMENTITY_LABEL,
@@ -142,7 +142,7 @@ class AmenityController extends Controller
             );
             // label short_name
             FeatureService::AddFeatureLabel(
-                isset($request->properties["alt_name"]) ? $request->properties["alt_name"] : null,
+                $request->properties["alt_name"] ?? null,
                 'alt_name',
                 'amenity_id',
                 TablesName::AMENTITY_LABEL,
@@ -184,7 +184,7 @@ class AmenityController extends Controller
             $geojson = json_decode($geojson);
             $geojson->features = $amenitysResource;
 
-            return response()->json([$geojson], 200);
+            return response()->json($geojson, 200);
         } catch (Exception $e) {
             return response()->json(['success' => false, 'message' => $e->getMessage()], status: 400);
         }
