@@ -70,11 +70,15 @@ class TablesName
     public const OPENING_CATEGORIES = "opening_categories";
     public const OPENING_ACCESSIBILITY = "opening_accessibility";
     public const DOORS = "doors";
-
+    
     public const ACCESSCONTROLS = 'accesscontrols';
     public const OPENING_ACCESSCONTROL = 'opening_accesscontrol';
-
-
+    public const OCCUPANTS = 'occupants';
+    public const OCCUPANT_CATEGORIES = "occupant_categories";
+    public const OCCUPANT_LABELS = "occupant_labels";
+    public const VALIDITIES = "validities";
+    
+    
 }
 
 

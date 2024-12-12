@@ -8,6 +8,7 @@ use App\Http\Controllers\Features\BuildingController;
 use App\Http\Controllers\Features\FootprintController;
 use App\Http\Controllers\Features\KioskController;
 use App\Http\Controllers\Features\LevelController;
+use App\Http\Controllers\Features\OccupantController;
 use App\Http\Controllers\Features\OpeningController;
 use App\Http\Controllers\Features\UnitController;
 use App\Http\Controllers\Features\VenueController;
@@ -121,6 +122,13 @@ Route::controller(OpeningController::class)->group(function () {
     Route::delete('/openings/{opening_id}', 'destroy');
 });
 
+Route::controller(OccupantController::class)->group(function () {
+    Route::get('/occupants', 'index');
+    Route::get('/occupants/{occupant_id}', 'show');
+    Route::post('/occupants', 'store');
+    Route::put('/occupants/{occupant_id}', 'update');
+    Route::delete('/occupants/{occupant_id}', 'destroy');
+});
 
 Route::get('/user', function (Request $request) {
     return $request->user();
