@@ -181,6 +181,7 @@ class UnitController extends Controller
         $unitResource = UnitResource::collection([$unit]);
         return response()->json(['success' => true, 'data' => $unitResource], 201);
     }
+        
     // public function store(Request $requests)
     // {
     //     // dd($requests->all());

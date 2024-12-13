@@ -79,6 +79,14 @@ class TablesName
     public const VALIDITIES = "validities";
     
     
+    public const FEATURE_REFERENCES = "feature_references";
+    public const RELATIONSHIPS = "relationships";
+    public const RELATIONSHIP_CATEGORIES = "relationship_categories";
+    public const FEATURE_ORIGIN_RELATIONSHIPS = "feature_origin_relationships";
+    public const FEATURE_INTERMEDIARY_RELATIONSHIPS = "feature_intermediary_relationships";
+    public const FEATURE_DESTINATION_RELATIONSHIPS = "feature_destination_relationships";
+    
+    
 }
 
 

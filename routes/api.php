@@ -10,6 +10,7 @@ use App\Http\Controllers\Features\KioskController;
 use App\Http\Controllers\Features\LevelController;
 use App\Http\Controllers\Features\OccupantController;
 use App\Http\Controllers\Features\OpeningController;
+use App\Http\Controllers\Features\RelationshipController;
 use App\Http\Controllers\Features\UnitController;
 use App\Http\Controllers\Features\VenueController;
 use App\Http\Controllers\Functions\SearchController;
@@ -129,6 +130,15 @@ Route::controller(OccupantController::class)->group(function () {
     Route::put('/occupants/{occupant_id}', 'update');
     Route::delete('/occupants/{occupant_id}', 'destroy');
 });
+
+Route::controller(RelationshipController::class)->group(function () {
+    Route::get('/relationships', 'index');
+    Route::get('/relationships/{relationship_id}', 'show');
+    Route::post('/relationships', 'store');
+    Route::put('/relationships/{relationship_id}', 'update');
+    Route::delete('/relationships/{relationship_id}', 'destroy');
+});
+
 
 Route::get('/user', function (Request $request) {
     return $request->user();
