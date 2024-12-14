@@ -8,6 +8,7 @@ use App\Http\Controllers\Features\AnchorController;
 use App\Http\Controllers\Features\BuildingController;
 use App\Http\Controllers\Features\FixtureController;
 use App\Http\Controllers\Features\FootprintController;
+use App\Http\Controllers\Features\GeofenceController;
 use App\Http\Controllers\Features\KioskController;
 use App\Http\Controllers\Features\LevelController;
 use App\Http\Controllers\Features\OccupantController;
@@ -166,6 +167,13 @@ Route::controller(SectionController::class)->group(function () {
     Route::delete('/sections/{section_id}', 'destroy');
 });
 
+Route::controller(GeofenceController::class)->group(function () {
+    Route::get('/geofences', 'index');
+    Route::get('/geofences/{geofence_id}', 'show');
+    Route::post('/geofences', 'store');
+    Route::put('/geofences/{geofence_id}', 'update');
+    Route::delete('/geofences/{geofence_id}', 'destroy');
+});
 
 Route::get('/user', function (Request $request) {
     return $request->user();

@@ -13,7 +13,7 @@ final class FeatureType extends BaseFixedConstants
     const DETAIL = 'detail';
     const FIXTURE = 'fixture';
     const FOOTPRINT = 'footprint';
-    const GEOFERENCE = 'geoference';
+    const GEOFENCE = 'geofence';
     const KIOSK = 'kiosk';
     const LEVEL = 'level';
     const OCCUPANT = 'occupant';

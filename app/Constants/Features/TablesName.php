@@ -103,6 +103,14 @@ class TablesName
     public const SECTION_PARENTS = "section_parents";
     
     
+    public const GEOFENCE_CATEGORIES = "geofence_categories";
+    public const GEOFENCES = "geofences";
+    public const GEOFENCE_LABELS = "geofence_labels";
+    public const GEOFENCE_BUILDING = "geofence_building";
+    public const GEOFENCE_LEVEL = "geofence_level";
+    public const GEOFENCE_PARENTS = "geofence_parents";
+    
+    
 
 }
 
