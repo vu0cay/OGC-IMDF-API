@@ -94,6 +94,14 @@ class TablesName
     public const FIXTURES = "fixtures";
     public const FIXTURE_LABELS = "fixture_labels";
     
+
+    public const SECTIONS = "sections";
+    public const SECTION_CATEGORIES = "section_categories";
+    public const SECTION_LABELS = "section_labels";
+    public const SECTION_ACCESSIBILITY = "section_accessibility";
+    public const ADDRESS_SECTIONS = "address_sections";
+    public const SECTION_PARENTS = "section_parents";
+    
     
 
 }

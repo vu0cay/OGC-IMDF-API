@@ -76,7 +76,7 @@ class AmenityController extends Controller
                 'properties.hours' => ['nullable','string',new ValidateHours],
                 'properties.website' => ['nullable', 'string', new ValidateWebsiteUri],
                 'properties.phone' => ['nullable', 'string', new ValidatePhone],
-                'properties.correlation_id' => ['nullable', 'uuid'],
+                'properties.correlation_id' => ['nullable', 'uuid', 'exists:'.TablesName::AMENITIES.',amenity_id'],
                 'properties.address_id' => 'nullable|uuid|exists:' . TablesName::ADDRESSES . ',address_id',
                 'properties.unit_ids' => 'required|array',
                 'properties.unit_ids.*' => 'required|uuid|exists:' . TablesName::UNITS . ',unit_id',
@@ -232,7 +232,7 @@ class AmenityController extends Controller
                 'properties.website' => ['nullable', 'string', new ValidateWebsiteUri],
                 'properties.phone' => ['nullable', 'string', new ValidatePhone],
 
-                'properties.correlation_id' => ['nullable', 'uuid'],
+                'properties.correlation_id' => ['nullable', 'uuid', 'exists:'.TablesName::AMENITIES.',amenity_id'],
                 'properties.address_id' => 'nullable|uuid|exists:' . TablesName::ADDRESSES . ',address_id',
                 'properties.unit_ids' => 'required|array',
                 'properties.unit_ids.*' => 'required|uuid|exists:' . TablesName::UNITS . ',unit_id',

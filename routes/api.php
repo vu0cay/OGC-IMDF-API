@@ -17,6 +17,7 @@ use App\Http\Controllers\Features\UnitController;
 use App\Http\Controllers\Features\VenueController;
 use App\Http\Controllers\Functions\SearchController;
 
+use App\Http\Controllers\SectionController;
 use App\Models\Features\Footprint;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -155,6 +156,14 @@ Route::controller(FixtureController::class)->group(function () {
     Route::post('/fixtures', 'store');
     Route::put('/fixtures/{fixture_id}', 'update');
     Route::delete('/fixtures/{fixture_id}', 'destroy');
+});
+
+Route::controller(SectionController::class)->group(function () {
+    Route::get('/sections', 'index');
+    Route::get('/sections/{section_id}', 'show');
+    Route::post('/sections', 'store');
+    Route::put('/sections/{section_id}', 'update');
+    Route::delete('/sections/{section_id}', 'destroy');
 });
 
 

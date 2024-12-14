@@ -98,4 +98,31 @@ class FeatureService
         }
 
     }
+
+    public static function AddFeatureParents($parents, $tableName, $feature_id, $feature_name_id, $parent_name_id)
+    {
+        if(isset($parents)) {
+            foreach($parents as $parent) { 
+                DB::table($tableName)->insert([
+                    $feature_name_id => $feature_id,
+                    $parent_name_id => $parent
+                ]);
+            }
+        }
+    }
+    public static function UpdateFeatureParents($parents, $tableName, $feature_id, $feature_name_id, $parent_name_id)
+    {
+        $record = DB::table($tableName)
+                ->where($feature_name_id, $feature_id)
+                ->delete();
+
+        if(isset($parents)) {
+            foreach($parents as $parent) { 
+                DB::table($tableName)->insert([
+                    $feature_name_id => $feature_id,
+                    $parent_name_id => $parent
+                ]);
+            }
+        }
+    }
 }

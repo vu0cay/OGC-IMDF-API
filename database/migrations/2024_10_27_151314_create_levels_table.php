@@ -22,11 +22,11 @@ return new class extends Migration
             $table->boolean("outdoor");
             $table->integer("ordinal");
             $table->geometry("display_point", srid: 4326)->nullable();
-            $table->uuid("address_id")->nullable();
+            // $table->uuid("address_id")->nullable();
             $table->foreign('feature_id')->references('id')->on(TablesName::FEATURES)->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreign('level_category_id')->references('id')->on(TablesName::LEVEL_CATEGORIES)->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreign('restriction_category_id')->references('id')->on(TablesName::RESTRICTION_CATEGORIES)->cascadeOnUpdate()->cascadeOnDelete();
-            $table->foreign("address_id")->references("address_id")->on(TablesName::ADDRESSES)->cascadeOnUpdate()->cascadeOnDelete();
+            // $table->foreign("address_id")->references("address_id")->on(TablesName::ADDRESSES)->cascadeOnUpdate()->cascadeOnDelete();
             $table->timestamps();
         });
 
@@ -40,7 +40,7 @@ return new class extends Migration
             "ordinal" => 0,
             "outdoor" => false,
             "display_point" => "POINT(100.0 1.0)",
-            "address_id" => null
+            // "address_id" => null
         ]);
 
     }
