@@ -13,6 +13,7 @@ use App\Models\Features\Level;
 use App\Rules\MultiPolygonCoordinateRule;
 use App\Rules\PointCoordinateRule;
 use App\Rules\PolygonCoordinateRule;
+use App\Rules\ValidateDisplayPoint;
 use App\Rules\ValidateFeatureIDUnique;
 use App\Rules\ValidateIso639;
 use DB;
@@ -86,9 +87,9 @@ class LevelController extends Controller
 
                 'properties.outdoor' => ['required','boolean'],
                 'properties.ordinal' => ['required','integer','min:0'],
-                'properties.display_point' => 'nullable',
-                'properties.display_point.type' => ['required_if:properties.display_point,!=null','in:Point'],
-                'properties.display_point.coordinates' => ['required_if:properties.display_point,!=null', new PointCoordinateRule],
+                'properties.display_point' => ['nullable', new ValidateDisplayPoint],
+                // 'properties.display_point.type' => ['required_if:properties.display_point,!=null','in:Point'],
+                // 'properties.display_point.coordinates' => ['required_if:properties.display_point,!=null', new PointCoordinateRule],
                 'properties.address_id' => 'nullable|exists:' . TablesName::ADDRESSES . ',address_id',
                 'properties.building_ids' => 'nullable|array',
                 'properties.building_ids.*' => 'required_if:properties.building_ids,!=null|uuid|exists:' . TablesName::BUILDINGS . ',building_id',
@@ -105,7 +106,7 @@ class LevelController extends Controller
             $textPolygon = Geom::GeomFromText($request->geometry);
 
             // convert coordinates Point to 4236 geometry format: Point( x1 y1 )
-            $txtPoint = Geom::GeomFromText($request->properties["display_point"]);
+            $txtPoint = Geom::GeomFromText($request->properties["display_point"] ?? null);
 
             // Start the transaction
             DB::beginTransaction();
@@ -242,9 +243,9 @@ class LevelController extends Controller
 
                 'properties.outdoor' => ['required','boolean'],
                 'properties.ordinal' => ['required','integer','min:0'],
-                'properties.display_point' => 'nullable',
-                'properties.display_point.type' => ['required_if:properties.display_point,!=null','in:Point'],
-                'properties.display_point.coordinates' => ['required_if:properties.display_point,!=null', new PointCoordinateRule],
+                'properties.display_point' => ['nullable', new ValidateDisplayPoint],
+                // 'properties.display_point.type' => ['required_if:properties.display_point,!=null','in:Point'],
+                // 'properties.display_point.coordinates' => ['required_if:properties.display_point,!=null', new PointCoordinateRule],
                 'properties.address_id' => 'nullable|exists:' . TablesName::ADDRESSES . ',address_id',
                 'properties.building_ids' => 'nullable|array',
                 'properties.building_ids.*' => 'required_if:properties.building_ids,!=null|uuid|exists:' . TablesName::BUILDINGS . ',building_id',
@@ -261,7 +262,7 @@ class LevelController extends Controller
             $textPolygon = Geom::GeomFromText($request->geometry);
 
             // convert coordinates Point to 4236 geometry format: Point( x1 y1 )
-            $txtPoint = Geom::GeomFromText($request->properties["display_point"]);
+            $txtPoint = Geom::GeomFromText($request->properties["display_point"] ?? null);
 
             // Start the transaction
             DB::beginTransaction();

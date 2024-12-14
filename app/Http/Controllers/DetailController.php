@@ -76,7 +76,7 @@ class DetailController extends Controller
 
                     }
                 ],
-                'properties.level_id' => 'required|exists:' . TablesName::LEVELS . ',level_id',
+                'properties.level_id' => 'required|uuid|exists:' . TablesName::LEVELS . ',level_id',
 
             ]);
             
@@ -185,7 +185,7 @@ class DetailController extends Controller
 
                     }
                 ],
-                'properties.level_id' => 'required|exists:' . TablesName::LEVELS . ',level_id',
+                'properties.level_id' => 'required|uuid|exists:' . TablesName::LEVELS . ',level_id',
 
             ]);
             

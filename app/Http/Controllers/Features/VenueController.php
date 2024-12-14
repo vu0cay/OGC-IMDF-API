@@ -15,6 +15,7 @@ use App\Rules\MultiPolygonCoordinateRule;
 use App\Rules\PointCoordinateRule;
 use App\Rules\PolygonCoordinateRule;
 use App\Rules\UniqueLangueTag;
+use App\Rules\ValidateDisplayPoint;
 use App\Rules\ValidateFeatureIDUnique;
 use App\Rules\ValidateHours;
 use App\Rules\ValidateIso639;
@@ -94,9 +95,9 @@ class VenueController extends Controller
                 'properties.hours' => ['nullable','string',new ValidateHours],
                 'properties.website' => ['nullable','string', new ValidateWebsiteUri],
                 'properties.phone' => ['nullable','string',new ValidatePhone],
-                'properties.display_point' => 'required',
-                'properties.display_point.type' => 'required|in:Point',
-                'properties.display_point.coordinates' => ['required', new PointCoordinateRule],
+                'properties.display_point' => ['required', new ValidateDisplayPoint],
+                // 'properties.display_point.type' => 'required|in:Point',
+                // 'properties.display_point.coordinates' => ['required', new PointCoordinateRule],
                 'properties.address_id' => 'required|exists:' . TablesName::ADDRESSES . ',address_id'
             ]);
 
@@ -240,9 +241,9 @@ class VenueController extends Controller
                 'properties.hours' => ['nullable','string',new ValidateHours],
                 'properties.website' => ['nullable','string', new ValidateWebsiteUri],
                 'properties.phone' => ['nullable','string',new ValidatePhone],
-                'properties.display_point' => 'required',
-                'properties.display_point.type' => 'required|in:Point',
-                'properties.display_point.coordinates' => ['required', new PointCoordinateRule],
+                'properties.display_point' => ['required', new ValidateDisplayPoint],
+                // 'properties.display_point.type' => 'required|in:Point',
+                // 'properties.display_point.coordinates' => ['required', new PointCoordinateRule],
                 'properties.address_id' => 'required|exists:' . TablesName::ADDRESSES . ',address_id'
             ]);
 

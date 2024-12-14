@@ -11,6 +11,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\FeatureResources\BuildingResource;
 use App\Models\Features\Building;
 use App\Rules\PointCoordinateRule;
+use App\Rules\ValidateDisplayPoint;
 use App\Rules\ValidateFeatureIDUnique;
 use App\Rules\ValidateIso639;
 use DB;
@@ -71,9 +72,9 @@ class BuildingController extends Controller
                 'properties.alt_name' => ['nullable','array',new ValidateIso639],
                 'properties.alt_name.*' => 'required',
 
-                'properties.display_point' => 'required',
-                'properties.display_point.type' => 'required|in:Point',
-                'properties.display_point.coordinates' => ['required', new PointCoordinateRule],
+                'properties.display_point' => ['required', new ValidateDisplayPoint],
+                // 'properties.display_point.type' => 'required|in:Point',
+                // 'properties.display_point.coordinates' => ['required', new PointCoordinateRule],
                 'properties.address_id' => 'nullable|exists:' . TablesName::ADDRESSES . ',address_id'
             ]);
 
@@ -204,7 +205,7 @@ class BuildingController extends Controller
                 'properties.name.*' => 'required',
                 'properties.alt_name' => ['nullable','array',new ValidateIso639],
                 'properties.alt_name.*' => 'required',
-                'properties.display_point' => 'required',
+                'properties.display_point' => ['required', new ValidateDisplayPoint],
                 'properties.display_point.type' => 'required|in:Point',
                 'properties.display_point.coordinates' => ['required', new PointCoordinateRule],
                 'properties.address_id' => 'nullable|exists:' . TablesName::ADDRESSES . ',address_id'

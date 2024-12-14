@@ -12,6 +12,7 @@ use App\Models\Features\Fixture;
 use App\Rules\MultiPolygonCoordinateRule;
 use App\Rules\PointCoordinateRule;
 use App\Rules\PolygonCoordinateRule;
+use App\Rules\ValidateDisplayPoint;
 use App\Rules\ValidateFeatureIDUnique;
 use App\Rules\ValidateIso639;
 use DB;
@@ -67,7 +68,8 @@ class FixtureController extends Controller
                 'geometry.coordinates' => [
                     'required',
                     function ($attribute, $value, $fail) use ($request) {
-                        if(!isset($request->geometry['type'])) return;
+                        if (!isset($request->geometry['type']))
+                            return;
 
                         if ($request->geometry['type'] === 'Polygon') {
                             $validateInstance = new PolygonCoordinateRule();
@@ -84,11 +86,11 @@ class FixtureController extends Controller
                 'properties.name.*' => 'required',
                 'properties.alt_name' => ['nullable', 'array', new ValidateIso639],
                 'properties.alt_name.*' => 'required',
-                'properties.display_point' => 'nullable',
-                'properties.display_point.type' => ['required_if:properties.display_point,!=null', 'in:Point'],
-                'properties.display_point.coordinates' => ['required_if:properties.display_point,!=null', new PointCoordinateRule],
-                'properties.level_id' => 'required|exists:' . TablesName::LEVELS . ',level_id',
-                'properties.anchor_id' => 'nullable|exists:' . TablesName::ANCHORS . ',anchor_id',
+                'properties.display_point' => ['nullable', new ValidateDisplayPoint],
+                // 'properties.display_point.type' => ['required_if:properties.display_point,!=null', 'in:Point'],
+                // 'properties.display_point.coordinates' => ['required_if:properties.display_point,!=null', new PointCoordinateRule],
+                'properties.level_id' => 'required|uuid|exists:' . TablesName::LEVELS . ',level_id',
+                'properties.anchor_id' => 'nullable|uuid|exists:' . TablesName::ANCHORS . ',anchor_id',
 
             ]);
 
@@ -103,7 +105,7 @@ class FixtureController extends Controller
             $textPolygon = Geom::GeomFromText($request->geometry);
 
             // convert coordinates Point to 4236 geometry format: Point( x1 y1 )
-            $txtPoint = Geom::GeomFromText($request->properties["display_point"]);
+            $txtPoint = Geom::GeomFromText($request->properties["display_point"] ?? null);
 
             // Start the transaction
             DB::beginTransaction();
@@ -116,7 +118,7 @@ class FixtureController extends Controller
             //     "anchor_id" => "99999999-9999-9999-9999-999999999999",
             //     "level_id" => "77777777-7777-7777-7777-777777777777"
             // ]);
-            
+
             $fixture = Fixture::create([
                 'fixture_id' => $request->id,
                 'feature_id' => DB::table(TablesName::FEATURES)->where("feature_type", $request->feature_type)->first()->id,
@@ -202,13 +204,13 @@ class FixtureController extends Controller
     {
         try {
             $fixture = Fixture::query()
-            ->where('fixture_id', '=', $fixture_id)->first();
+                ->where('fixture_id', '=', $fixture_id)->first();
             if (!$fixture)
                 return response()->json(['success' => false, 'message' => 'Not Found'], 404);
 
             // validation
             $attributes = Validator::make($request->all(), [
-                'id' => ['required', 'uuid', 'in:'.$fixture_id],
+                'id' => ['required', 'uuid', 'in:' . $fixture_id],
                 'type' => 'in:Feature',
                 'feature_type' => 'required|string|in:fixture',
                 'geometry' => 'required',
@@ -216,7 +218,8 @@ class FixtureController extends Controller
                 'geometry.coordinates' => [
                     'required',
                     function ($attribute, $value, $fail) use ($request) {
-                        if(!isset($request->geometry['type'])) return;
+                        if (!isset($request->geometry['type']))
+                            return;
 
                         if ($request->geometry['type'] === 'Polygon') {
                             $validateInstance = new PolygonCoordinateRule();
@@ -233,12 +236,11 @@ class FixtureController extends Controller
                 'properties.name.*' => 'required',
                 'properties.alt_name' => ['nullable', 'array', new ValidateIso639],
                 'properties.alt_name.*' => 'required',
-                'properties.display_point' => 'nullable',
-                'properties.display_point.type' => ['required_if:properties.display_point,!=null', 'in:Point'],
-                'properties.display_point.coordinates' => ['required_if:properties.display_point,!=null', new PointCoordinateRule],
-                'properties.level_id' => 'required|exists:' . TablesName::LEVELS . ',level_id',
-                'properties.anchor_id' => 'nullable|exists:' . TablesName::ANCHORS . ',anchor_id',
-
+                'properties.display_point' => ['nullable', new ValidateDisplayPoint],
+                // 'properties.display_point.type' => ['required_if:properties.display_point,!=null', 'in:Point'],
+                // 'properties.display_point.coordinates' => ['required_if:properties.display_point,!=null', new PointCoordinateRule],
+                'properties.level_id' => 'required|uuid|exists:' . TablesName::LEVELS . ',level_id',
+                'properties.anchor_id' => 'nullable|uuid|exists:' . TablesName::ANCHORS . ',anchor_id',
             ]);
 
             // Bad Request
@@ -246,17 +248,16 @@ class FixtureController extends Controller
                 $error = $attributes->errors()->first();
                 return response()->json(['success' => false, 'message' => $error], 400);
             }
-
             // Adding feature to the database
             // convert coordinate Polygon to 4236 geometry format: POLYGON( (x1 y1), (x2 y2), ..., (x3 y3) )
             $textPolygon = Geom::GeomFromText($request->geometry);
 
             // convert coordinates Point to 4236 geometry format: Point( x1 y1 )
-            $txtPoint = Geom::GeomFromText($request->properties["display_point"]);
+            $txtPoint = Geom::GeomFromText($request->properties["display_point"] ?? null);
 
             // Start the transaction
             DB::beginTransaction();
-            
+
             $fixture->update([
                 'fixture_id' => $request->id,
                 'feature_id' => DB::table(TablesName::FEATURES)->where("feature_type", $request->feature_type)->first()->id,
