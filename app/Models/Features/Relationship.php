@@ -9,6 +9,7 @@ use App\Models\FeaturesRelation\FeatureDestinationRelationship;
 use App\Models\FeaturesRelation\FeatureIntermediaryRelationship;
 use App\Models\FeaturesRelation\FeatureOriginRelationship;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Relationship extends Model
@@ -43,10 +44,18 @@ class Relationship extends Model
     {
         return $this->HasOne(FeatureOriginRelationship::class, 'relationship_id', 'relationship_id');
     }
-    public function intermediary(): HasOne
+    public function intermediary(): BelongsToMany
     {
-        return $this->HasOne(FeatureIntermediaryRelationship::class, 'relationship_id', 'relationship_id');
+        return $this->belongsToMany(
+            FeatureReference::class,
+            TablesName::FEATURE_INTERMEDIARY_RELATIONSHIPS,
+            'relationship_id',
+            'feature_reference_id',
+            'relationship_id',
+            'id'
+        );
     }
+
 
     public function destination(): HasOne
     {

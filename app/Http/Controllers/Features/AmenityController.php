@@ -11,6 +11,7 @@ use App\Http\Resources\FeatureResources\AmenityResource;
 use App\Models\Features\Amenity;
 use App\Rules\PointCoordinateRule;
 use App\Rules\ValidateFeatureIDUnique;
+use App\Rules\ValidateHours;
 use App\Rules\ValidateIso639;
 use App\Rules\Venue\ValidatePhone;
 use App\Rules\Venue\ValidateWebsiteUri;
@@ -72,7 +73,7 @@ class AmenityController extends Controller
                 'properties.alt_name' => ['nullable', 'array', new ValidateIso639],
                 'properties.alt_name.*' => 'required',
 
-                'properties.hours' => 'nullable|string',
+                'properties.hours' => ['nullable','string',new ValidateHours],
                 'properties.website' => ['nullable', 'string', new ValidateWebsiteUri],
                 'properties.phone' => ['nullable', 'string', new ValidatePhone],
                 'properties.correlation_id' => ['nullable', 'uuid'],
@@ -227,7 +228,7 @@ class AmenityController extends Controller
                 'properties.alt_name' => ['nullable', 'array', new ValidateIso639],
                 'properties.alt_name.*' => 'required',
 
-                'properties.hours' => 'nullable|string',
+                'properties.hours' => ['nullable','string',new ValidateHours],
                 'properties.website' => ['nullable', 'string', new ValidateWebsiteUri],
                 'properties.phone' => ['nullable', 'string', new ValidatePhone],
 

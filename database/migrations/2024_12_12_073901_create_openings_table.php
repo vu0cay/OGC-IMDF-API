@@ -41,6 +41,16 @@ return new class extends Migration {
             "door_id" => 1
         ]);         
         
+        DB::table(TablesName::OPENINGS)->insert([
+            "opening_id" => "88888888-3333-2222-8888-888888888888",
+            "feature_id" => 12,
+            "geometry" => "LineString (100.0 0.0, 101.0 1.0)",
+            "opening_category_id" => 4,
+            "display_point" => "POINT(100.0 1.0)",
+            "level_id" => "77777777-7777-7777-7777-777777777777",
+            "door_id" => 1
+        ]);         
+        
 
     }
 

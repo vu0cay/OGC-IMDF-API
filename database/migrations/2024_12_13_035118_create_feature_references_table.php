@@ -32,6 +32,11 @@ return new class extends Migration
             'feature_id' => "88888888-1111-2222-8888-888888888888",
             'feature_type_id' => 12
         ]);
+        //
+        DB::table(TablesName::FEATURE_REFERENCES)->insert([
+            'feature_id' => "88888888-3333-2222-8888-888888888888",
+            'feature_type_id' => 12
+        ]);
 
     }
 

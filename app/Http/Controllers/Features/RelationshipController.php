@@ -10,8 +10,10 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\FeatureResources\RelationshipResource;
 use App\Models\Features\Relationship;
 use App\Models\FeaturesCategory\FeatureReference;
+use App\Rules\Relationship\ValidateFeatureIntermediary;
 use App\Rules\Relationship\ValidateFeatureReference;
 use App\Rules\ValidateFeatureIDUnique;
+use App\Rules\ValidateHours;
 use DB;
 use Exception;
 use Illuminate\Http\Request;
@@ -60,9 +62,10 @@ class RelationshipController extends Controller
                 'type' => 'in:Feature',
                 'feature_type' => 'required|string|in:relationship',
                 'properties.category' => 'required|string|in:' . RelationshipCategory::getConstansAsString(),
-                'properties.hours' => 'nullable|string',
+                'properties.hours' => ['nullable', 'string', new ValidateHours],
+                'properties.direction' => 'required|string|in:undirected,directed',
                 'properties.origin' => ['nullable', new ValidateFeatureReference],
-                'properties.intermediary' => ['nullable', new ValidateFeatureReference],
+                'properties.intermediary' => ['nullable', new ValidateFeatureIntermediary],
                 'properties.destination' => ['nullable', new ValidateFeatureReference],
             ]);
 
@@ -76,14 +79,6 @@ class RelationshipController extends Controller
 
             // Start the transaction
             DB::beginTransaction();
-            // DB::table(TablesName::RELATIONSHIPS)->insert([
-            //     'relationship_id' => "88888888-8888-1234-8888-888888888888",
-            //     'relationship_category_id' => 6,
-            //     'direction' => 'directed',
-            //     'feature_id' => 13,
-            //     // 'origin_id' => 1,
-            //     // 'intermediary_id' => 2,
-            // ]);
 
             $relationship = Relationship::create([
                 'relationship_id' => $request->id,
@@ -93,33 +88,18 @@ class RelationshipController extends Controller
             ]);
 
             // add feature reference
-
-            // if(isset($request->properties['origin'])) {
-            //     $featureRef = FeatureReference::where('feature_id', $request->properties['origin']['id'])->first();
-            //     $finalVal = !isset($featureRef) ?
-            //         DB::table(TablesName::FEATURE_REFERENCES)->insert([
-            //             'feature_id' => "88888888-8888-8888-8888-888888888888",
-            //             'feature_type_id' => 15
-            //         ]) : $featureRef;
-
-            //     DB::table(TablesName::FEATURE_ORIGIN_RELATIONSHIPS)->insert([
-            //         'feature_reference_id' => $finalVal->id,
-            //         'relationship_id' => $relationship->relationship_id
-            //     ]);
-
-            // }
             FeatureReferenceRelation::AddFeatureReferenceRelation(
-                $request->properties['origin'],
+                $request->properties['origin'] ?? null,
                 TablesName::FEATURE_ORIGIN_RELATIONSHIPS,
                 $relationship->relationship_id
             );
-            FeatureReferenceRelation::AddFeatureReferenceRelation(
-                $request->properties['intermediary'],
+            FeatureReferenceRelation::AddFeatureIntermediary(
+                $request->properties['intermediary'] ?? null,
                 TablesName::FEATURE_INTERMEDIARY_RELATIONSHIPS,
                 $relationship->relationship_id
             );
             FeatureReferenceRelation::AddFeatureReferenceRelation(
-                $request->properties['destination'],
+                $request->properties['destination'] ?? null,
                 TablesName::FEATURE_DESTINATION_RELATIONSHIPS,
                 $relationship->relationship_id
             );
@@ -190,9 +170,10 @@ class RelationshipController extends Controller
                 'type' => 'in:Feature',
                 'feature_type' => 'required|string|in:relationship',
                 'properties.category' => 'required|string|in:' . RelationshipCategory::getConstansAsString(),
-                'properties.hours' => 'nullable|string',
+                'properties.hours' => ['nullable', 'string', new ValidateHours],
+                'properties.direction' => 'required|string|in:undirected,directed',
                 'properties.origin' => ['nullable', new ValidateFeatureReference],
-                'properties.intermediary' => ['nullable', new ValidateFeatureReference],
+                'properties.intermediary' => ['nullable', new ValidateFeatureIntermediary],
                 'properties.destination' => ['nullable', new ValidateFeatureReference],
             ]);
 
@@ -221,7 +202,7 @@ class RelationshipController extends Controller
                 TablesName::FEATURE_ORIGIN_RELATIONSHIPS,
                 $relationship->relationship_id
             );
-            FeatureReferenceRelation::UpdateFeatureReferenceRelation(
+            FeatureReferenceRelation::UpdateFeatureIntermediary(
                 $request->properties['intermediary'] ?? null,
                 TablesName::FEATURE_INTERMEDIARY_RELATIONSHIPS,
                 $relationship->relationship_id

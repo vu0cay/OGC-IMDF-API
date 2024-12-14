@@ -22,7 +22,7 @@ return new class extends Migration
             // $table->unsignedInteger("destination_id")->nullable();
 
             $table->enum('direction', ['directed','undirected'])->nullable();
-            $table->string('hours')->nullable();
+            $table->time('hours')->nullable();
 
             $table->foreign('feature_id')->references('id')->on(TablesName::FEATURES)->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreign('relationship_category_id')->references('id')->on(TablesName::RELATIONSHIP_CATEGORIES)->cascadeOnUpdate()->cascadeOnDelete();

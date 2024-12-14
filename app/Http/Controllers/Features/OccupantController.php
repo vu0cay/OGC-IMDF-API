@@ -11,6 +11,7 @@ use App\Models\Features\Occupant;
 use App\Models\FeaturesCategory\Validity;
 use App\Rules\Occupant\ValidateValidity;
 use App\Rules\ValidateFeatureIDUnique;
+use App\Rules\ValidateHours;
 use App\Rules\ValidateIso639;
 use App\Rules\Venue\ValidatePhone;
 use App\Rules\Venue\ValidateWebsiteUri;
@@ -65,7 +66,7 @@ class OccupantController extends Controller
                 'properties.category' => 'required|string|in:' . OccupantCategory::getConstansAsString(),
                 'properties.name' => ['required', 'array',new ValidateIso639],
                 'properties.name.*' => 'required',
-                'properties.hours' => 'nullable|string',
+                'properties.hours' => ['nullable','string',new ValidateHours],
                 'properties.website' => ['nullable','string', new ValidateWebsiteUri],
                 'properties.phone' => ['nullable','string',new ValidatePhone],
                 'properties.anchor_id' => 'nullable|exists:' . TablesName::ANCHORS . ',anchor_id',
@@ -183,7 +184,7 @@ class OccupantController extends Controller
                 'properties.category' => 'required|string|in:' . OccupantCategory::getConstansAsString(),
                 'properties.name' => ['required', 'array',new ValidateIso639],
                 'properties.name.*' => 'required',
-                'properties.hours' => 'nullable|string',
+                'properties.hours' => ['nullable','string',new ValidateHours],
                 'properties.website' => ['nullable','string', new ValidateWebsiteUri],
                 'properties.phone' => ['nullable','string',new ValidatePhone],
                 'properties.anchor_id' => 'nullable|exists:' . TablesName::ANCHORS . ',anchor_id',

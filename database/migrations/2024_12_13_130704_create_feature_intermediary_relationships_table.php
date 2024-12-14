@@ -27,6 +27,10 @@ return new class extends Migration
             'feature_reference_id' => 2,
             'relationship_id' => '88888888-8888-1234-8888-888888888888'
         ]);
+        DB::table(TablesName::FEATURE_INTERMEDIARY_RELATIONSHIPS)->insert([
+            'feature_reference_id' => 3,
+            'relationship_id' => '88888888-8888-1234-8888-888888888888'
+        ]);
     }
 
     /**
