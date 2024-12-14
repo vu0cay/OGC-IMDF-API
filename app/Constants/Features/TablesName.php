@@ -88,6 +88,11 @@ class TablesName
     
     
     public const DETAILS = "details";
+
+
+    public const FIXTURE_CATEGORIES = "fixture_categories";
+    public const FIXTURES = "fixtures";
+    public const FIXTURE_LABELS = "fixture_labels";
     
     
 

@@ -17,7 +17,7 @@ class ValidateHours implements ValidationRule
         $regex = '/^(Mo|Tu|We|Th|Fr|Sa|Su)-(Mo|Tu|We|Th|Fr|Sa|Su) \d{2}:\d{2}-\d{2}:\d{2}$/';
 
         if (!preg_match($regex, $value)) { 
-            $fail('invalid hours example "Mo-Fr 08:30-20:00".');
+            $fail('Hours must follow the OSM Opening Hours format, for example: Mo-Fr 08:30-20:00.');
         }
 
     }

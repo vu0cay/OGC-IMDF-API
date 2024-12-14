@@ -6,6 +6,7 @@ use App\Http\Controllers\Features\AddressController;
 use App\Http\Controllers\Features\AmenityController;
 use App\Http\Controllers\Features\AnchorController;
 use App\Http\Controllers\Features\BuildingController;
+use App\Http\Controllers\Features\FixtureController;
 use App\Http\Controllers\Features\FootprintController;
 use App\Http\Controllers\Features\KioskController;
 use App\Http\Controllers\Features\LevelController;
@@ -146,6 +147,14 @@ Route::controller(DetailController::class)->group(function () {
     Route::post('/details', 'store');
     Route::put('/details/{detail_id}', 'update');
     Route::delete('/details/{detail_id}', 'destroy');
+});
+
+Route::controller(FixtureController::class)->group(function () {
+    Route::get('/fixtures', 'index');
+    Route::get('/fixtures/{fixture_id}', 'show');
+    Route::post('/fixtures', 'store');
+    Route::put('/fixtures/{fixture_id}', 'update');
+    Route::delete('/fixtures/{fixture_id}', 'destroy');
 });
 
 

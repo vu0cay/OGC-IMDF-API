@@ -153,7 +153,7 @@ class DetailController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $detail_id)
+    public function update(Request $request, $detail_id)
     {
         try {
             $detail = Detail::query()
