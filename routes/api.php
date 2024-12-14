@@ -1,6 +1,7 @@
 <?php
 
 use App\Constants\Features\TablesName;
+use App\Http\Controllers\DetailController;
 use App\Http\Controllers\Features\AddressController;
 use App\Http\Controllers\Features\AmenityController;
 use App\Http\Controllers\Features\AnchorController;
@@ -137,6 +138,14 @@ Route::controller(RelationshipController::class)->group(function () {
     Route::post('/relationships', 'store');
     Route::put('/relationships/{relationship_id}', 'update');
     Route::delete('/relationships/{relationship_id}', 'destroy');
+});
+
+Route::controller(DetailController::class)->group(function () {
+    Route::get('/details', 'index');
+    Route::get('/details/{detail_id}', 'show');
+    Route::post('/details', 'store');
+    Route::put('/details/{detail_id}', 'update');
+    Route::delete('/details/{detail_id}', 'destroy');
 });
 
 

@@ -75,6 +75,25 @@ class Geom extends Model
                 }
                 $text = rtrim($text, ', ').")', 4326)";
                 return $text;
+            case "MultiLineString":
+                    $lineStrings = $geometry["coordinates"];
+                    $text = "ST_GeomFromText('MultiLineString(";
+                    foreach($lineStrings as $linestring) { 
+                        $text .= '(';
+                        foreach($linestring as $coordinate) {
+                            // dd($coordinate);
+                            $text .= $coordinate[0]." ".$coordinate[1].", ";
+                         }
+                        $text = rtrim($text, ", ");
+                        $text .= '),';
+                        // dd($text);
+
+                    }
+                    $text = rtrim($text, ', ').")', 4326)";
+                    // dd($text);
+                    return $text;
+
+                   
             default: 
                 return "null"; 
             }

@@ -16,6 +16,7 @@ class ValidateFeatureIDUnique implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
+        $detail_ids = DB::table(TablesName::DETAILS)->select('detail_id as fid');
         $relationship_ids = DB::table(TablesName::RELATIONSHIPS)->select('relationship_id as fid');
         $occupant_ids = DB::table(TablesName::OCCUPANTS)->select('occupant_id as fid');
         $opening_ids = DB::table(TablesName::OPENINGS)->select('opening_id as fid');
@@ -30,6 +31,7 @@ class ValidateFeatureIDUnique implements ValidationRule
         $venue_ids = DB::table(TablesName::VENUES)->select('venue_id as fid');
         
         $combined = $unit_ids
+            ->union($detail_ids)
             ->union($relationship_ids)
             ->union($occupant_ids)
             ->union($opening_ids)

@@ -87,6 +87,10 @@ class TablesName
     public const FEATURE_DESTINATION_RELATIONSHIPS = "feature_destination_relationships";
     
     
+    public const DETAILS = "details";
+    
+    
+
 }
 
 
