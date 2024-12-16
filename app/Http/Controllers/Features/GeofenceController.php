@@ -64,21 +64,21 @@ class GeofenceController extends Controller
                 'geometry' => 'required',
                 'geometry.type' => 'required|in:Polygon,MultiPolygon',
                 'geometry.coordinates' => [
-                        'required',
-                        function ($attribute, $value, $fail) use ($request) {
-                            if (!isset($request->geometry['type']))
-                                return;
+                    'required',
+                    function ($attribute, $value, $fail) use ($request) {
+                        if (!isset($request->geometry['type']))
+                            return;
 
-                            if ($request->geometry['type'] === 'Polygon') {
-                                $validateInstance = new PolygonCoordinateRule();
-                                $validateInstance->validate($attribute, $value, $fail);
-                            } else {
-                                $validateInstance = new MultiPolygonCoordinateRule();
-                                $validateInstance->validate($attribute, $value, $fail);
-                            }
-
+                        if ($request->geometry['type'] === 'Polygon') {
+                            $validateInstance = new PolygonCoordinateRule();
+                            $validateInstance->validate($attribute, $value, $fail);
+                        } else {
+                            $validateInstance = new MultiPolygonCoordinateRule();
+                            $validateInstance->validate($attribute, $value, $fail);
                         }
-                    ],
+
+                    }
+                ],
                 'properties.category' => 'required|string|in:' . GeofenceCategory::getConstansAsString(),
                 'properties.restriction' => 'nullable|string|in:' . RestrictionCategory::getConstansAsString(),
 
@@ -86,7 +86,7 @@ class GeofenceController extends Controller
                 'properties.name.*' => 'required',
                 'properties.alt_name' => ['nullable', 'array', new ValidateIso639],
                 'properties.alt_name.*' => 'required',
-                'properties.correlation_id' => 'nullable|uuid|exists:'.TablesName::GEOFENCES.',geofence_id',
+                'properties.correlation_id' => 'nullable|uuid|exists:' . TablesName::GEOFENCES . ',geofence_id',
 
                 'properties.display_point' => ['nullable', new ValidateDisplayPoint],
                 // 'properties.display_point.type' => ['required_if:properties.display_point,!=null','in:Point'],
@@ -96,7 +96,7 @@ class GeofenceController extends Controller
                 'properties.level_ids' => 'nullable|array',
                 'properties.level_ids.*' => 'required_if:properties.level_ids,!=null|uuid|exists:' . TablesName::LEVELS . ',level_id',
                 'properties.parents' => ['nullable', 'array', 'exists:' . TablesName::GEOFENCES . ',geofence_id'],
-                'properties.parents.*' => 'required_if:properties.parents,!=null|uuid|exists:' . TablesName::GEOFENCES . ',geofence_id',   
+                'properties.parents.*' => 'required_if:properties.parents,!=null|uuid|exists:' . TablesName::GEOFENCES . ',geofence_id',
             ]);
 
             // Bad Request
@@ -129,20 +129,25 @@ class GeofenceController extends Controller
 
 
             // add buildings
-            collect($request->properties['building_ids'])->map(function ($item) use ($geofence) {
-                DB::table(TablesName::GEOFENCE_BUILDING)->insert([
-                    'geofence_id' => $geofence->geofence_id,
-                    'building_id' => $item
-                ]);
-            });
+            if (isset($request->properties['building_ids'])) {
+
+                collect($request->properties['building_ids'])->map(function ($item) use ($geofence) {
+                    DB::table(TablesName::GEOFENCE_BUILDING)->insert([
+                        'geofence_id' => $geofence->geofence_id,
+                        'building_id' => $item
+                    ]);
+                });
+            }
 
             // add levels
-            collect($request->properties['level_ids'])->map(function ($item) use ($geofence) {
-                DB::table(TablesName::GEOFENCE_LEVEL)->insert([
-                    'geofence_id' => $geofence->geofence_id,
-                    'level_id' => $item
-                ]);
-            });
+            if (isset($request->properties['level_ids'])) {
+                collect($request->properties['level_ids'])->map(function ($item) use ($geofence) {
+                    DB::table(TablesName::GEOFENCE_LEVEL)->insert([
+                        'geofence_id' => $geofence->geofence_id,
+                        'level_id' => $item
+                    ]);
+                });
+            }
 
             // add parents
             FeatureService::AddFeatureParents(
@@ -230,27 +235,27 @@ class GeofenceController extends Controller
 
             // validation
             $attributes = Validator::make($request->all(), [
-                'id' => ['required', 'uuid', 'in:'.$geofence_id],
+                'id' => ['required', 'uuid', 'in:' . $geofence_id],
                 'type' => 'in:Feature',
                 'feature_type' => 'required|string|in:geofence',
                 'geometry' => 'required',
                 'geometry.type' => 'required|in:Polygon,MultiPolygon',
                 'geometry.coordinates' => [
-                        'required',
-                        function ($attribute, $value, $fail) use ($request) {
-                            if (!isset($request->geometry['type']))
-                                return;
+                    'required',
+                    function ($attribute, $value, $fail) use ($request) {
+                        if (!isset($request->geometry['type']))
+                            return;
 
-                            if ($request->geometry['type'] === 'Polygon') {
-                                $validateInstance = new PolygonCoordinateRule();
-                                $validateInstance->validate($attribute, $value, $fail);
-                            } else {
-                                $validateInstance = new MultiPolygonCoordinateRule();
-                                $validateInstance->validate($attribute, $value, $fail);
-                            }
-
+                        if ($request->geometry['type'] === 'Polygon') {
+                            $validateInstance = new PolygonCoordinateRule();
+                            $validateInstance->validate($attribute, $value, $fail);
+                        } else {
+                            $validateInstance = new MultiPolygonCoordinateRule();
+                            $validateInstance->validate($attribute, $value, $fail);
                         }
-                    ],
+
+                    }
+                ],
                 'properties.category' => 'required|string|in:' . GeofenceCategory::getConstansAsString(),
                 'properties.restriction' => 'nullable|string|in:' . RestrictionCategory::getConstansAsString(),
 
@@ -258,7 +263,7 @@ class GeofenceController extends Controller
                 'properties.name.*' => 'required',
                 'properties.alt_name' => ['nullable', 'array', new ValidateIso639],
                 'properties.alt_name.*' => 'required',
-                'properties.correlation_id' => 'nullable|uuid|exists:'.TablesName::GEOFENCES.',geofence_id',
+                'properties.correlation_id' => 'nullable|uuid|exists:' . TablesName::GEOFENCES . ',geofence_id',
 
                 'properties.display_point' => ['nullable', new ValidateDisplayPoint],
                 // 'properties.display_point.type' => ['required_if:properties.display_point,!=null','in:Point'],
@@ -268,7 +273,7 @@ class GeofenceController extends Controller
                 'properties.level_ids' => 'nullable|array',
                 'properties.level_ids.*' => 'required_if:properties.level_ids,!=null|uuid|exists:' . TablesName::LEVELS . ',level_id',
                 'properties.parents' => ['nullable', 'array', 'exists:' . TablesName::GEOFENCES . ',geofence_id'],
-                'properties.parents.*' => 'required_if:properties.parents,!=null|uuid|exists:' . TablesName::GEOFENCES . ',geofence_id',   
+                'properties.parents.*' => 'required_if:properties.parents,!=null|uuid|exists:' . TablesName::GEOFENCES . ',geofence_id',
             ]);
 
             // Bad Request
@@ -305,7 +310,7 @@ class GeofenceController extends Controller
                 ->where('geofence_id', $geofence->geofence_id)
                 ->delete();
 
-            if(isset($request->properties['building_ids'])) {
+            if (isset($request->properties['building_ids'])) {
                 collect($request->properties['building_ids'])->map(function ($item) use ($geofence) {
                     DB::table(TablesName::GEOFENCE_BUILDING)->insert([
                         'geofence_id' => $geofence->geofence_id,
@@ -319,7 +324,7 @@ class GeofenceController extends Controller
                 ->where('geofence_id', $geofence->geofence_id)
                 ->delete();
 
-            if(isset($request->properties['level_ids'])) {
+            if (isset($request->properties['level_ids'])) {
                 collect($request->properties['level_ids'])->map(function ($item) use ($geofence) {
                     DB::table(TablesName::GEOFENCE_LEVEL)->insert([
                         'geofence_id' => $geofence->geofence_id,
@@ -339,7 +344,7 @@ class GeofenceController extends Controller
 
             // label name
             FeatureService::UpdateFeatureLabel(
-                $request->properties["name"],
+                $request->properties["name"] ?? null,
                 'name',
                 'geofence_id',
                 TablesName::GEOFENCE_LABELS,
@@ -347,7 +352,7 @@ class GeofenceController extends Controller
             );
             // label short_name
             FeatureService::UpdateFeatureLabel(
-                $request->properties["alt_name"],
+                $request->properties["alt_name"] ?? null,
                 'alt_name',
                 'geofence_id',
                 TablesName::GEOFENCE_LABELS,

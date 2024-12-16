@@ -184,7 +184,7 @@ Route::get('/user', function (Request $request) {
 
 
 // search custom function for client use 
-// Route::get('/search', [SearchController::class, '__invoke'])->name('search');
+Route::get('/search', [SearchController::class, '__invoke'])->name('search');
 
 // list all feature references
 // unit - level - building - footprint - venue - address

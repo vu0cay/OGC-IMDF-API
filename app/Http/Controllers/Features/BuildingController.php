@@ -251,7 +251,7 @@ class BuildingController extends Controller
 
             // label name
             FeatureService::UpdateFeatureLabel(
-                $request->properties["name"],
+                $request->properties["name"] ?? null,
                 'name',
                 'building_id',
                 TablesName::BUILDING_LABELS,
@@ -259,7 +259,7 @@ class BuildingController extends Controller
             );
             // label alt_name
             FeatureService::UpdateFeatureLabel(
-                $request->properties["alt_name"],
+                $request->properties["alt_name"] ?? null,
                 'alt_name',
                 'building_id',
                 TablesName::BUILDING_LABELS,

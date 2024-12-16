@@ -30,6 +30,7 @@ class FixtureController extends Controller
         try {
             // $units = Unit::with( 'feature', 'restriction', 'category', 'accessibilities', 'labels')->get();
             $fixtures = Fixture::get();
+
             $fixturesResource = FixtureResource::collection($fixtures);
             $geojson = '{"type": "FeatureCollection","features": [], "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::404000"}}}';
 
