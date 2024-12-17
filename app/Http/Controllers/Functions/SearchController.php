@@ -43,9 +43,9 @@ class SearchController extends Controller
                 $tableRelateLabel = TablesName::UNIT_LABELS;
                 break;
             case 'amenity':
-                $tableName = TablesName::UNITS;
+                $tableName = TablesName::AMENITIES;
                 $tableLabel = TablesName::LABELS;
-                $tableRelateLabel = TablesName::UNIT_LABELS;
+                $tableRelateLabel = TablesName::AMENTITY_LABEL;
                 break;
             default:
                 return response()->json(['message' => 'Not found'], 404);
@@ -62,7 +62,7 @@ class SearchController extends Controller
 
         // dd($features);
         //$unitsResource = UnitResource::collection($units);
-
+        // dd($features);
 
         return response()->json($features);
     }

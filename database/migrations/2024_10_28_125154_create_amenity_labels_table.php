@@ -27,16 +27,16 @@ return new class extends Migration
         });
 
 
-        // $newLabel = Label::create([
-        //     'language_tag' => 'vi',
-        //     'value' => 'stairs'
-        // ]);
+        $newLabel = Label::create([
+            'language_tag' => 'vi',
+            'value' => 'stairs'
+        ]);
 
-        // DB::table(TablesName::AMENTITY_LABEL)->insert([
-        //     'amenity_id' => "99999998-9999-9999-9999-999999999999",
-        //     'label_id' => $newLabel->id,
-        //     'type' => 'alt_name'
-        // ]);
+        DB::table(TablesName::AMENTITY_LABEL)->insert([
+            'amenity_id' => "99999998-9999-9999-9999-999999999999",
+            'label_id' => $newLabel->id,
+            'type' => 'alt_name'
+        ]);
 
         
     }
