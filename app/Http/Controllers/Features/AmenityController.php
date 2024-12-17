@@ -102,20 +102,22 @@ class AmenityController extends Controller
                 'feature_id' => DB::table(TablesName::FEATURES)->where("feature_type", $request->feature_type)->first()->id,
                 'amenity_category_id' => DB::table(TablesName::AMENITY_CATEGORIES)->where("name", $request->properties['category'])->first()->id,
                 'geometry' => DB::raw($txtPoint),
-                'phone' => $request->properties['phone'],
-                'website' => $request->properties['website'],
-                'hours' => $request->properties['hours'],
-                'correlation_id' => $request->properties['correlation_id'],
+                'phone' => $request->properties['phone'] ?? null,
+                'website' => $request->properties['website'] ?? null,
+                'hours' => $request->properties['hours'] ?? null,
+                'correlation_id' => $request->properties['correlation_id'] ?? null,
             ]);
 
             // add unit accessibility
-            collect($request->properties['accessibility'])->map(function ($item) use ($amenity) {
-                $accessibility_id = DB::table(TablesName::ACCESSIBILITY_CATEGORIES)->where('name', $item)->first()->id;
-                DB::table(TablesName::AMENITY_ACCESSIBILITY)->insert([
-                    'amenity_id' => $amenity->amenity_id,
-                    'accessibility_id' => $accessibility_id
-                ]);
-            });
+            if(isset($request->properties['accessibility'])){
+                collect($request->properties['accessibility'])->map(function ($item) use ($amenity) {
+                    $accessibility_id = DB::table(TablesName::ACCESSIBILITY_CATEGORIES)->where('name', $item)->first()->id;
+                    DB::table(TablesName::AMENITY_ACCESSIBILITY)->insert([
+                        'amenity_id' => $amenity->amenity_id,
+                        'accessibility_id' => $accessibility_id
+                    ]);
+                });
+            }
 
             // add amenity address
             if (isset($request->properties['address_id'])) {
@@ -258,10 +260,10 @@ class AmenityController extends Controller
                 'feature_id' => DB::table(TablesName::FEATURES)->where("feature_type", $request->feature_type)->first()->id,
                 'amenity_category_id' => DB::table(TablesName::AMENITY_CATEGORIES)->where("name", $request->properties['category'])->first()->id,
                 'geometry' => DB::raw($txtPoint),
-                'phone' => $request->properties['phone'],
-                'website' => $request->properties['website'],
-                'hours' => $request->properties['hours'],
-                'correlation_id' => $request->properties['correlation_id'],
+                'phone' => $request->properties['phone'] ?? null,
+                'website' => $request->properties['website'] ?? null,
+                'hours' => $request->properties['hours'] ?? null,
+                'correlation_id' => $request->properties['correlation_id'] ?? null,
             ]);
 
             // add unit accessibility
@@ -270,14 +272,15 @@ class AmenityController extends Controller
                 ->where('amenity_id', $amenity->amenity_id)
                 ->delete();
 
-            collect($request->properties['accessibility'])->map(function ($item) use ($amenity) {
-                $accessibility_id = DB::table(TablesName::ACCESSIBILITY_CATEGORIES)->where('name', $item)->first()->id;
-                DB::table(TablesName::AMENITY_ACCESSIBILITY)->insert([
-                    'amenity_id' => $amenity->amenity_id,
-                    'accessibility_id' => $accessibility_id
-                ]);
-            });
-
+            if(isset($request->properties['accessibility'])){
+                collect($request->properties['accessibility'])->map(function ($item) use ($amenity) {
+                    $accessibility_id = DB::table(TablesName::ACCESSIBILITY_CATEGORIES)->where('name', $item)->first()->id;
+                    DB::table(TablesName::AMENITY_ACCESSIBILITY)->insert([
+                        'amenity_id' => $amenity->amenity_id,
+                        'accessibility_id' => $accessibility_id
+                    ]);
+                });
+            }
             // add amenity address
             $record = DB::table(TablesName::ADDRESS_AMENITIES . ' as address_feature')
                 ->where('amenity_id', $amenity->amenity_id)
