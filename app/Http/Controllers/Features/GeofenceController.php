@@ -86,7 +86,8 @@ class GeofenceController extends Controller
                 'properties.name.*' => 'required',
                 'properties.alt_name' => ['nullable', 'array', new ValidateIso639],
                 'properties.alt_name.*' => 'required',
-                'properties.correlation_id' => 'nullable|uuid|exists:' . TablesName::GEOFENCES . ',geofence_id',
+                // 'properties.correlation_id' => 'nullable|uuid|exists:' . TablesName::GEOFENCES . ',geofence_id',
+                'properties.correlation_id' => 'nullable|uuid',
 
                 'properties.display_point' => ['nullable', new ValidateDisplayPoint],
                 // 'properties.display_point.type' => ['required_if:properties.display_point,!=null','in:Point'],
@@ -263,7 +264,8 @@ class GeofenceController extends Controller
                 'properties.name.*' => 'required',
                 'properties.alt_name' => ['nullable', 'array', new ValidateIso639],
                 'properties.alt_name.*' => 'required',
-                'properties.correlation_id' => 'nullable|uuid|exists:' . TablesName::GEOFENCES . ',geofence_id',
+                // 'properties.correlation_id' => 'nullable|uuid|exists:' . TablesName::GEOFENCES . ',geofence_id',
+                'properties.correlation_id' => 'nullable|uuid',
 
                 'properties.display_point' => ['nullable', new ValidateDisplayPoint],
                 // 'properties.display_point.type' => ['required_if:properties.display_point,!=null','in:Point'],

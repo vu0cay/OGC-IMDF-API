@@ -93,7 +93,8 @@ class SectionController extends Controller
                 // 'properties.display_point.coordinates' => ['required_if:properties.display_point,!=null', new PointCoordinateRule],
                 'properties.level_id' => 'required|uuid|exists:' . TablesName::LEVELS . ',level_id',
                 'properties.address_id' => 'nullable|uuid|exists:' . TablesName::ADDRESSES . ',address_id',
-                'properties.correlation_id' => ['nullable', 'uuid', 'exists:' . TablesName::SECTIONS . ',section_id'],
+                // 'properties.correlation_id' => ['nullable', 'uuid', 'exists:' . TablesName::SECTIONS . ',section_id'],
+                'properties.correlation_id' => ['nullable', 'uuid'],
                 'properties.parents' => ['nullable', 'array', 'exists:' . TablesName::SECTIONS . ',section_id'],
                 'properties.parents.*' => 'required_if:properties.parents,!=null|uuid|exists:' . TablesName::SECTIONS . ',section_id',
             ]);
@@ -277,7 +278,8 @@ class SectionController extends Controller
                 // 'properties.display_point.coordinates' => ['required_if:properties.display_point,!=null', new PointCoordinateRule],
                 'properties.level_id' => 'required|uuid|exists:' . TablesName::LEVELS . ',level_id',
                 'properties.address_id' => 'nullable|uuid|exists:' . TablesName::ADDRESSES . ',address_id',
-                'properties.correlation_id' => ['nullable', 'uuid', 'exists:' . TablesName::SECTIONS . ',section_id'],
+                // 'properties.correlation_id' => ['nullable', 'uuid', 'exists:' . TablesName::SECTIONS . ',section_id'],
+                'properties.correlation_id' => ['nullable', 'uuid'],
                 'properties.parents' => ['nullable', 'array', 'exists:' . TablesName::SECTIONS . ',section_id'],
                 'properties.parents.*' => 'required_if:properties.parents,!=null|uuid|exists:' . TablesName::SECTIONS . ',section_id',
             ]);
