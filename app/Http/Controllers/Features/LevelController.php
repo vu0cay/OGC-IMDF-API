@@ -32,7 +32,6 @@ class LevelController extends Controller
             // $levels = Level::with('feature', 'restriction', 'category', 'labels')->get();
             $levels = Level::get();
             $levelsResource = LevelResource::collection($levels);
-
             $geojson = '{"type": "FeatureCollection","features": [], "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::404000"}}}';
             $geojson = json_decode($geojson);
             $geojson->features = $levelsResource;

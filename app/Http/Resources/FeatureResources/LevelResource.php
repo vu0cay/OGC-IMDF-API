@@ -46,10 +46,10 @@ class LevelResource extends JsonResource
                 "outdoor" => $this->outdoor,
                 "name" => $name!=null && count($name) > 0 ? $name : null,
                 "short_name" => $short_name !=null &&  count($short_name) > 0 ? $short_name : null,
-                "display_point" => [
+                "display_point" => $display_point !== null ? [
                     "type" => $display_point->type,
                     "coordinates" => $display_point->coordinates
-                ],
+                ] : null,
                 "address_id" => $this->address->address_id ?? null,
                 "building_ids" => count($this->buildings) > 0 ? $this->buildings->pluck('building_id')->toArray() : null
             ]
