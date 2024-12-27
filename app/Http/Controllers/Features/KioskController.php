@@ -79,9 +79,9 @@ class KioskController extends Controller
                     }
                 ],
                 'properties.name' => ['nullable', 'array', new ValidateIso639],
-                'properties.name.*' => 'required',
+                // 'properties.name.*' => 'required',
                 'properties.alt_name' => ['nullable', 'array', new ValidateIso639],
-                'properties.alt_name.*' => 'required',
+                // 'properties.alt_name.*' => 'required',
                 'properties.display_point' => ['nullable', new ValidateDisplayPoint],
                 // 'properties.display_point.type' => ['required_if:properties.display_point,!=null', 'in:Point'],
                 // 'properties.display_point.coordinates' => ['required_if:properties.display_point,!=null', new PolygonCoordinateRule],
@@ -218,9 +218,9 @@ class KioskController extends Controller
                     }
                 ],
                 'properties.name' => ['nullable', 'array', new ValidateIso639],
-                'properties.name.*' => 'required',
+                // 'properties.name.*' => 'required',
                 'properties.alt_name' => ['nullable', 'array', new ValidateIso639],
-                'properties.alt_name.*' => 'required',
+                // 'properties.alt_name.*' => 'required',
                 'properties.display_point' => ['nullable', new ValidateDisplayPoint],
                 // 'properties.display_point.type' => ['required_if:properties.display_point,!=null', 'in:Point'],
                 // 'properties.display_point.coordinates' => ['required_if:properties.display_point,!=null', new PointCoordinateRule],

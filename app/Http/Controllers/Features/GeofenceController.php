@@ -83,9 +83,9 @@ class GeofenceController extends Controller
                 'properties.restriction' => 'nullable|string|in:' . RestrictionCategory::getConstansAsString(),
 
                 'properties.name' => ['nullable', 'array', new ValidateIso639],
-                'properties.name.*' => 'required',
+                // 'properties.name.*' => 'required',
                 'properties.alt_name' => ['nullable', 'array', new ValidateIso639],
-                'properties.alt_name.*' => 'required',
+                // 'properties.alt_name.*' => 'required',
                 // 'properties.correlation_id' => 'nullable|uuid|exists:' . TablesName::GEOFENCES . ',geofence_id',
                 'properties.correlation_id' => 'nullable|uuid',
 
@@ -261,9 +261,9 @@ class GeofenceController extends Controller
                 'properties.restriction' => 'nullable|string|in:' . RestrictionCategory::getConstansAsString(),
 
                 'properties.name' => ['nullable', 'array', new ValidateIso639],
-                'properties.name.*' => 'required',
+                // 'properties.name.*' => 'required',
                 'properties.alt_name' => ['nullable', 'array', new ValidateIso639],
-                'properties.alt_name.*' => 'required',
+                // 'properties.alt_name.*' => 'required',
                 // 'properties.correlation_id' => 'nullable|uuid|exists:' . TablesName::GEOFENCES . ',geofence_id',
                 'properties.correlation_id' => 'nullable|uuid',
 

@@ -19,6 +19,7 @@ use App\Http\Controllers\Features\VenueController;
 use App\Http\Controllers\Functions\SearchController;
 
 use App\Http\Controllers\SectionController;
+use App\Http\Controllers\SensorController;
 use App\Models\Features\Footprint;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;

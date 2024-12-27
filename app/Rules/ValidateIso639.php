@@ -15,6 +15,10 @@ class ValidateIso639 implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
+        if(!$value || !is_array($value) || count($value) === 0) {
+            $fail("Invalid ".$attribute);
+            return ;
+        }
         $filePath = __DIR__ . '/ValidateRuleCSV/iso_639-1.csv';
         $iso639 = LoadIso639LanguageCode::loadIso639($filePath);
 

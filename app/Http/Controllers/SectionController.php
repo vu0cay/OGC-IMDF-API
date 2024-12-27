@@ -85,9 +85,9 @@ class SectionController extends Controller
                 'properties.accessibility' => 'nullable|array',
                 'properties.accessibility.*' => 'required_if:properties.accessibility,!=null|exists:' . TablesName::ACCESSIBILITY_CATEGORIES . ',name',
                 'properties.name' => ['nullable', 'array', new ValidateIso639],
-                'properties.name.*' => 'required',
+                // 'properties.name.*' => 'required',
                 'properties.alt_name' => ['nullable', 'array', new ValidateIso639],
-                'properties.alt_name.*' => 'required',
+                // 'properties.alt_name.*' => 'required',
                 'properties.display_point' => ['nullable', new ValidateDisplayPoint],
                 // 'properties.display_point.type' => ['required_if:properties.display_point,!=null', 'in:Point'],
                 // 'properties.display_point.coordinates' => ['required_if:properties.display_point,!=null', new PointCoordinateRule],
@@ -95,8 +95,10 @@ class SectionController extends Controller
                 'properties.address_id' => 'nullable|uuid|exists:' . TablesName::ADDRESSES . ',address_id',
                 // 'properties.correlation_id' => ['nullable', 'uuid', 'exists:' . TablesName::SECTIONS . ',section_id'],
                 'properties.correlation_id' => ['nullable', 'uuid'],
-                'properties.parents' => ['nullable', 'array', 'exists:' . TablesName::SECTIONS . ',section_id'],
-                'properties.parents.*' => 'required_if:properties.parents,!=null|uuid|exists:' . TablesName::SECTIONS . ',section_id',
+                'properties.parents' => ['nullable', 'array'],
+                'properties.parents.*' => [
+                   'uuid', 'required_if:properties.parents,!=null','exists:' . TablesName::SECTIONS . ',section_id'
+                ],
             ]);
 
             // Bad Request
@@ -270,9 +272,9 @@ class SectionController extends Controller
                 'properties.accessibility' => 'nullable|array',
                 'properties.accessibility.*' => 'required_if:properties.accessibility,!=null|exists:' . TablesName::ACCESSIBILITY_CATEGORIES . ',name',
                 'properties.name' => ['nullable', 'array', new ValidateIso639],
-                'properties.name.*' => 'required',
+                // 'properties.name.*' => 'required',
                 'properties.alt_name' => ['nullable', 'array', new ValidateIso639],
-                'properties.alt_name.*' => 'required',
+                // 'properties.alt_name.*' => 'required',
                 'properties.display_point' => ['nullable', new ValidateDisplayPoint],
                 // 'properties.display_point.type' => ['required_if:properties.display_point,!=null', 'in:Point'],
                 // 'properties.display_point.coordinates' => ['required_if:properties.display_point,!=null', new PointCoordinateRule],
@@ -280,8 +282,13 @@ class SectionController extends Controller
                 'properties.address_id' => 'nullable|uuid|exists:' . TablesName::ADDRESSES . ',address_id',
                 // 'properties.correlation_id' => ['nullable', 'uuid', 'exists:' . TablesName::SECTIONS . ',section_id'],
                 'properties.correlation_id' => ['nullable', 'uuid'],
-                'properties.parents' => ['nullable', 'array', 'exists:' . TablesName::SECTIONS . ',section_id'],
-                'properties.parents.*' => 'required_if:properties.parents,!=null|uuid|exists:' . TablesName::SECTIONS . ',section_id',
+                'properties.parents' => ['nullable', 'array'],
+                'properties.parents.*' => [
+                   'uuid', 'required_if:properties.parents,!=null','exists:' . TablesName::SECTIONS . ',section_id'
+                ],
+
+                
+                
             ]);
 
             // Bad Request

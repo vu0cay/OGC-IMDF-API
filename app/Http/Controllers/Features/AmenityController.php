@@ -69,9 +69,9 @@ class AmenityController extends Controller
                 'properties.accessibility.*' => 'required_if:properties.accessibility,!=null|exists:' . TablesName::ACCESSIBILITY_CATEGORIES . ',name',
 
                 'properties.name' => ['nullable', 'array', new ValidateIso639],
-                'properties.name.*' => 'required',
+                // 'properties.name.*' => 'required',
                 'properties.alt_name' => ['nullable', 'array', new ValidateIso639],
-                'properties.alt_name.*' => 'required',
+                // 'properties.alt_name.*' => 'required',
 
                 'properties.hours' => ['nullable','string',new ValidateHours],
                 'properties.website' => ['nullable', 'string', new ValidateWebsiteUri],
@@ -227,9 +227,9 @@ class AmenityController extends Controller
                 'properties.accessibility.*' => 'required_if:properties.accessibility,!=null|exists:' . TablesName::ACCESSIBILITY_CATEGORIES . ',name',
 
                 'properties.name' => ['nullable', 'array', new ValidateIso639],
-                'properties.name.*' => 'required',
+                // 'properties.name.*' => 'required',
                 'properties.alt_name' => ['nullable', 'array', new ValidateIso639],
-                'properties.alt_name.*' => 'required',
+                // 'properties.alt_name.*' => 'required',
 
                 'properties.hours' => ['nullable','string',new ValidateHours],
                 'properties.website' => ['nullable', 'string', new ValidateWebsiteUri],

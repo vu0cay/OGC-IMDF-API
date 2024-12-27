@@ -68,9 +68,9 @@ class BuildingController extends Controller
                 'properties.restriction' => 'nullable|string|in:' . RestrictionCategory::getConstansAsString(),
                 
                 'properties.name' => ['nullable', 'array',new ValidateIso639],
-                'properties.name.*' => 'required',
+                // 'properties.name.*' => 'required',
                 'properties.alt_name' => ['nullable','array',new ValidateIso639],
-                'properties.alt_name.*' => 'required',
+                // 'properties.alt_name.*' => 'required',
 
                 'properties.display_point' => ['required', new ValidateDisplayPoint],
                 // 'properties.display_point.type' => 'required|in:Point',
@@ -202,9 +202,9 @@ class BuildingController extends Controller
                 'properties.category' => 'required|string|in:' . BuildingCategory::getConstansAsString(),
                 'properties.restriction' => 'nullable|string|in:' . RestrictionCategory::getConstansAsString(),
                 'properties.name' => ['nullable', 'array',new ValidateIso639],
-                'properties.name.*' => 'required',
+                // 'properties.name.*' => 'required',
                 'properties.alt_name' => ['nullable','array',new ValidateIso639],
-                'properties.alt_name.*' => 'required',
+                // 'properties.alt_name.*' => 'required',
                 'properties.display_point' => ['required', new ValidateDisplayPoint],
                 'properties.display_point.type' => 'required|in:Point',
                 'properties.display_point.coordinates' => ['required', new PointCoordinateRule],

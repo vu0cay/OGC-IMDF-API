@@ -43,6 +43,8 @@ return new class extends Migration
             // "address_id" => null
         ]);
 
+        
+
     }
 
     /**

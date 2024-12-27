@@ -75,7 +75,7 @@ class FootprintController extends Controller
                 }],
                 'properties.category' => 'required|string|in:' . FootprintCategory::getConstansAsString(),
                 'properties.name' => ['nullable', 'array',new ValidateIso639],
-                'properties.name.*' => 'required',
+                // 'properties.name.*' => 'required',
                 'properties.building_ids' => 'required|array',
                 'properties.building_ids.*' => 'required|uuid|exists:' . TablesName::BUILDINGS . ',building_id',
             ]);
@@ -198,7 +198,7 @@ class FootprintController extends Controller
                 }],
                 'properties.category' => 'required|string|in:' . FootprintCategory::getConstansAsString(),
                 'properties.name' => ['nullable', 'array',new ValidateIso639],
-                'properties.name.*' => 'required',
+                // 'properties.name.*' => 'required',
                 'properties.building_ids' => 'required|array',
                 'properties.building_ids.*' => 'required|uuid|exists:' . TablesName::BUILDINGS . ',building_id',
             ]);

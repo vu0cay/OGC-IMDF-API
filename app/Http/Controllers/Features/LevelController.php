@@ -83,9 +83,9 @@ class LevelController extends Controller
                 'properties.restriction' => 'nullable|string|in:' . RestrictionCategory::getConstansAsString(),
 
                 'properties.name' => ['required', 'array', new ValidateIso639],
-                'properties.name.*' => 'required',
+                // 'properties.name.*' => 'required',
                 'properties.short_name' => ['required', 'array', new ValidateIso639],
-                'properties.short_name.*' => 'required',
+                // 'properties.short_name.*' => 'required',
 
                 'properties.outdoor' => ['required', 'boolean'],
                 'properties.ordinal' => ['required', 'integer', 'min:0'],
@@ -244,9 +244,9 @@ class LevelController extends Controller
                 'properties.restriction' => 'nullable|string|in:' . RestrictionCategory::getConstansAsString(),
 
                 'properties.name' => ['required', 'array', new ValidateIso639],
-                'properties.name.*' => 'required',
+                // 'properties.name.*' => 'required',
                 'properties.short_name' => ['required', 'array', new ValidateIso639],
-                'properties.short_name.*' => 'required',
+                // 'properties.short_name.*' => 'required',
 
                 'properties.outdoor' => ['required', 'boolean'],
                 'properties.ordinal' => ['required', 'integer', 'min:0'],
