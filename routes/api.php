@@ -1,6 +1,7 @@
 <?php
 
 use App\Constants\Features\TablesName;
+use App\Contracts\ExportDatasets;
 use App\Http\Controllers\DetailController;
 use App\Http\Controllers\Features\AddressController;
 use App\Http\Controllers\Features\AmenityController;
@@ -190,3 +191,8 @@ Route::get('/search', [SearchController::class, '__invoke'])->name('search');
 // list all feature references
 // unit - level - building - footprint - venue - address
 
+
+// export datasets
+Route::get('/export-spatial-data', function () {
+    return ExportDatasets::exportRoutesToJsonZip();
+});
