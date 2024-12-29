@@ -21,7 +21,7 @@ class ExportDatasets
         $routes = Route::getRoutes();
         $files = [];
         
-        $feature_api_routes = [];
+        $feature_api_routes = ['api/manifests'];
 
         $features = Feature::all('feature_type');
         // dd($features);

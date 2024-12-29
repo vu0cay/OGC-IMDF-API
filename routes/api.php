@@ -12,6 +12,7 @@ use App\Http\Controllers\Features\FootprintController;
 use App\Http\Controllers\Features\GeofenceController;
 use App\Http\Controllers\Features\KioskController;
 use App\Http\Controllers\Features\LevelController;
+use App\Http\Controllers\Features\ManifestController;
 use App\Http\Controllers\Features\OccupantController;
 use App\Http\Controllers\Features\OpeningController;
 use App\Http\Controllers\Features\RelationshipController;
@@ -37,6 +38,15 @@ use Illuminate\Support\Facades\Route;
 // Route::apiResource("openings", OpeningController::class);
 // Route::apiResource(TablesName::VENUES, VenueController::class);
 
+Route::controller(ManifestController::class)->group(function () {
+
+    Route::get('/manifests', 'index');
+    // Route::get('/addresses/{address_id}', 'show');
+    // Route::post('/addresses', 'store');
+    // Route::put('/addresses/{address_id}', 'update');
+    // Route::delete('/addresses/{address_id}', 'destroy');
+
+});
 Route::controller(AddressController::class)->group(function () {
 
     Route::get('/addresses', 'index');
