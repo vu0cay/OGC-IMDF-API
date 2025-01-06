@@ -25,7 +25,9 @@ class UnitResource extends JsonResource
         $geometry = json_decode($geom[0]->geometry);
         $display_point = json_decode($geom[0]->display_point);
         
+        // dd($geom[0]->geometry);
 
+        
         $name = GetFeatureName::getName($this->labels, 'name');
         $alt_name = GetFeatureName::getName($this->labels, 'alt_name');
 

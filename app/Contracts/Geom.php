@@ -42,12 +42,21 @@ class Geom extends Model
                 return "ST_GeomFromText('POINT($x". " "."$y)', 4326)";
                 
             case "Polygon":
-                $coordinates = $geometry["coordinates"][0];
-                $text = "ST_GeomFromText('POLYGON((";
-                foreach($coordinates as $coordinate) {
-                    $text .= $coordinate[0]." ".$coordinate[1].", ";
+                $polys = $geometry["coordinates"];
+                    //"POLYGON( (180.0 40.0, 180.0 50.0, 170.0 50.0, 170.0 40.0, 180.0 40.0),
+                    //(-170.0 40.0, -170.0 50.0, -180.0 50.0, -180.0 40.0, -170.0 40.0)
+                    //)"
+                $text = "ST_GeomFromText('POLYGON(";
+                foreach($polys as $coordinates) {
+                    $text .= "(";
+                    foreach($coordinates as $coordinate) {
+                        $text .= $coordinate[0]." ".$coordinate[1].", ";
+                    }
+                    $text = rtrim($text, ", ");
+                    $text .= "),";
                 }
-                $text = rtrim($text, ', ')."))', 4326)";
+                $text = rtrim($text, ', ').")', 4326)";
+                // dd($text);
                 return $text;
             case "MultiPolygon":
                     $polygons = $geometry["coordinates"];
