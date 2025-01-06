@@ -70,7 +70,7 @@ class OccupantController extends Controller
                 'properties.website' => ['nullable','string', new ValidateWebsiteUri],
                 'properties.phone' => ['nullable','string',new ValidatePhone],
                 'properties.anchor_id' => 'nullable|exists:' . TablesName::ANCHORS . ',anchor_id',
-                'properties.validity' => ['required', new ValidateValidity]
+                'properties.validity' => ['nullable', new ValidateValidity]
             ]);
 
             // Bad Request
@@ -188,7 +188,7 @@ class OccupantController extends Controller
                 'properties.website' => ['nullable','string', new ValidateWebsiteUri],
                 'properties.phone' => ['nullable','string',new ValidatePhone],
                 'properties.anchor_id' => 'nullable|exists:' . TablesName::ANCHORS . ',anchor_id',
-                'properties.validity' => ['required', new ValidateValidity]
+                'properties.validity' => ['nullable', new ValidateValidity]
             ]);
 
             // Bad Request

@@ -14,6 +14,7 @@ class ValidateValidity implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
+        if(!isset($value)) return;
         $arr = ['start', 'end', 'modified'];
         foreach ($value as $key => $val) { 
             if(!in_array($key, $arr)) { 
