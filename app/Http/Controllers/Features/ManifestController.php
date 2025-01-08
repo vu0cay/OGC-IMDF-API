@@ -14,6 +14,9 @@ class ManifestController extends Controller
      */
     public function index()
     {
+
+        // dd($version);
+
         $manifests = DB::table('manifests')->get();
         $manifestResource = ManifestResource::collection($manifests);
         return response()->json($manifestResource[0], 200);

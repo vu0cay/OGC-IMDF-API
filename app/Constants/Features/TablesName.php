@@ -110,6 +110,8 @@ class TablesName
     public const GEOFENCE_LEVEL = "geofence_level";
     public const GEOFENCE_PARENTS = "geofence_parents";
     
+    public const MANIFESTS = "manifests";
+    
     
 
 }
