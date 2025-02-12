@@ -62,7 +62,7 @@ class AnchorController extends Controller
                 'feature_type' => 'required|string|in:anchor',
                 'geometry' => 'required',
                 'geometry.type' => ['required','in:Point'],
-                'geometry.coordinates' => ['required', new PointCoordinateRule],
+                'geometry.coordinates' => 'required',
                 'properties.address_id' => 'nullable|exists:' . TablesName::ADDRESSES . ',address_id',
                 'properties.unit_id' => 'required|exists:' . TablesName::UNITS . ',unit_id',
                 
@@ -162,7 +162,7 @@ class AnchorController extends Controller
                 'feature_type' => 'required|string|in:anchor',
                 'geometry' => 'required',
                 'geometry.type' => ['required','in:Point'],
-                'geometry.coordinates' => ['required', new PointCoordinateRule],
+                'geometry.coordinates' => 'required',
                 'properties.address_id' => 'nullable|exists:' . TablesName::ADDRESSES . ',address_id',
                 'properties.unit_id' => 'required|exists:' . TablesName::UNITS . ',unit_id',
                 

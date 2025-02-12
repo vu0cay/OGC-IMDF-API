@@ -63,22 +63,7 @@ class LevelController extends Controller
                 'feature_type' => 'required|string|in:level',
                 'geometry' => 'required',
                 'geometry.type' => 'required|in:Polygon,MultiPolygon',
-                'geometry.coordinates' => [
-                    'required',
-                    function ($attribute, $value, $fail) use ($request) {
-                        if (!isset($request->geometry['type']))
-                            return;
-
-                        if ($request->geometry['type'] === 'Polygon') {
-                            $validateInstance = new PolygonCoordinateRule();
-                            $validateInstance->validate($attribute, $value, $fail);
-                        } else {
-                            $validateInstance = new MultiPolygonCoordinateRule();
-                            $validateInstance->validate($attribute, $value, $fail);
-                        }
-
-                    }
-                ],
+                'geometry.coordinates' => 'required',
                 'properties.category' => 'required|string|in:' . LevelCategory::getConstansAsString(),
                 'properties.restriction' => 'nullable|string|in:' . RestrictionCategory::getConstansAsString(),
 
@@ -224,22 +209,7 @@ class LevelController extends Controller
                 'feature_type' => 'required|string|in:level',
                 'geometry' => 'required',
                 'geometry.type' => 'required|in:Polygon,MultiPolygon',
-                'geometry.coordinates' => [
-                    'required',
-                    function ($attribute, $value, $fail) use ($request) {
-                        if (!isset($request->geometry['type']))
-                            return;
-
-                        if ($request->geometry['type'] === 'Polygon') {
-                            $validateInstance = new PolygonCoordinateRule();
-                            $validateInstance->validate($attribute, $value, $fail);
-                        } else {
-                            $validateInstance = new MultiPolygonCoordinateRule();
-                            $validateInstance->validate($attribute, $value, $fail);
-                        }
-
-                    }
-                ],
+                'geometry.coordinates' => 'required',
                 'properties.category' => 'required|string|in:' . LevelCategory::getConstansAsString(),
                 'properties.restriction' => 'nullable|string|in:' . RestrictionCategory::getConstansAsString(),
 

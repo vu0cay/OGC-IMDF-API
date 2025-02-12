@@ -61,18 +61,7 @@ class FootprintController extends Controller
                 'feature_type' => 'required|string|in:footprint',
                 'geometry' => 'required',
                 'geometry.type' => 'required|in:Polygon,MultiPolygon',
-                'geometry.coordinates' => ['required', function($attribute, $value, $fail) use($request) {
-                    if(!isset($request->geometry['type'])) return;
-
-                    if($request->geometry['type'] === 'Polygon') {
-                        $validateInstance = new PolygonCoordinateRule();
-                        $validateInstance->validate($attribute, $value, $fail);
-                    } else {
-                        $validateInstance = new MultiPolygonCoordinateRule();
-                        $validateInstance->validate($attribute, $value, $fail);
-                    }
-
-                }],
+                'geometry.coordinates' => 'required',
                 'properties.category' => 'required|string|in:' . FootprintCategory::getConstansAsString(),
                 'properties.name' => ['nullable', 'array',new ValidateIso639],
                 // 'properties.name.*' => 'required',
@@ -184,18 +173,7 @@ class FootprintController extends Controller
                 'feature_type' => 'required|string|in:footprint',
                 'geometry' => 'required',
                 'geometry.type' => 'required|in:Polygon,MultiPolygon',
-                'geometry.coordinates' => ['required', function($attribute, $value, $fail) use($request) {
-                    if(!isset($request->geometry['type'])) return;
-
-                    if($request->geometry['type'] === 'Polygon') {
-                        $validateInstance = new PolygonCoordinateRule();
-                        $validateInstance->validate($attribute, $value, $fail);
-                    } else {
-                        $validateInstance = new MultiPolygonCoordinateRule();
-                        $validateInstance->validate($attribute, $value, $fail);
-                    }
-
-                }],
+                'geometry.coordinates' => 'required',
                 'properties.category' => 'required|string|in:' . FootprintCategory::getConstansAsString(),
                 'properties.name' => ['nullable', 'array',new ValidateIso639],
                 // 'properties.name.*' => 'required',

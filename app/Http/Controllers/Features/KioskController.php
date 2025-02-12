@@ -63,21 +63,7 @@ class KioskController extends Controller
                 'feature_type' => 'required|string|in:kiosk',
                 'geometry' => 'required',
                 'geometry.type' => ['required','in:Polygon,MultiPolygon'],
-                'geometry.coordinates' => [
-                    'required',
-                    function ($attribute, $value, $fail) use ($request) {
-                        if(!isset($request->geometry['type'])) return;
-
-                        if ($request->geometry['type'] === 'Polygon') {
-                            $validateInstance = new PolygonCoordinateRule();
-                            $validateInstance->validate($attribute, $value, $fail);
-                        } else {
-                            $validateInstance = new MultiPolygonCoordinateRule();
-                            $validateInstance->validate($attribute, $value, $fail);
-                        }
-
-                    }
-                ],
+                'geometry.coordinates' => 'required',
                 'properties.name' => ['nullable', 'array', new ValidateIso639],
                 // 'properties.name.*' => 'required',
                 'properties.alt_name' => ['nullable', 'array', new ValidateIso639],
@@ -202,21 +188,7 @@ class KioskController extends Controller
                 'feature_type' => 'required|string|in:kiosk',
                 'geometry' => 'required',
                 'geometry.type' => 'required|in:Polygon,MultiPolygon',
-                'geometry.coordinates' => [
-                    'required',
-                    function ($attribute, $value, $fail) use ($request) {
-                        if(!isset($request->geometry['type'])) return;
-
-                        if ($request->geometry['type'] === 'Polygon') {
-                            $validateInstance = new PolygonCoordinateRule();
-                            $validateInstance->validate($attribute, $value, $fail);
-                        } else {
-                            $validateInstance = new MultiPolygonCoordinateRule();
-                            $validateInstance->validate($attribute, $value, $fail);
-                        }
-
-                    }
-                ],
+                'geometry.coordinates' => 'required',
                 'properties.name' => ['nullable', 'array', new ValidateIso639],
                 // 'properties.name.*' => 'required',
                 'properties.alt_name' => ['nullable', 'array', new ValidateIso639],

@@ -16,22 +16,21 @@ class ExportDatasets
         if (!file_exists($tempDir)) {
             mkdir($tempDir, 0755, true);
         }
-
+        
         // Get all routes
         $routes = Route::getRoutes();
         $files = [];
+        $feature_api_routes = ['api/v1.0.0/manifests'];
         
-        $feature_api_routes = ['api/manifests'];
-
         $features = Feature::all('feature_type');
         // dd($features);
         foreach ($features as $feature) { 
             if (substr($feature->feature_type, -1) === 'y') { 
-                $str = 'api/'.substr($feature->feature_type, 0, -1).'ies';
+                $str = 'api/v1.0.0/'.substr($feature->feature_type, 0, -1).'ies';
             }  else if (substr($feature->feature_type, -1) === 's') { 
-                $str = 'api/'.$feature->feature_type.'es';
-            } else $str = 'api/'.$feature->feature_type.'s';
-
+                $str = 'api/v1.0.0/'.$feature->feature_type.'es';
+            } else $str = 'api/v1.0.0/'.$feature->feature_type.'s';
+            
             array_push($feature_api_routes, $str);
         }
         // dd($feature_api_routes);
@@ -57,7 +56,10 @@ class ExportDatasets
                     // dd($content);
                     // Save response to a file
                     // $filename = str_replace(['/', ':'], '_', substr($uri,3)) . '.json';
-                    $filename = substr($uri,4) . '.json';
+                    // dd($uri);
+                    $substr = preg_replace('/^api\/v[\d\.]+\//', '', $uri);
+                    // dd($preg);
+                    $filename = $substr . '.json';
                     $filePath = $tempDir . '/' . $filename;
                     file_put_contents($filePath, $content);
                     $files[] = $filePath;
@@ -67,9 +69,10 @@ class ExportDatasets
                 continue;
             }
         }
-        
+
         // Create ZIP file
         $zipPath = storage_path('app/routes_export.zip');
+        
         $zip = new ZipArchive();
         if ($zip->open($zipPath, ZipArchive::CREATE | ZipArchive::OVERWRITE) === true) {
             foreach ($files as $file) {
@@ -77,13 +80,12 @@ class ExportDatasets
             }
             $zip->close();
         }
-
         // Cleanup temporary files
         foreach ($files as $file) {
             unlink($file);
         }
         rmdir($tempDir);
-
+        // return response()->download($zipPath);
         return response()->download($zipPath)->deleteFileAfterSend(true);
     }
 

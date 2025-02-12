@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Features;
 
 use App\Constants\Features\Category\RestrictionCategory;
 use App\Constants\Features\Category\SectionCategory;
 use App\Constants\Features\TablesName;
 use App\Contracts\FeatureService;
 use App\Contracts\Geom;
+use App\Http\Controllers\Controller;
 use App\Http\Resources\FeatureResources\SectionResource;
 use App\Models\Features\Section;
 use App\Rules\MultiPolygonCoordinateRule;
@@ -64,22 +65,7 @@ class SectionController extends Controller
                 'feature_type' => 'required|string|in:section',
                 'geometry' => 'required',
                 'geometry.type' => 'required|in:Polygon,MultiPolygon',
-                'geometry.coordinates' => [
-                    'required',
-                    function ($attribute, $value, $fail) use ($request) {
-                        if (!isset($request->geometry['type']))
-                            return;
-
-                        if ($request->geometry['type'] === 'Polygon') {
-                            $validateInstance = new PolygonCoordinateRule();
-                            $validateInstance->validate($attribute, $value, $fail);
-                        } else {
-                            $validateInstance = new MultiPolygonCoordinateRule();
-                            $validateInstance->validate($attribute, $value, $fail);
-                        }
-
-                    }
-                ],
+                'geometry.coordinates' => 'required',
                 'properties.category' => 'required|string|in:' . SectionCategory::getConstansAsString(),
                 'properties.restriction' => 'nullable|string|in:' . RestrictionCategory::getConstansAsString(),
                 'properties.accessibility' => 'nullable|array',
@@ -251,22 +237,7 @@ class SectionController extends Controller
                 'feature_type' => 'required|string|in:section',
                 'geometry' => 'required',
                 'geometry.type' => 'required|in:Polygon,MultiPolygon',
-                'geometry.coordinates' => [
-                    'required',
-                    function ($attribute, $value, $fail) use ($request) {
-                        if (!isset($request->geometry['type']))
-                            return;
-
-                        if ($request->geometry['type'] === 'Polygon') {
-                            $validateInstance = new PolygonCoordinateRule();
-                            $validateInstance->validate($attribute, $value, $fail);
-                        } else {
-                            $validateInstance = new MultiPolygonCoordinateRule();
-                            $validateInstance->validate($attribute, $value, $fail);
-                        }
-
-                    }
-                ],
+                'geometry.coordinates' => 'required',
                 'properties.category' => 'required|string|in:' . SectionCategory::getConstansAsString(),
                 'properties.restriction' => 'nullable|string|in:' . RestrictionCategory::getConstansAsString(),
                 'properties.accessibility' => 'nullable|array',

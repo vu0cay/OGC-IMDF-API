@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Features;
 
 use App\Constants\Features\TablesName;
 use App\Contracts\Geom;
+use App\Http\Controllers\Controller;
 use App\Http\Resources\FeatureResources\DetailResource;
 use App\Models\Features\Detail;
 use App\Rules\LineStringCoordinateRule;
@@ -60,22 +61,7 @@ class DetailController extends Controller
                 'feature_type' => 'required|string|in:detail',
                 'geometry' => 'required',
                 'geometry.type' => 'required|in:LineString,MultiLineString',
-                'geometry.coordinates' => [
-                    'required',
-                    function ($attribute, $value, $fail) use ($request) {
-                        if(!isset($request->geometry['type'])) return;
-
-                        if ($request->geometry['type'] === 'LineString') {
-                            $validateInstance = new LineStringCoordinateRule();
-                            $validateInstance->validate($attribute, $value, $fail);
-                        } else {
-                            $validateInstance = new MultiLineStringCoordinateRule();
-                            $validateInstance->validate($attribute, $value, $fail);
-
-                        }
-
-                    }
-                ],
+                'geometry.coordinates' => 'required',
                 'properties.level_id' => 'required|uuid|exists:' . TablesName::LEVELS . ',level_id',
 
             ]);
@@ -169,22 +155,7 @@ class DetailController extends Controller
                 'feature_type' => 'required|string|in:detail',
                 'geometry' => 'required',
                 'geometry.type' => 'required|in:LineString,MultiLineString',
-                'geometry.coordinates' => [
-                    'required',
-                    function ($attribute, $value, $fail) use ($request) {
-                        if(!isset($request->geometry['type'])) return;
-
-                        if ($request->geometry['type'] === 'LineString') {
-                            $validateInstance = new LineStringCoordinateRule();
-                            $validateInstance->validate($attribute, $value, $fail);
-                        } else {
-                            $validateInstance = new MultiLineStringCoordinateRule();
-                            $validateInstance->validate($attribute, $value, $fail);
-
-                        }
-
-                    }
-                ],
+                'geometry.coordinates' => 'required',
                 'properties.level_id' => 'required|uuid|exists:' . TablesName::LEVELS . ',level_id',
 
             ]);
