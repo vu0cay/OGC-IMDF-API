@@ -6,6 +6,14 @@ use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
+    protected function hosts()
+    {
+        return [
+            'hoangvu.id.vn',
+            // or: '^hoangvuctu\.id\.vn$'
+        ];
+    }
+
     /**
      * Register any application services.
      */

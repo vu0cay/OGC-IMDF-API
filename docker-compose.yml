@@ -1,0 +1,44 @@
+version: "3.8"
+services:
+  server:
+    container_name: be_service
+    build:                             # Uncomment this line if you want to build the image from Dockerfile  
+      context: .
+      dockerfile: Dockerfile
+    # image: vu0cay/ctu-imdf-platform:latest
+    env_file: 
+      - .env
+    ports:
+      - "8000:80"
+    volumes:
+      - ./docker/custom_apache.conf:/etc/apache2/sites-available/000-default.conf
+      - ./docker/php.ini:/usr/local/etc/php/conf.d/custom.ini
+    networks:
+      - ctu_net
+    depends_on: 
+      - db
+
+  db:
+    image: postgis/postgis:latest
+    container_name: postgres-imdf-db
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports: 
+      - "5432:5432"
+    volumes:
+      - db:/var/lib/postgresql/data
+    networks:
+      - ctu_net
+    restart: unless-stopped
+
+networks:
+  ctu_net:
+    name: ctu_net
+    attachable: true
+    driver: bridge
+
+volumes:
+  db:
+  server:
