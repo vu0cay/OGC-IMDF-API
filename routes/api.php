@@ -29,7 +29,7 @@ use Illuminate\Support\Facades\Route;
 
 
 
-Route::prefix('v1.0.0')->group(function() {
+Route::prefix(env('VERSION', 'v1.0.0'))->group(function() {
     Route::controller(ManifestController::class)->group(function () {
         Route::get('/manifests', 'index');
     });

@@ -32,13 +32,12 @@ services:
     networks:
       - ctu_net
     restart: unless-stopped
-
+  
 networks:
   ctu_net:
     name: ctu_net
     attachable: true
     driver: bridge
-
 volumes:
   db:
   server:

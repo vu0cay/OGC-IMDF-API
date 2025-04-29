@@ -40,7 +40,6 @@ class BuildingController extends Controller
         catch (Exception $e) {
             return response()->json(['success' => false, 'message' => $e->getMessage()], status: 400);
         }
-
     }
 
     /**
